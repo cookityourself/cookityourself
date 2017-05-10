@@ -1,12 +1,13 @@
 use <ciy_logo.scad>
+use <../libs/recycling_symbol_library/recycling_symbol.scad>
 
 scale([1/1,1/1,1/1]){
-    circular_basis();
+    circular_basis(recycling_type = "PLA", recycling_angle_degree=45);
 }
 
 
 
-module circular_basis(){
+module circular_basis(recycling_type = "PLA", recycling_angle_degree = 0){
     
     base_height = 2;
     base_radius = 30;
@@ -39,5 +40,8 @@ module circular_basis(){
             ciy_logo(logo_height=base_height+1);
         }
     }
+    
+    // plain recycling logo
+    recycling_symbol("PLA", logo_size, base_height+1, [logo_excentricity*cos(recycling_angle_degree),logo_excentricity*sin(recycling_angle_degree),0]);
 }
 
