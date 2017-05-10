@@ -10,7 +10,7 @@ size=20; //[1:50]
 // Thickness of the symbol
 T=1; //[1:10]
 /* [Hidden] */
-use <write/Write.scad>
+use <../writescad/Write.scad>
 
 if(demo)
 color("SteelBlue")
