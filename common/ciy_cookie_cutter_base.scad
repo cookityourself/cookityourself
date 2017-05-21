@@ -42,6 +42,10 @@ module circular_basis(recycling_type = "PLA", recycling_angle_degree = 0){
     }
     
     // plain recycling logo
-    recycling_symbol("PLA", logo_size, base_height+1, [logo_excentricity*cos(recycling_angle_degree),logo_excentricity*sin(recycling_angle_degree),0]);
+    echo ("Recycling type is ",recycling_type);
+    if (recycling_type == "") {}
+    else {
+        recycling_symbol(recycling_type, logo_size, base_height+1, [logo_excentricity*cos(recycling_angle_degree),logo_excentricity*sin(recycling_angle_degree),0]);
+    }
 }
 
