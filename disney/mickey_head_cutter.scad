@@ -1,11 +1,17 @@
 use <../common/ciy_cookie_cutter_base.scad>
 
 scale([1/1,1/1,1/1]){
-    mickey_head_cutter();
+    mickey_head_cutter(
+        cutter_height = 25, 
+        head_radius = 23, 
+        ear_radius = 14, 
+        skin = 1.5, 
+        ear_extentricity_correction = 2
+    );
 }
 
 
-module mickey_head_cutter (cutter_height = 25, head_radius = 23, ear_radius = 14, skin = 1.5, ear_extentricity_correction = 2) {
+module mickey_head_cutter (cutter_height, head_radius, ear_radius, skin, ear_extentricity_correction) {
     $fn = 60;
     linear_extrude (cutter_height) {
         difference () {
@@ -14,7 +20,12 @@ module mickey_head_cutter (cutter_height = 25, head_radius = 23, ear_radius = 14
         }
     }
     difference () {
-        circular_basis(recycling_type = "PLA", recycling_angle_degree = 0);
+        circular_basis(
+            base_radius = 35,
+            logo_size = 8,
+            recycling_type = "PLA",
+            recycling_angle_degree = 3
+        );
         translate ([0, 0, -5]) linear_extrude (10) mickey_head_shape(head_radius, ear_radius, 0, ear_extentricity_correction);
     }
 }
