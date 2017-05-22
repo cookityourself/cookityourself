@@ -3,3 +3,5 @@
 **/*.doc
 **/*.gcode
 libs/writescad/*.*
+libs/wedge/*.*
+test_log.txt
