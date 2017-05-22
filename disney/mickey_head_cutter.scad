@@ -5,7 +5,7 @@ scale([1/1,1/1,1/1]){
         cutter_height = 25, 
         head_radius = 23, 
         ear_radius = 14, 
-        skin = 1.5, 
+        skin = 1, 
         ear_extentricity_correction = 2
     );
 }
