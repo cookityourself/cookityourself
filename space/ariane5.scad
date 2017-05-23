@@ -1,14 +1,22 @@
+use <../common/ciy_cookie_cutter_base.scad>
+use <../common/cutterize.scad>
+
+
+
 scale([1/1,1/1,1/1]){
+    $fn = 30;
+    
     ariane5_cutter();
+
 }
 
 
-module ariane5_cutter () {
-    cutter_skin = 2;
-    rocket_diameter = 20;
-    rocket_height = 100;
+module ariane5_cutter (cutter_height = 25, cutter_skin = 1, rocket_diameter = 20, rocket_height = 100) {
+    
 
-    ariane5_shape (diameter = rocket_diameter, height = rocket_height);
+    cutterize (cutter_skin) 
+        linear_extrude (cutter_height) 
+            ariane5_shape (diameter = rocket_diameter, height = rocket_height);
 
 }
 
@@ -61,21 +69,29 @@ module ariane5_shape (diameter = 20, height = 100) {
     reactors_width = diameter/2;
     reactors_height = height*0.6;
     reactors_x_pos = body_width/2+reactors_width/2+2;
-    reactors_y_pos = -(chamber_height*1.1);
+    reactors_y_pos = -(chamber_height*1.2);
     
         // reactors
     translate([-reactors_x_pos, reactors_y_pos,0])  reactor (width = reactors_width, height = reactors_height);
-    translate([+reactors_x_pos, reactors_y_pos,0])  reactor (width = reactors_width, height = reactors_height);
+    translate([+reactors_x_pos, reactors_y_pos,0])  mirror () reactor (width = reactors_width, height = reactors_height);
         // connectors
     //square([body_width+reactors_width, height*0.2], center = true);
-    translate([0, -height*0.1,0])  square([body_width+reactors_width, height*0.4], center = true);
+    translate([0, -height*0.1,0])  square([body_width+reactors_width, height*0.45], center = true);
     
 }
 
 module reactor (width, height) {
     square([width,height], center = true);
-    //translate([0, height*0.6, 0]) resize ([width, width/4]) circle (width/2);
-    translate([0, height*0.47, 0]) circle (width/2);
+    //ellipse: translate([0, height*0.6, 0]) resize ([width, width/4]) circle (width/2);
+    translate([0, height/2, 0]) {
+        //circle: translate([0, height*0.47, 0]) circle (width/2);
+        // closer from the original:
+        circle_radius = width/8*1.3;
+        hull () {
+            polygon (points = [[-width/2, 0], [width/2, width], [width/2, 0]]);
+            translate ([width/2-circle_radius, width, 0]) circle (circle_radius, center = true);
+        }
+    }
     // engine
     engine_width = width*0.6;
     engine_height = height*0.25;
