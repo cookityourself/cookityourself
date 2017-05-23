@@ -6,6 +6,7 @@ scale([1/1,1/1,1/1]){
         base_radius = 30,
         base_x_scale = 1.2,
         logo_size = 5,
+        plain_logo_angle_degree = 180,
         recycling_type = "PLA", 
         recycling_angle_degree=45,
         hollow_logo = true
@@ -14,7 +15,7 @@ scale([1/1,1/1,1/1]){
 
 
 
-module circular_basis(base_radius = 30, base_x_scale = 1, base_y_scale = 1, logo_size = 5, logo_from_edge = 1, recycling_type = "", recycling_angle_degree = 0, recycling_from_edge = 0, hollow_logo = true){
+module circular_basis(base_radius = 30, base_x_scale = 1, base_y_scale = 1, logo_size = 5, plain_logo_angle_degree = 90, logo_from_edge = 1, recycling_type = "", recycling_angle_degree = 0, recycling_from_edge = 0, hollow_logo = true, hollow_logo_angle_degree = -90){
     
     base_height = 2;
     
@@ -40,7 +41,7 @@ module circular_basis(base_radius = 30, base_x_scale = 1, base_y_scale = 1, logo
                 hollow_logo_excentricity = base_y_scale*base_radius-hollow_logo_size/2-logo_from_edge;
 
     // debug:   translate([0,0,-hollow_logo_height/2]){
-                translate([0,-hollow_logo_excentricity,-hollow_logo_height/2]){
+                translate([hollow_logo_excentricity*cos(hollow_logo_angle_degree),hollow_logo_excentricity*sin(hollow_logo_angle_degree),-hollow_logo_height/2]){
                 ciy_logo(logo_size = hollow_logo_size, logo_height=hollow_logo_height);
                 }
             }
@@ -48,7 +49,7 @@ module circular_basis(base_radius = 30, base_x_scale = 1, base_y_scale = 1, logo
     }
 
     // plain logo "CIY" on the inner face
-    translate([0,logo_excentricity,0]){
+    translate([logo_excentricity*cos(plain_logo_angle_degree),logo_excentricity*sin(plain_logo_angle_degree),0]){
         rotate ([0, 0, -6])
         ciy_logo(logo_size = logo_size, logo_height=base_height+1);
     }
