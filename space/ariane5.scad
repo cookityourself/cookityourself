@@ -11,12 +11,33 @@ scale([1/1,1/1,1/1]){
 }
 
 
-module ariane5_cutter (cutter_height = 25, cutter_skin = 1, rocket_diameter = 20, rocket_height = 100) {
+module ariane5_cutter (cutter_height = 25, cutter_skin = 1, rocket_diameter = 20*0.7, rocket_height = 100*0.7) {
     
+    cutter_position_x = 0;
+    cutter_position_y = 5;
+    
+    translate ([cutter_position_x, cutter_position_y, cutter_skin])
+        cutterize (cutter_skin) 
+            linear_extrude (cutter_height) 
+                ariane5_shape (diameter = rocket_diameter, height = rocket_height);
 
-    cutterize (cutter_skin) 
-        linear_extrude (cutter_height) 
-            ariane5_shape (diameter = rocket_diameter, height = rocket_height);
+    difference () {
+        circular_basis(
+            base_radius = 28,
+            base_x_scale = 1, 
+            base_y_scale = 0.8,
+            logo_size = 5,
+            plain_logo_angle_degree = 180,
+            logo_from_edge = -2, 
+            recycling_type = "PLA",
+            recycling_angle_degree = 15,
+            recycling_from_edge = 1,
+            hollow_logo = false
+        );
+        translate ([cutter_position_x, cutter_position_y, -5]) 
+            linear_extrude (10) ariane5_shape (diameter = rocket_diameter, height = rocket_height);
+    }
+
 
 }
 
@@ -32,8 +53,9 @@ module ariane5_shape (diameter = 20, height = 100) {
     head_height = diameter * 1.5;
     head_width = diameter;
     ogive_radius = head_width;
+    rounding_radius = diameter/4;
 
-    translate([-ogive_radius/3, body_height/2,0])  {
+    translate([-head_width/3, body_height/2,0])  {
         resize ([head_width, head_height]) {
             minkowski() {
                 difference () {
@@ -43,7 +65,7 @@ module ariane5_shape (diameter = 20, height = 100) {
                     }
                     translate([0, -ogive_radius, 0]) square(ogive_radius);
                     }
-                circle (5);
+                circle (rounding_radius);
             }
         }
     }
