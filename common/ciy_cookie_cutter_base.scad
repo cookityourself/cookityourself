@@ -19,11 +19,11 @@ module circular_basis(base_height = 2, base_radius = 30, base_x_scale = 1, base_
     
     
     
-    letters_height = base_height+1;
+    letters_height = base_height+0.5;
     logo_excentricity = base_y_scale*base_radius-logo_size/2-logo_from_edge;
     
     min_hlogo_size = 8; // minimum size of the hollow logo required for correct printing
-    min_rlogo_size = 9; // minimum size of the recycling logo required for correct printing
+    min_rlogo_size = 8; // minimum size of the recycling logo required for correct printing
 
     hollow_logo_size = logo_size < min_hlogo_size? min_hlogo_size:logo_size;
     recycling_logo_size = logo_size < min_rlogo_size? min_rlogo_size:logo_size;
