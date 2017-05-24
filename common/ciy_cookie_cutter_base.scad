@@ -15,9 +15,9 @@ scale([1/1,1/1,1/1]){
 
 
 
-module circular_basis(base_radius = 30, base_x_scale = 1, base_y_scale = 1, logo_size = 5, plain_logo_angle_degree = 90, logo_from_edge = 1, recycling_type = "", recycling_angle_degree = 0, recycling_from_edge = 0, hollow_logo = true, hollow_logo_angle_degree = -90){
+module circular_basis(base_height = 2, base_radius = 30, base_x_scale = 1, base_y_scale = 1, logo_size = 5, plain_logo_angle_degree = 90, logo_from_edge = 1, recycling_type = "", recycling_angle_degree = 0, recycling_from_edge = 0, hollow_logo = true, hollow_logo_angle_degree = -90){
     
-    base_height = 2;
+    
     
     letters_height = base_height+1;
     logo_excentricity = base_y_scale*base_radius-logo_size/2-logo_from_edge;
