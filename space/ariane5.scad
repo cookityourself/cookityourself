@@ -21,14 +21,13 @@ module ariane5_cutter (cutter_height = 15, cutter_skin = 1, rocket_diameter = 20
     cutter_position_y = 0;
     
     translate ([cutter_position_x, cutter_position_y, cutter_skin/2])
-        union () {
         cutterize_offset_round (cutter_skin/2) 
             linear_extrude (cutter_height-base_height) 
                 ariane5_shape (diameter = rocket_diameter, height = rocket_height);        
+    translate ([cutter_position_x, cutter_position_y, 0])
         inset_shell_round (thickness = cutter_skin/2)
-            linear_extrude (cutter_height-base_height) 
+            linear_extrude (cutter_height-base_height+cutter_skin) 
                 ariane5_shape (diameter = rocket_diameter, height = rocket_height);
-        }
 
     difference () {
         circular_basis(
