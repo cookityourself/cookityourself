@@ -11,7 +11,7 @@ scale([1/1,1/1,1/1]){
 }
 
 
-module ariane5_cutter (cutter_height = 25, cutter_skin = 1, rocket_diameter = 20*0.7, rocket_height = 100*0.7) {
+module ariane5_cutter (cutter_height = 25, cutter_skin = 1, rocket_diameter = 20*0.8, rocket_height = 100*0.8) {
     
     cutter_position_x = 0;
     cutter_position_y = 5;
@@ -24,11 +24,11 @@ module ariane5_cutter (cutter_height = 25, cutter_skin = 1, rocket_diameter = 20
     difference () {
         circular_basis(
             base_radius = 28,
-            base_x_scale = 1, 
-            base_y_scale = 0.8,
+            base_x_scale = 1.1, 
+            base_y_scale = 0.9,
             logo_size = 5,
             plain_logo_angle_degree = 180,
-            logo_from_edge = -2, 
+            logo_from_edge = -1, 
             recycling_type = "PLA",
             recycling_angle_degree = 15,
             recycling_from_edge = 1,
