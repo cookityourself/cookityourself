@@ -23,7 +23,7 @@ module circular_basis(base_height = 2, base_radius = 30, base_x_scale = 1, base_
     logo_excentricity = base_y_scale*base_radius-logo_size/2-logo_from_edge;
     
     min_hlogo_size = 8; // minimum size of the hollow logo required for correct printing
-    min_rlogo_size = 8; // minimum size of the recycling logo required for correct printing
+    min_rlogo_size = 9; // minimum size of the recycling logo required for correct printing
 
     hollow_logo_size = logo_size < min_hlogo_size? min_hlogo_size:logo_size;
     recycling_logo_size = logo_size < min_rlogo_size? min_rlogo_size:logo_size;
@@ -51,7 +51,7 @@ module circular_basis(base_height = 2, base_radius = 30, base_x_scale = 1, base_
     // plain logo "CIY" on the inner face
     translate([logo_excentricity*cos(plain_logo_angle_degree),logo_excentricity*sin(plain_logo_angle_degree),0]){
         rotate ([0, 0, -6])
-        ciy_logo(logo_size = logo_size, logo_height=base_height+1);
+        ciy_logo(logo_size = logo_size, logo_height=letters_height);
     }
     
     // plain recycling logo
@@ -59,7 +59,7 @@ module circular_basis(base_height = 2, base_radius = 30, base_x_scale = 1, base_
     if (recycling_type == "") {}
     else {
         recycling_logo_x = base_x_scale*base_radius-recycling_logo_size/2-recycling_from_edge;
-        recycling_logo_y = base_y_scale*base_radius-recycling_logo_size/2-recycling_from_edge;        recycling_symbol(recycling_type, recycling_logo_size, base_height+1, [recycling_logo_x*cos(recycling_angle_degree),recycling_logo_y*sin(recycling_angle_degree),0]);
+        recycling_logo_y = base_y_scale*base_radius-recycling_logo_size/2-recycling_from_edge;        recycling_symbol(recycling_type, recycling_logo_size, letters_height, [recycling_logo_x*cos(recycling_angle_degree),recycling_logo_y*sin(recycling_angle_degree),0]);
     }
 }
 
