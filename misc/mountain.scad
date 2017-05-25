@@ -12,12 +12,12 @@ scale([1/1,1/1,1/1]){
 
 }
 
-module mountains_cutter (cutter_height = 15, cutter_skin = 1, shape_height = 40, shape_width = 80) {
+module mountains_cutter (cutter_height = 15, cutter_skin = 1.5, shape_height = 40, shape_width = 80) {
 
 
   base_height = 2;
-  cutter_position_x = 2;
-  cutter_position_y = -13;
+  cutter_position_x = 0;
+  cutter_position_y = -14;
   
   translate ([cutter_position_x, cutter_position_y, cutter_skin/2])
     cutterize_offset_round (cutter_skin/2) 
@@ -34,12 +34,12 @@ module mountains_cutter (cutter_height = 15, cutter_skin = 1, shape_height = 40,
       base_height = 2,
       base_radius = 28,
       base_x_scale = 1.2, 
-      base_y_scale = 0.8,
-      logo_size = 5,
+      base_y_scale = 0.9,
+      logo_size = 6,
       plain_logo_angle_degree = -90,
-      logo_from_edge = 0.5, 
+      logo_from_edge = 1, 
       recycling_type = "PLA",
-      recycling_angle_degree = 124,
+      recycling_angle_degree = 132,
       recycling_from_edge = 0.5,
       hollow_logo = false
     );
