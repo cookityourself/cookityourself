@@ -6,17 +6,38 @@ use <../common/cutterize.scad>
 scale([1/1,1/1,1/1]){
   $fn = 30;
   
-  tangram_cutter(
-    cutter_height = 15, 
-    cutter_skin = 1, 
-    width = 60
-  );
+  tangram_cutter();
 
 }
 
 module tangram_cutter (cutter_height = 15, cutter_skin = 1, width = 60) {
 
-  tangram_shape (width, cutter_skin);
+  cutter_position_x = -width/4;
+  cutter_position_y = -3*width/4;
+  
+  translate ([cutter_position_x, cutter_position_y, 0])
+    linear_extrude (cutter_height) {
+      tangram_shape (width, cutter_skin);
+    }
+    
+  difference () {
+    rotate ([0, 0, 45])
+      circular_basis(
+          base_radius = 25,
+          base_x_scale = 1.2, 
+          base_y_scale = 1,
+          logo_size = 6,
+          plain_logo_angle_degree = 145,
+          logo_from_edge = 1, 
+          recycling_type = "PLA",
+          recycling_angle_degree = 40,
+          recycling_from_edge = 0.5,
+          hollow_logo = false
+      );
+    translate ([cutter_position_x, cutter_position_y, -5]) 
+        linear_extrude (10) square(width, center = false); 
+  }
+
 }
 
 module tangram_shape (width = 60, wall = 1) {
