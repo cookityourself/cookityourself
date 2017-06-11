@@ -27,14 +27,14 @@ module tangram_shape (width = 60, wall = 1) {
   difference () {
     square(width, center = false); 
     union () {
-      color ("blue") polygon(points =[[od+od/2, width-od],[width-od-od/2, width-od],[width/2, width/2+od/2]]);
-      color ("grey") polygon(points =[[od, od+od/2],[od, width-od-od/2],[width/2-od/2, width/2]]);
+      color ("blue") polygon(points =[[ol+od/2, width-ol],[width-ol-od/2, width-ol],[width/2, width/2+od/2]]);
+      color ("grey") polygon(points =[[ol, ol+od/2],[ol, width-ol-od/2],[width/2-od/2, width/2]]);
       //polygon(points =[[od+od/2, od],[width-od-od/2, od],[width/2, width/2-od/2]]);
-      color ("orange") polygon(points =[[od+od/2, od],[width/2-od, od],[width/4, width/4-od/2]]);
-      color ("purple") polygon(points =[[width/2, od],[width/4+od/2, width/4],[width/2, width/2-od/2],[3*width/4-od/2, width/4]]);
-      color ("black") polygon(points =[[width/2+od, od],[width-od, od],[width-od, width/2-od-od/2]]);
+      color ("orange") polygon(points =[[ol+od/2, ol],[width/2-od, ol],[width/4, width/4-od/2]]);
+      color ("purple") polygon(points =[[width/2, ol],[width/4+od/2, width/4],[width/2, width/2-od/2],[3*width/4-od/2, width/4]]);
+      color ("black") polygon(points =[[width/2+od, ol],[width-ol, ol],[width-ol, width/2-ol-od/2]]);
       color ("yellow") polygon(points =[[width/2+od/2, width/2],[3*width/4, width/4+od/2],[3*width/4, 3*width/4-od/2]]);
-      color ("pink") polygon(points =[[3*width/4+ol, width/4+od+od/2],[3*width/4+ol, 3*width/4], [width-od, width-od-od/2],[width-od, width/2-od+od/2]]);
+      color ("pink") polygon(points =[[3*width/4+ol, width/4+ol+od/2],[3*width/4+ol, 3*width/4], [width-ol, width-ol-od/2],[width-ol, width/2-ol+od/2]]);
     }
   }
   // debug
