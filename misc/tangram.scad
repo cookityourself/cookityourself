@@ -10,10 +10,10 @@ scale([1/1,1/1,1/1]){
 
 }
 
-module tangram_cutter (cutter_height = 15, cutter_skin = 1, width = 60) {
+module tangram_cutter (cutter_height = 15, cutter_skin = 1, width = 100) {
 
-  cutter_position_x = -width/4;
-  cutter_position_y = -3*width/4;
+  cutter_position_x = -width*0.195;
+  cutter_position_y = -width*(1-0.195);
   
   translate ([cutter_position_x, cutter_position_y, 0])
     linear_extrude (cutter_height) {
@@ -23,15 +23,15 @@ module tangram_cutter (cutter_height = 15, cutter_skin = 1, width = 60) {
   difference () {
     rotate ([0, 0, 45])
       circular_basis(
-          base_radius = 25,
+          base_radius = width*0.3,
           base_x_scale = 1.2, 
           base_y_scale = 1,
           logo_size = 6,
           plain_logo_angle_degree = 145,
-          logo_from_edge = 1, 
+          logo_from_edge = 1.5, 
           recycling_type = "PLA",
           recycling_angle_degree = 40,
-          recycling_from_edge = 0.5,
+          recycling_from_edge = 1,
           hollow_logo = false
       );
     translate ([cutter_position_x, cutter_position_y, -5]) 
