@@ -12,7 +12,7 @@ scale([1/1,1/1,1/1]){
 
 }
 
-module mountains_cutter (cutter_height = 15, cutter_skin = 1.5, shape_height = 40, shape_width = 80) {
+module mountains_cutter (cutter_height = 15, cutter_skin = 1.2, shape_height = 40, shape_width = 80) {
 
 
   base_height = 2;
