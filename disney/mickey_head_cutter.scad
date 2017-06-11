@@ -2,7 +2,7 @@ use <../common/ciy_cookie_cutter_base.scad>
 
 scale([1/1,1/1,1/1]){
     mickey_head_cutter(
-        cutter_height = 25, 
+        cutter_height = 15, 
         head_radius = 23, 
         ear_radius = 14, 
         skin = 1, 
