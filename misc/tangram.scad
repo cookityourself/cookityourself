@@ -1,7 +1,5 @@
 
 use <../common/ciy_cookie_cutter_base.scad>
-use <../common/cutterize.scad>
-
 
 scale([1/1,1/1,1/1]){
   $fn = 30;
@@ -10,7 +8,7 @@ scale([1/1,1/1,1/1]){
 
 }
 
-module tangram_cutter (cutter_height = 15, cutter_skin = 1, width = 100) {
+module tangram_cutter (cutter_height = 15, cutter_skin = 1.2, width = 100) {
 
   cutter_position_x = -width*0.195;
   cutter_position_y = -width*(1-0.195);
@@ -26,9 +24,9 @@ module tangram_cutter (cutter_height = 15, cutter_skin = 1, width = 100) {
           base_radius = width*0.3,
           base_x_scale = 1.2, 
           base_y_scale = 1,
-          logo_size = 6,
+          logo_size = 7,
           plain_logo_angle_degree = 145,
-          logo_from_edge = 1.5, 
+          logo_from_edge = 1, 
           recycling_type = "PLA",
           recycling_angle_degree = 40,
           recycling_from_edge = 1,
