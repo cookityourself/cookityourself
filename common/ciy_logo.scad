@@ -1,6 +1,7 @@
-ciy_logo(logo_size = 10, logo_height = 5);
+ciy_logo(logo_size = 10, logo_height = 5, logo_orientation = 10);
 
-module ciy_logo(logo_size = 5, logo_height) {
+module ciy_logo(logo_size = 5, logo_height, logo_orientation = 0) {
+  rotate ([0, 0, logo_orientation])
     scale ([logo_size/5, logo_size/5 , 1]) {
         linear_extrude(height= logo_height, center = false){
             translate([-3.5,0,0]){

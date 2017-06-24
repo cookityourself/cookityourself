@@ -15,7 +15,7 @@ scale([1/1,1/1,1/1]){
 
 
 
-module circular_basis(base_height = 2, base_radius = 30, base_x_scale = 1, base_y_scale = 1, logo_size = 5, plain_logo_angle_degree = 90, logo_from_edge = 1, recycling_type = "", recycling_angle_degree = 0, recycling_from_edge = 0, hollow_logo = true, hollow_logo_angle_degree = -90){
+module circular_basis(base_height = 2, base_radius = 30, base_x_scale = 1, base_y_scale = 1, logo_size = 5, plain_logo_angle_degree = 90, logo_from_edge = 1, logo_orientation = 0, recycling_type = "", recycling_angle_degree = 0, recycling_from_edge = 0, hollow_logo = true, hollow_logo_angle_degree = -90){
     
     
     
@@ -51,7 +51,7 @@ module circular_basis(base_height = 2, base_radius = 30, base_x_scale = 1, base_
     // plain logo "CIY" on the inner face
     translate([logo_excentricity*cos(plain_logo_angle_degree),logo_excentricity*sin(plain_logo_angle_degree),0]){
         rotate ([0, 0, -6])
-        ciy_logo(logo_size = logo_size, logo_height=letters_height);
+        ciy_logo(logo_size = logo_size, logo_height=letters_height, logo_orientation = logo_orientation);
     }
     
     // plain recycling logo
