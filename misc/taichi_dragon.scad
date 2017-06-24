@@ -15,7 +15,7 @@ module taichi_dragon_cutter (cutter_height = 15, cutter_skin = 1.2, width = 80, 
   
   
   cutter_position_x = 0;
-  cutter_position_y = -height*0.25;
+  cutter_position_y = -height*0.2;
   
   translate ([cutter_position_x, cutter_position_y, 0])
   cutterize_offset_round(1.2)
@@ -30,12 +30,12 @@ module taichi_dragon_cutter (cutter_height = 15, cutter_skin = 1.2, width = 80, 
           base_x_scale = 1.2, 
           base_y_scale = 0.9,
           logo_size = 7,
-          plain_logo_angle_degree = 160,
-          logo_from_edge = -3.5, 
-          logo_orientation = 50,
+          plain_logo_angle_degree = 165,
+          logo_from_edge = -2.5, 
+          logo_orientation = 60,
           recycling_type = "PLA",
-          recycling_angle_degree = -85,
-          recycling_from_edge = 4.5,
+          recycling_angle_degree = -80,
+          recycling_from_edge = 5,
           hollow_logo = false
       );
     translate ([cutter_position_x, cutter_position_y, -5]) 
@@ -45,6 +45,8 @@ module taichi_dragon_cutter (cutter_height = 15, cutter_skin = 1.2, width = 80, 
 }
 
 module taichi_dragon_shape (width, height) {
+  
+  scale ([0.8,0.8]) {
   
   // head
   head_radius = width/6;
@@ -69,7 +71,7 @@ module taichi_dragon_shape (width, height) {
   belly_radius = width*0.13;
   translate ([0, height/2-belly_radius*0.5, 0]) 
     circle (belly_radius, center = true);
-  
+  }
   
 }
 
