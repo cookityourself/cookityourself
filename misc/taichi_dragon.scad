@@ -42,33 +42,35 @@ module taichi_dragon_cutter (cutter_height = 15, cutter_skin = 1.2, width = 80, 
 module taichi_dragon_shape (width, height) {
   
   // head
-  head_radius = width/8;
+  head_radius = width/6;
   translate ([0, height-head_radius, 0]) 
     circle (head_radius, center = true);
   
   // left arm
   left_arm_l = width/4; // left arm length
-  left_arm_t = left_arm_l/4;// left arm thickness scale factor
+  left_arm_t = left_arm_l/2.5;// left arm thickness scale factor
   translate ([-left_arm_l,height-head_radius,0])
-    difference () {
-      circle (left_arm_l, center = true);
-      translate ([left_arm_t, left_arm_t,0])
+    mirror([0,1,0]) rotate([0,0,-105]) scale ([1.2,1.1])
+      difference () {
         circle (left_arm_l, center = true);
-    }
+        translate ([left_arm_t, left_arm_t,0])
+          circle (left_arm_l, center = true);
+      }
   
   // right arm
-  right_arm_l = width/2; // right arm length
-  right_arm_t = width*0.1;// right arm thickness scale factor
-  translate ([right_arm_l/2,height-2*head_radius-right_arm_t,0])
-    rotate ([0,0,-10])
+  right_arm_l = width/1.4; // right arm length
+  right_arm_t = width*0.16;// right arm thickness scale factor
+  translate ([right_arm_l/2.4,height-2*head_radius-right_arm_t/2,0])
+    rotate ([0,0,-11])
       resize([right_arm_l, right_arm_t]) 
         circle (1, center = true);
   
   // left leg
   left_leg_l = width/4; // left leg length
-  left_leg_t = left_leg_l/4;// left leg thickness scale factor
-  translate ([-left_leg_l/2,left_leg_l/2,0])
-    difference () {
+  left_leg_t = left_leg_l/1.5;// left leg thickness scale factor
+  translate ([-left_leg_l/2,left_leg_l/2.3,0])
+    //mirror([0,1,0]) rotate([0,0,0]) scale ([1.4,1.2])    
+      difference () {
       circle (left_leg_l, center = true);
       translate ([left_leg_t, -left_leg_t*0.5,0])
         circle (left_leg_l, center = true);
@@ -82,9 +84,9 @@ module taichi_dragon_shape (width, height) {
 //      resize([right_leg_l, right_leg_t]) 
 //        circle (1, center = true);
 
-  right_leg_l = width*0.4; // right leg length
-  right_leg_t = right_leg_l*0.2;// right leg thickness scale factor
-  translate ([right_leg_l*0.9,right_leg_l*0.3,0])
+  right_leg_l = width*0.45; // right leg length
+  right_leg_t = right_leg_l*0.35;// right leg thickness scale factor
+  translate ([right_leg_l*0.9,right_leg_l*0.2,0])
     rotate ([0,0,-30])
       difference () {
         resize ([right_leg_l*2, right_leg_l/2]) 
@@ -95,8 +97,8 @@ module taichi_dragon_shape (width, height) {
     }
   
   // belly
-  belly_radius = width*0.1;
-  translate ([0, height/2, 0]) 
+  belly_radius = width*0.13;
+  translate ([0, height/2-belly_radius/3, 0]) 
     circle (belly_radius, center = true);
   
   
