@@ -49,16 +49,16 @@ module taichi_dragon_shape (width, height) {
     circle (head_radius, center = true);
   
   // arms
-  arm_l = width;
+  arm_l = width*0.9;
   arm_t = width/5;
-  translate ([width*0.08,height-head_radius*0.8,0])
+  translate ([width*0.08,height-head_radius,0])
   round_all (3) rotate ([0,0, 10])
     resize ([arm_l, arm_l/2]) comma (arm_l, arm_t);
 
   // legs
   leg_l = width;
   leg_t = width/10;
-  translate ([width*0.3,-height*0.18,0])
+  translate ([width*0.25,-height*0.18,0])
   round_all (5) rotate ([0,0, -33]) mirror ([0,1])
     resize ([leg_l, leg_l*0.6]) comma (leg_l, leg_t);
   
