@@ -25,7 +25,7 @@ module spinner_shuriken (radius) {
     }
 
   // attach
-  //color ("green") 
+  color ("green") 
     difference () {
       linear_extrude (bbearing_h) difference (){
         circle (d=bbearing_d+8);
@@ -37,35 +37,53 @@ module spinner_shuriken (radius) {
     }
     
   // branches
-  shuriken_branch (radius, bbearing_h);
-  rotate ([0,0,180]) shuriken_branch (radius, bbearing_h);
+  translate ([0,0,-1]) {
+    shuriken_branch (radius, bbearing_h+2);
+    rotate ([0,0,180]) shuriken_branch (radius, bbearing_h+2);
+  }
 
 }
 
-module shuriken_branch (radius, center_high) {
+module shuriken_branch (radius, center_height) {
   
   difference () {
-    translate ([0,0, center_high/2])
-      resize ([2*radius, 0.7*2*radius, center_high]) sphere (radius);
+    translate ([0,0, center_height/2])
+      resize ([2*radius, 0.7*2*radius, center_height]) sphere (radius);
     translate ([radius*0.4, 0, 0]) rotate ([0,0,-10])
       resize ([0.8*2*radius, 0.62*2*radius, 2*radius]) sphere (radius); 
     pink = radius/7;
-    color ("pink") translate ([-radius*0.8,radius*0.25,center_high/2])
+    color ("pink") translate ([-radius*0.8,radius*0.25,center_height/2])
       resize ([2*pink, 2*pink, 2*pink]) sphere (pink);    
-    color ("pink") translate ([-radius*0.55,-radius*0.43,center_high/2])
+    color ("pink") translate ([-radius*0.55,-radius*0.43,center_height/2])
       resize ([2*pink, 2*pink, 2*pink]) sphere (pink);    
     red = 5;
-//    #color ("red") translate ([-radius*0.25,-radius*0.35,center_high/2])
-//    color ("red") translate ([-radius*0.25,-radius*0.3,center_high/2])
+//    #color ("red") translate ([-radius*0.25,-radius*0.35,center_height/2])
+//    color ("red") translate ([-radius*0.25,-radius*0.3,center_height/2])
 //      resize ([2*red, 2*red, 2*red]) sphere (red);    
     orange = 9;
-    //color ("orange") translate ([-radius*0.4,-radius*0.55,center_high/2])
-    color ("orange") translate ([-radius*0.19,-radius*0.37,center_high/2])
+    //color ("orange") translate ([-radius*0.4,-radius*0.55,center_height/2])
+    color ("orange") translate ([-radius*0.19,-radius*0.37,center_height/2])
       resize ([2*orange, 2*orange, 2*orange]) sphere (orange);    
     grey = 20;
-    color ("grey") translate ([-radius*0.15,-radius*0.9,center_high/2])
+    color ("grey") translate ([-radius*0.15,-radius*0.9,center_height/2])
       resize ([2*grey, 2*grey, 2*grey]) sphere (grey);    
+    translate ([-radius*0.7, -radius*0.1, 0.7]) #weight_inclusion ();
   }
+  
+}
+
+module weight_inclusion () {
+
+  hexa_d = 13;
+  hexa_h = 5;
+  round_d = 6.5;
+  color ("purple") linear_extrude (hexa_h) {
+    difference (){
+      circle ($fn=6, d=hexa_d);
+      circle (d=round_d);
+    }
+  }
+
 }
 
 module ninja_kanji () {
