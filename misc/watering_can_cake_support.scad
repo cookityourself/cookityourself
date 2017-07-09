@@ -47,23 +47,32 @@ module watering_can_cake_support (plate_d = 160) {
   // water drops
   drops_r = 3;
   drops_h = 50;
-  //drops_random = [];
+  drops_num = 3;
+  drops_random = [0,3,0,
+                  10,7,0,15,5,18,
+                  15,7,3,1,4,2,13,10,30];
   difference () {
     translate ([8, 0, pot_h-2])
       for (drop_circle = [1:3]) {
         drops_circle_radius = wcan_nose_d*0.75 *sin(wcan_nose_angle) * drop_circle/3;
-        drops_number = 3*drop_circle;
+        drops_number = drops_num*drop_circle;
         for (drop_index = [1:drops_number]) {
+          r = drop_circle == 1 ? drop_index/drops_number : 0;
+          g = drop_circle == 2 ? drop_index/drops_number : 0;
+          b = drop_circle == 3 ? drop_index/drops_number : 0;
+          drops_random_index = drop_circle == 1 ? drop_index-1 : drop_circle == 2 ? 3+drop_index-1 : 9+drop_index-1;
+          //echo (drop_index, drops_random_index, drops_random[drops_random_index])
           translate ([
             drops_circle_radius*cos(360/drops_number*drop_index),
             drops_circle_radius*sin(360/drops_number*drop_index),
-            //rands(0,20,1)[0]*cos(360/drops_number*drop_index)]) 
-            drops_h*(1-cos(2*(drops_circle_radius*cos(360/drops_number*drop_index)+drops_circle_radius*sin(360/drops_number*drop_index))))])
-              water_drop (drops_r, drops_h*cos(2*(drops_circle_radius*cos(360/drops_number*drop_index)+drops_circle_radius*sin(360/drops_number*drop_index))));
+            drops_random[drops_random_index]]) 
+             //color([r,g,b]) 
+              water_drop (drops_r, drops_h-drops_random[drops_random_index]);
         }
       }
     translate ([wcan_nose_d*0.15,0,water_h]) rotate ([0,-wcan_nose_angle,0]) 
       cylinder (100, d=wcan_nose_d, center = false);
+    translate ([-50,-50,water_h+wcan_nose_d/2*sin(wcan_nose_angle)]) cube (100);
   }
 
   // debug pot cake
@@ -79,6 +88,6 @@ module watering_can_cake_support (plate_d = 160) {
 
 module water_drop (radius, height) {
 //  color ("blue") cylinder (height, r=radius, center = false);
-  color ("blue") cylinder (height, r1=radius, r2=radius*0.4, center = false);
-  translate ([0,0,0]) color ("blue") sphere (radius, center = false);
+  color ("LightBlue") cylinder (height, r1=radius, r2=radius*0.4, center = false);
+  translate ([0,0,0]) color ("LightBlue") sphere (radius, center = false);
 }
