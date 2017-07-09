@@ -37,9 +37,9 @@ module spinner_shuriken (radius) {
     }
     
   // branches
-  translate ([0,0,-1]) {
-    shuriken_branch (radius, bbearing_h+2);
-    rotate ([0,0,180]) shuriken_branch (radius, bbearing_h+2);
+  translate ([0,0,-2]) {
+    shuriken_branch (radius, bbearing_h+4);
+    rotate ([0,0,180]) shuriken_branch (radius, bbearing_h+4);
   }
 
 }
@@ -67,15 +67,17 @@ module shuriken_branch (radius, center_height) {
     grey = 20;
     color ("grey") translate ([-radius*0.15,-radius*0.9,center_height/2])
       resize ([2*grey, 2*grey, 2*grey]) sphere (grey);    
-    translate ([-radius*0.7, -radius*0.1, 0.7]) #weight_inclusion ();
+    translate ([-radius*0.7, -radius*0.1, 1]) rotate([-2,9,0]) #weight_inclusion ();
   }
+  
+  // drawings
   
 }
 
 module weight_inclusion () {
 
   hexa_d = 13;
-  hexa_h = 5;
+  hexa_h = 6.3;
   round_d = 6.5;
   color ("purple") linear_extrude (hexa_h) {
     difference (){
