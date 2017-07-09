@@ -17,6 +17,7 @@ module watering_can_cake_support (plate_d = 160) {
   
   wcan_t = 5;
   wcan_nose_d = 50;
+  wcan_nose_angle = 30;
   wcan_low_d = 38;
   wcan_low_h = 15;
   wcan_high_d = 65;
@@ -34,7 +35,7 @@ module watering_can_cake_support (plate_d = 160) {
   
   // water
   color ("blue") cylinder (tower_h, d=tower_d, center = false);
-  color ("blue") translate ([wcan_nose_d*0.15,0,water_h]) rotate ([0,-30,0]) 
+  color ("purple") translate ([wcan_nose_d*0.15,0,water_h]) rotate ([0,-wcan_nose_angle,0]) 
     cylinder (wcan_t, d=wcan_nose_d, center = true);
 
   // watering can support
@@ -43,13 +44,41 @@ module watering_can_cake_support (plate_d = 160) {
   color ("grey") translate ([-wcan_high_d*0.4,0,tower_h]) 
     cylinder (wcan_t, d=wcan_high_d, center = true);
 
+  // water drops
+  drops_r = 3;
+  drops_h = 50;
+  //drops_random = [];
+  difference () {
+    translate ([8, 0, pot_h-2])
+      for (drop_circle = [1:3]) {
+        drops_circle_radius = wcan_nose_d*0.75 *sin(wcan_nose_angle) * drop_circle/3;
+        drops_number = 3*drop_circle;
+        for (drop_index = [1:drops_number]) {
+          translate ([
+            drops_circle_radius*cos(360/drops_number*drop_index),
+            drops_circle_radius*sin(360/drops_number*drop_index),
+            //rands(0,20,1)[0]*cos(360/drops_number*drop_index)]) 
+            drops_h*(1-cos(2*(drops_circle_radius*cos(360/drops_number*drop_index)+drops_circle_radius*sin(360/drops_number*drop_index))))])
+              water_drop (drops_r, drops_h*cos(2*(drops_circle_radius*cos(360/drops_number*drop_index)+drops_circle_radius*sin(360/drops_number*drop_index))));
+        }
+      }
+    translate ([wcan_nose_d*0.15,0,water_h]) rotate ([0,-wcan_nose_angle,0]) 
+      cylinder (100, d=wcan_nose_d, center = false);
+  }
+
   // debug pot cake
   #color ("brown") translate ([0,0,plate_h]) cylinder (60, d=120, center = false);
   
   // debug watering can cake
   #color ("red") translate ([-30,0,160]) rotate ([0,60,0]) cylinder (60, d=80, center = true);
   #color ("red") translate ([0,0,118]) rotate ([0,-30,0]) cylinder (25, d1=wcan_nose_d, d2 = 0, center = true);
-  #color ("red") translate ([-5,0,120]) rotate ([0,-30,0]) cylinder (20, d1=20, d2 = 45, center = true);
+  #color ("red") translate ([-7,0,119]) rotate ([0,-30,0]) cylinder (20, d1=20, d2 = 40, center = true);
 
 
+}
+
+module water_drop (radius, height) {
+//  color ("blue") cylinder (height, r=radius, center = false);
+  color ("blue") cylinder (height, r1=radius, r2=radius*0.4, center = false);
+  translate ([0,0,0]) color ("blue") sphere (radius, center = false);
 }
