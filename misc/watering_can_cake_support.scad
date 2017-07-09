@@ -1,7 +1,7 @@
 
 
 scale([1/1,1/1,1/1]){
-  $fn = 100;
+  $fn = 50;
   //$fn = 30; // debug
   
   watering_can_cake_support();
@@ -75,19 +75,18 @@ module watering_can_cake_support (plate_d = 160) {
     translate ([-50,-50,water_h+wcan_nose_d/2*sin(wcan_nose_angle)]) cube (100);
   }
 
-  // debug pot cake
-  #color ("brown") translate ([0,0,plate_h]) cylinder (60, d=120, center = false);
-  
-  // debug watering can cake
-  #color ("red") translate ([-30,0,160]) rotate ([0,60,0]) cylinder (60, d=80, center = true);
-  #color ("red") translate ([0,0,118]) rotate ([0,-30,0]) cylinder (25, d1=wcan_nose_d, d2 = 0, center = true);
-  #color ("red") translate ([-7,0,119]) rotate ([0,-30,0]) cylinder (20, d1=20, d2 = 40, center = true);
+//  // debug pot cake
+//  #color ("brown") translate ([0,0,plate_h]) cylinder (60, d=120, center = false);
+//  
+//  // debug watering can cake
+//  #color ("red") translate ([-30,0,160]) rotate ([0,60,0]) cylinder (60, d=80, center = true);
+//  #color ("red") translate ([0,0,118]) rotate ([0,-30,0]) cylinder (25, d1=wcan_nose_d, d2 = 0, center = true);
+//  #color ("red") translate ([-7,0,119]) rotate ([0,-30,0]) cylinder (20, d1=20, d2 = 40, center = true);
 
 
 }
 
 module water_drop (radius, height) {
-//  color ("blue") cylinder (height, r=radius, center = false);
   color ("LightBlue") cylinder (height, r1=radius, r2=radius*0.4, center = false);
   translate ([0,0,0]) color ("LightBlue") sphere (radius, center = false);
 }
