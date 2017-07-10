@@ -3,17 +3,16 @@
 scale([1/1,1/1,1/1]){
   $fn = 50;
   //$fn = 30; // debug
-  
-  watering_can_cake_support();
 
-}
-
-module watering_can_cake_support (plate_d = 160) {
-
+  plate_d = 160;
   plate_h = 5; // thick plate for a heavy basis
+
   pot_h = 70;
   
   water_h = 1.5*pot_h;
+  
+  tube_h = water_h-plate_h;
+  tube_d = 10;  // compromise between aesthetic and strength
   
   wcan_t = 5;
   wcan_nose_d = 50;
@@ -25,13 +24,23 @@ module watering_can_cake_support (plate_d = 160) {
 
   tower_h = water_h + wcan_high_h;
   tower_d = 10; // compromise between aesthetic and strength
+  
+  watering_can_cake_support(plate_d, plate_h, pot_h, water_h, tube_d, tube_h, 
+    wcan_t, wcan_nose_d, wcan_nose_angle, wcan_low_d, wcan_low_h, 
+    wcan_high_d, wcan_high_h, tower_d, tower_h);
+  
+  // debug and export
+  //plate (plate_d, plate_h, tube_d, tube_h);
+
+}
+
+module watering_can_cake_support (plate_d, plate_h, pot_h, water_h, tube_d, tube_h, 
+    wcan_t, wcan_nose_d, wcan_nose_angle, wcan_low_d, wcan_low_h, 
+    wcan_high_d, wcan_high_h, tower_d, tower_h) {
+
 
   // plate
-  cylinder (plate_h, d=plate_d, center = true);
-  color("orange") translate ([0,0,plate_h]) difference () {
-    cylinder (plate_h, d=plate_d, center = true);
-    cylinder (plate_h+10, d=plate_d-2, center = true);
-  }
+  plate (plate_d, plate_h, tube_d, tube_h);
   
   // water
   color ("blue") cylinder (tower_h, d=tower_d, center = false);
@@ -84,6 +93,23 @@ module watering_can_cake_support (plate_d = 160) {
 //  #color ("red") translate ([-7,0,119]) rotate ([0,-30,0]) cylinder (20, d1=20, d2 = 40, center = true);
 
 
+}
+
+
+module plate (plate_d, plate_h, tube_d, tube_h) {
+  difference () {
+    union () {
+      // base
+      cylinder (plate_h, d=plate_d, center = true);
+      color("orange") translate ([0,0,plate_h]) difference () {
+        cylinder (plate_h, d=plate_d, center = true);
+        cylinder (plate_h*2, d=plate_d-2, center = true);
+      }
+    // tube
+      color ("gold") cylinder (tube_h, d=tube_d, center = false);
+    }
+    color ("gold") cylinder (tube_h*3, d=(tube_d-2), center = true);
+  }
 }
 
 module water_drop (radius, height) {
