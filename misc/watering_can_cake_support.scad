@@ -15,6 +15,7 @@ scale([1/1,1/1,1/1]){
   plate_tube_h = water_h-plate_h;
   tube_d = 10;  // compromise between aesthetic and strength
   tube_t = 2;
+  tube_margin_d = 0.6;
   
   wcan_t = 5;
   wcan_nose_d = 50;
@@ -27,18 +28,18 @@ scale([1/1,1/1,1/1]){
   tower_h = water_h + wcan_high_h;
   tower_d = tube_d; // compromise between aesthetic and strength
   
-//  watering_can_cake_support(plate_d, plate_h, pot_h, water_h, tube_d, plate_tube_h, tube_t,
+//  watering_can_cake_support(plate_d, plate_h, pot_h, water_h, tube_d, plate_tube_h, tube_t, tube_margin_d,
 //    wcan_t, wcan_nose_d, wcan_nose_angle, wcan_low_d, wcan_low_h, 
 //    wcan_high_d, wcan_high_h, water_tube_h, tower_d, tower_h);
   
   // debug and export
   //plate (plate_d, plate_h, tube_d, plate_tube_h);
   //tube_stop (tube_t, tube_d);
-  translate ([0,0,-1.5]) mirror ([0,0,1]) rotate ([0,30,0]) water (water_h, wcan_nose_d, wcan_nose_angle, wcan_t, tube_d-tube_t, water_tube_h, tube_t, water_tube_h/2);
+  translate ([0,0,-1.5]) mirror ([0,0,1]) rotate ([0,30,0]) water (water_h, wcan_nose_d, wcan_nose_angle, wcan_t, tube_d-tube_t, water_tube_h, tube_t, tube_margin_d, water_tube_h/2);
 
 }
 
-module watering_can_cake_support (plate_d, plate_h, pot_h, water_h, tube_d, plate_tube_h,tube_t, wcan_t, wcan_nose_d, wcan_nose_angle, wcan_low_d, wcan_low_h, 
+module watering_can_cake_support (plate_d, plate_h, pot_h, water_h, tube_d, plate_tube_h,tube_t, tube_margin_d, wcan_t, wcan_nose_d, wcan_nose_angle, wcan_low_d, wcan_low_h, 
     wcan_high_d, wcan_high_h, water_tube_h, tower_d, tower_h) {
 
 
@@ -47,7 +48,7 @@ module watering_can_cake_support (plate_d, plate_h, pot_h, water_h, tube_d, plat
   
   // water
   water_tube_d = tube_d-tube_t;
-  translate ([0,0,water_h]) water (water_h, wcan_nose_d, wcan_nose_angle, wcan_t,  water_tube_d, water_tube_h, tube_t, water_tube_h/2);
+  translate ([0,0,water_h]) water (water_h, wcan_nose_d, wcan_nose_angle, wcan_t,  water_tube_d, water_tube_h, tube_t, tube_margin_d, water_tube_h/2);
 
   // watering can support
         //color ("MediumBlue") cylinder (tube_up_h, d=tube_d, center = false);
@@ -85,15 +86,19 @@ module plate (plate_d, plate_h, tube_d, tube_h, tube_t) {
 }
 
 
-module water (water_h, wcan_nose_d, wcan_nose_angle, wcan_t, tube_d, tube_h, tube_t, tube_stop_h) {
+module water (water_h, wcan_nose_d, wcan_nose_angle, wcan_t, tube_d, tube_h, tube_t,tube_margin_d, tube_stop_h) {
   
-    drops_r = 3;
-    drops_h = 50;
-    drops_circle_r = wcan_nose_d*0.75 *sin(wcan_nose_angle) ;
-    drops_num = 3;
-    drops_random = [14,15,11,
-                    13,20,23,30,17,27,
-                    16,19,29,23,24,25,13,10,14];
+  drops_r = 3;
+  drops_h = 50;
+  drops_circle_r = wcan_nose_d*0.75 *sin(wcan_nose_angle) ;
+  drops_num = 3;
+  drops_random = [14,15,11,
+                  13,20,23,30,17,27,
+                  16,19,29,23,24,25,13,10,14];
+  
+  tube_outer_d = tube_d-tube_margin_d;
+  tube_inner_d = tube_d-tube_margin_d-tube_t;
+  
   
   difference () {
     union () {
@@ -104,7 +109,7 @@ module water (water_h, wcan_nose_d, wcan_nose_angle, wcan_t, tube_d, tube_h, tub
     difference () {
       union () {
         // tube for support
-        translate ([0,0,-tube_h/2]) color ("blue") cylinder (tube_h, d=tube_d, center = true);
+        translate ([0,0,-tube_h/2]) color ("blue") cylinder (tube_h, d=tube_outer_d, center = true);
         // water drops
         difference () {
           // drops
@@ -120,11 +125,11 @@ module water (water_h, wcan_nose_d, wcan_nose_angle, wcan_t, tube_d, tube_h, tub
       }
     }
     // hole to create a tube for assembling parts
-    color ("blue") cylinder (tube_h*10, d=tube_d-tube_t, center = true);
+    color ("blue") cylinder (tube_h*10, d=tube_inner_d, center = true);
   }
   
   // stop for the next inner tube
-  translate ([0,0,-tube_stop_h]) tube_stop (tube_t, tube_d-tube_t);
+  translate ([0,0,-tube_stop_h]) tube_stop (tube_t, tube_inner_d);
 }
 
 module water_drops (drops_r, drops_h, drops_circle_r, drops_num, drops_random, wcan_nose_angle) {
