@@ -54,7 +54,7 @@ module shuriken_branch (radius, center_height) {
     pink = radius/7;
     color ("pink") translate ([-radius*0.8,radius*0.25,center_height/2])
       resize ([2*pink, 2*pink, 2*pink]) sphere (pink);    
-    color ("pink") translate ([-radius*0.55,-radius*0.43,center_height/2])
+    color ("pink") translate ([-radius*0.53,-radius*0.44,center_height/2])
       resize ([2*pink, 2*pink, 2*pink]) sphere (pink);    
     red = 5;
 //    #color ("red") translate ([-radius*0.25,-radius*0.35,center_height/2])
@@ -62,7 +62,7 @@ module shuriken_branch (radius, center_height) {
 //      resize ([2*red, 2*red, 2*red]) sphere (red);    
     orange = 9;
     //color ("orange") translate ([-radius*0.4,-radius*0.55,center_height/2])
-    color ("orange") translate ([-radius*0.19,-radius*0.37,center_height/2])
+    color ("orange") translate ([-radius*0.21,-radius*0.47,center_height/2])
       resize ([2*orange, 2*orange, 2*orange]) sphere (orange);    
     grey = 20;
     color ("grey") translate ([-radius*0.15,-radius*0.9,center_height/2])
