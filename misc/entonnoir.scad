@@ -1,9 +1,9 @@
 $fn=100; 
 wallThickness=0.8;
-tubeRadius=2.6;
+tubeRadius=2.4;
 tube_height = 20;
 coneRadius = 20;
-cone_height = 30;
+cone_height = 35;
 cone_z_pos = tube_height-3;
 
 difference(){
