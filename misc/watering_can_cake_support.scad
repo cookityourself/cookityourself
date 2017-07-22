@@ -16,8 +16,8 @@ scale([1,1,1]){
   $fn = 100;
   //$fn = 30; // debug
 
-  preview = true; // true for preview, false for export
-  export = "wcan_high"; // can be either "plate" / "wcan_nose" / "wcan_low" / "wcan_high"
+  preview = false; // true for preview, false for export
+  export = ""; // can be either "plate" / "wcan_nose" / "wcan_low" / "wcan_high"
 
   plate_d = 160;
   plate_h = 5; // thick plate for a heavy basis
@@ -73,6 +73,13 @@ scale([1,1,1]){
     else if (export == "wcan_high") {
       translate ([0,0,wcan_t/2]) rotate ([180,0,0])    watering_can_support_high (wcan_t, wcan_high_d, wcan_high_tube_d, wcan_high_tube_l, tube_t);
     }
+    else {
+      cylinder (wcan_low_tube_l/4, d=wcan_low_tube_d);
+      translate ([0,0,wcan_low_tube_l/4]) difference () {
+        cylinder (wcan_low_tube_l/2, d=wcan_low_tube_d+tube_t+tube_margin_d);
+        translate ([0,0,tube_t]) cylinder (wcan_low_tube_l, d=wcan_low_tube_d+tube_margin_d);
+      }
+    }
   }
   
   // debug 
@@ -104,7 +111,7 @@ module watering_can_cake_support (plate_d, plate_h, pot_h, water_h, tube_d, plat
     watering_can_support_low (wcan_t, wcan_low_d, wcan_low_tube_d, wcan_low_tube_l, wcan_low_tube_h);
 
   // watering can high support
-  color ("green") translate ([-wcan_high_d/2+wcan_high_tube_d,0, water_h+wcan_high_h]) 
+  color ("green") translate ([-wcan_high_d/2+wcan_high_tube_d*0.8,0, water_h+wcan_high_h]) 
     watering_can_support_high (wcan_t, wcan_high_d, wcan_high_tube_d, wcan_high_tube_l, tube_t);
 
   union () {
@@ -112,7 +119,7 @@ module watering_can_cake_support (plate_d, plate_h, pot_h, water_h, tube_d, plat
   #color ("brown") translate ([0,0,plate_h]) cylinder (60, d=120, center = false);
   
   // preview of the watering can cake
-  #color ("red") translate ([-29,0,160]) rotate ([0,60,0]) cylinder (60, d=80, center = true);
+  #color ("red") translate ([-31,0,160]) rotate ([0,60,0]) cylinder (60, d=80, center = true);
   #color ("red") translate ([1,0,118]) rotate ([0,-30,0]) cylinder (25, d1=wcan_nose_d, d2 = 0, center = true);
   #color ("red") translate ([-7,0,119]) rotate ([0,-30,0]) cylinder (20, d1=20, d2 = 40, center = true);
   }
@@ -218,6 +225,7 @@ module water_drop (radius, height) {
 
 module watering_can_support_low (wcan_t, wcan_low_d, wcan_low_tube_d, wcan_low_tube_l, wcan_low_tube_h) {
   scale ([1,0.5,1]) cylinder (wcan_t, d=wcan_low_d, center = true);
+  translate ([-wcan_low_d/4,0,0]) cylinder (wcan_t, d=wcan_low_d*0.7, center = true);
   translate ([wcan_low_d/2,0,-wcan_low_tube_h]) cylinder (wcan_low_tube_l, d = wcan_low_tube_d, center = false);
 }
 
@@ -225,10 +233,10 @@ module watering_can_support_high (wcan_t, wcan_high_d, wcan_high_tube_d, wcan_hi
   difference () {
     union () {
       cylinder (wcan_t, d=wcan_high_d, center = true);
-      translate ([wcan_high_d/2-wcan_high_tube_d,0,-wcan_high_tube_l])
+      translate ([wcan_high_d/2-wcan_high_tube_d*0.8,0,-wcan_high_tube_l])
         cylinder (wcan_high_tube_l, d = wcan_high_tube_d, center = false);  
     }
-    translate ([wcan_high_d/2-wcan_high_tube_d,0,-2*wcan_high_tube_l]) cylinder (4*wcan_high_tube_l, d = wcan_high_tube_d-wcan_high_tube_t, center = false);
+    translate ([wcan_high_d/2-wcan_high_tube_d*0.8,0,-2*wcan_high_tube_l]) cylinder (4*wcan_high_tube_l, d = wcan_high_tube_d-wcan_high_tube_t, center = false);
   }
 }
 
