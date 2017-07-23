@@ -54,7 +54,7 @@ scale([1/1,1/1,1/1]){
   // "part1_fil2" : half of the pokeball to print with filament #1 with support
   // "part2_fil2" : other half of the pokeball to print with filament #2 with support
   // "stubs" : pieces to print to fullfill the holes after adding the 1 eurocent coins to weight the model
-  export = "part2"; 
+  export = "part1_black"; 
   
   //----------------------------------------------------------
   
@@ -100,16 +100,28 @@ scale([1/1,1/1,1/1]){
     fil2 (export_r, bb_ext_d, bb_support_dout, bb_support_h, black_center_h, weight_margin);
   }
   else if (export == "part1_fil1") {
-    part1_fil1(export_r, bb_ext_d, bb_support_dout, bb_support_h, black_center_h, weight_margin);
+    mirror([0,0,1])part1_fil1(export_r, bb_ext_d, bb_support_dout, bb_support_h, black_center_h, weight_margin);
   }
   else if (export == "part2_fil1") {
     part2_fil1(export_r, bb_ext_d, bb_support_dout, bb_support_h, black_center_h, weight_margin);
   }
   else if (export == "part1_fil2") {
-    part1_fil2(export_r, bb_ext_d, bb_support_dout, bb_support_h, black_center_h, weight_margin);
+    mirror([0,0,1])part1_fil2(export_r, bb_ext_d, bb_support_dout, bb_support_h, black_center_h, weight_margin);
   }
   else if (export == "part2_fil2") {
     part2_fil2(export_r, bb_ext_d, bb_support_dout, bb_support_h, black_center_h, weight_margin);
+  }
+  else if (export == "part1_white") {
+    mirror([0,0,1])part1_white(export_r, bb_ext_d, bb_support_dout, bb_support_h, black_center_h, weight_margin);
+  }
+  else if (export == "part2_white") {
+    part2_white(export_r, bb_ext_d, bb_support_dout, bb_support_h, black_center_h, weight_margin);
+  }
+  else if (export == "part1_black") {
+    mirror([0,0,1])part1_black(export_r, bb_ext_d, bb_support_dout, bb_support_h, black_center_h, weight_margin);
+  }
+  else if (export == "part2_black") {
+    part2_black(export_r, bb_ext_d, bb_support_dout, bb_support_h, black_center_h, weight_margin);
   }
   else if (export == "stubs"){
     stub (export_r, bb_ext_d, bb_support_dout, bb_support_h/2, black_center_h, weight_margin);
@@ -171,41 +183,69 @@ module fil1_full (radius, bb_ext_d, bb_support_dout, bb_support_h, black_center_
 
 // ************************************************************
 
-// Cut the piece to print with filament #2 in two part to be able to print without support
-module part1_fil2(radius, bb_ext_d, bb_support_dout, bb_support_h, black_center_h, weight_margin) {
+
+module part1_white (radius, bb_ext_d, bb_support_dout, bb_support_h, black_center_h, weight_margin) {
   
   difference () {
-    fil2 (radius, bb_ext_d, bb_support_dout, bb_support_h, black_center_h, weight_margin);
+    piece_white (radius, bb_ext_d, bb_support_dout, bb_support_h, black_center_h, weight_margin);
+    translate ([-2*radius, -2*radius, -t_eurocent1]) cube (8*radius);
+  }
+  
+}
+
+module part2_white (radius, bb_ext_d, bb_support_dout, bb_support_h, black_center_h, weight_margin) {
+  
+  difference () {
+    piece_white (radius, bb_ext_d, bb_support_dout, bb_support_h, black_center_h, weight_margin);
+    translate ([-2*radius, -2*radius, -8*radius-t_eurocent1]) cube (8*radius);
+  }
+  
+}
+
+module part1_black (radius, bb_ext_d, bb_support_dout, bb_support_h, black_center_h, weight_margin) {
+  
+  difference () {
+    piece_black (radius, bb_ext_d, bb_support_dout, bb_support_h, black_center_h, weight_margin);
     translate ([-2*radius, -2*radius, -t_eurocent1]) cube (8*radius);
   }
 }
 
-module part2_fil2(radius, bb_ext_d, bb_support_dout, bb_support_h, black_center_h, weight_margin) {
+module part2_black (radius, bb_ext_d, bb_support_dout, bb_support_h, black_center_h, weight_margin) {
+  
   difference () {
-    fil2 (radius, bb_ext_d, bb_support_dout, bb_support_h, black_center_h, weight_margin);
+    piece_black (radius, bb_ext_d, bb_support_dout, bb_support_h, black_center_h, weight_margin);
     translate ([-2*radius, -2*radius, -8*radius-t_eurocent1]) cube (8*radius);
   }
 }
 
 
-// Piece to print with filament #2
-module fil2 (radius, bb_ext_d, bb_support_dout, bb_support_h, black_center_h, weight_margin) {
-
-  // ballbearing hole
-  translate ([0,0,-bb_support_h/2]) color ("black") linear_extrude (bb_support_h) 
-    difference (){
-      circle (d=bb_support_dout);
-      circle (d=bb_ext_d);
-    }
+module piece_white (radius, bb_ext_d, bb_support_dout, bb_support_h, black_center_h, weight_margin) {
 
   difference () {
-    fil2_full (radius, bb_ext_d, bb_support_dout, bb_support_h, black_center_h, weight_margin);
+    piece_white_full (radius, bb_ext_d, bb_support_dout, bb_support_h, black_center_h, weight_margin);
     translate ([0,0,-t_eurocent1]) weights (radius, bb_support_h, weight_margin);
+  }
+
+
+}
+
+
+module piece_black (radius, bb_ext_d, bb_support_dout, bb_support_h, black_center_h, weight_margin) {
+
+  piece_black_full (radius, bb_ext_d, bb_support_dout, bb_support_h, black_center_h, weight_margin);
+}
+
+module piece_white_full (radius, bb_ext_d, bb_support_dout, bb_support_h, black_center_h, weight_margin) {
+
+  // pokeball white part
+  color ("white") difference () {
+    pokeball(radius, bb_support_h+3, bb_support_dout/2);
+    translate([-2*radius, -black_center_h/2, -2*radius]) cube(4*radius);
   }
 
 }
 
-module fil2_full (radius, bb_ext_d, bb_support_dout, bb_support_h, black_center_h, weight_margin) {
+module piece_black_full (radius, bb_ext_d, bb_support_dout, bb_support_h, black_center_h, weight_margin) {
 
   // ballbearing hole
   translate ([0,0,-bb_support_h/2]) color ("black") linear_extrude (bb_support_h) 
@@ -218,14 +258,42 @@ module fil2_full (radius, bb_ext_d, bb_support_dout, bb_support_h, black_center_
   difference () {
     color ("black") pokeball(radius-1, bb_support_h+1, bb_support_dout/2);
     translate([-2*radius, black_center_h/2, -2*radius]) cube(4*radius);
+    piece_white_full (radius, bb_ext_d, bb_support_dout, bb_support_h, black_center_h, weight_margin);
   }
   
+
+}
+
+// ************************************************************
+
+
+// Cut the piece to print with filament #2 in two part to be able to print without support
+module part1_fil2(radius, bb_ext_d, bb_support_dout, bb_support_h, black_center_h, weight_margin) {
   
-  // pokeball white part
-  color ("white") difference () {
-    pokeball(radius, bb_support_h+3, bb_support_dout/2);
-    translate([-2*radius, -black_center_h/2, -2*radius]) cube(4*radius);
-  }
+  part1_black (radius, bb_ext_d, bb_support_dout, bb_support_h, black_center_h, weight_margin);
+  part1_white (radius, bb_ext_d, bb_support_dout, bb_support_h, black_center_h, weight_margin);
+}
+
+module part2_fil2(radius, bb_ext_d, bb_support_dout, bb_support_h, black_center_h, weight_margin) {
+
+  part2_black (radius, bb_ext_d, bb_support_dout, bb_support_h, black_center_h, weight_margin);
+  part2_white (radius, bb_ext_d, bb_support_dout, bb_support_h, black_center_h, weight_margin);
+}
+
+// Piece to print with filament #2
+module fil2 (radius, bb_ext_d, bb_support_dout, bb_support_h, black_center_h, weight_margin) {
+
+
+  piece_black (radius, bb_ext_d, bb_support_dout, bb_support_h, black_center_h, weight_margin);
+  piece_white (radius, bb_ext_d, bb_support_dout, bb_support_h, black_center_h, weight_margin);
+
+}
+
+module fil2_full (radius, bb_ext_d, bb_support_dout, bb_support_h, black_center_h, weight_margin) {
+
+  piece_black_full (radius, bb_ext_d, bb_support_dout, bb_support_h, black_center_h, weight_margin);
+  
+  piece_white_full (radius, bb_ext_d, bb_support_dout, bb_support_h, black_center_h, weight_margin);
 }
 
 // ************************************************************
