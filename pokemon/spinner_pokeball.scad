@@ -54,7 +54,7 @@ scale([1/1,1/1,1/1]){
   // "part1_fil2" : half of the pokeball to print with filament #1 with support
   // "part2_fil2" : other half of the pokeball to print with filament #2 with support
   // "stubs" : pieces to print to fullfill the holes after adding the 1 eurocent coins to weight the model
-  export = "part1_black"; 
+  export = "part2_fil1"; 
   
   //----------------------------------------------------------
   
@@ -159,12 +159,12 @@ module part2_fil1(radius, bb_ext_d, bb_support_dout, bb_support_h, black_center_
   }
 }
 
-// Piece to print with filament #1
+// Piece to print with filament #1 (red)
 module fil1 (radius, bb_ext_d, bb_support_dout, bb_support_h, black_center_h, weight_margin) {
 
   difference () {
     fil1_full (radius, bb_ext_d, bb_support_dout, bb_support_h, black_center_h, weight_margin);
-    translate ([0,0,-t_eurocent1]) weights (radius, bb_support_h, weight_margin);
+    translate ([0,0,-t_eurocent1]) weights (radius, 3*t_eurocent1, weight_margin);
   }
 
 }
