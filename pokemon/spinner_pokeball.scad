@@ -54,7 +54,7 @@ scale([1/1,1/1,1/1]){
   // "part1_fil2" : half of the pokeball to print with filament #1 with support
   // "part2_fil2" : other half of the pokeball to print with filament #2 with support
   // "stubs" : pieces to print to fullfill the holes after adding the 1 eurocent coins to weight the model
-  export = "part2_fil1"; 
+  export = "pokeball"; 
   
   //----------------------------------------------------------
   
@@ -93,17 +93,17 @@ scale([1/1,1/1,1/1]){
       part2_fil2(export_r, bb_ext_d, bb_support_dout, bb_support_h, black_center_h, weight_margin);
     }
   }  
-  else if (export == "fil1") {
+  else if (export == "fil1" || export == "red") {
     fil1 (export_r, bb_ext_d, bb_support_dout, bb_support_h, black_center_h, weight_margin);
   }
   else if (export == "fil2") {
     fil2 (export_r, bb_ext_d, bb_support_dout, bb_support_h, black_center_h, weight_margin);
   }
-  else if (export == "part1_fil1") {
-    mirror([0,0,1])part1_fil1(export_r, bb_ext_d, bb_support_dout, bb_support_h, black_center_h, weight_margin);
+  else if (export == "part1_fil1" || export == "part1_red") {
+    translate ([0,0,-t_eurocent1]) mirror([0,0,1])part1_fil1(export_r, bb_ext_d, bb_support_dout, bb_support_h, black_center_h, weight_margin);
   }
-  else if (export == "part2_fil1") {
-    part2_fil1(export_r, bb_ext_d, bb_support_dout, bb_support_h, black_center_h, weight_margin);
+  else if (export == "part2_fil1" || export == "part2_red") {
+    translate ([0,0,t_eurocent1]) part2_fil1(export_r, bb_ext_d, bb_support_dout, bb_support_h, black_center_h, weight_margin);
   }
   else if (export == "part1_fil2") {
     mirror([0,0,1])part1_fil2(export_r, bb_ext_d, bb_support_dout, bb_support_h, black_center_h, weight_margin);
@@ -112,10 +112,10 @@ scale([1/1,1/1,1/1]){
     part2_fil2(export_r, bb_ext_d, bb_support_dout, bb_support_h, black_center_h, weight_margin);
   }
   else if (export == "part1_white") {
-    mirror([0,0,1])part1_white(export_r, bb_ext_d, bb_support_dout, bb_support_h, black_center_h, weight_margin);
+    translate ([0,0,-t_eurocent1]) mirror([0,0,1])part1_white(export_r, bb_ext_d, bb_support_dout, bb_support_h, black_center_h, weight_margin);
   }
   else if (export == "part2_white") {
-    part2_white(export_r, bb_ext_d, bb_support_dout, bb_support_h, black_center_h, weight_margin);
+    translate ([0,0,t_eurocent1]) part2_white(export_r, bb_ext_d, bb_support_dout, bb_support_h, black_center_h, weight_margin);
   }
   else if (export == "part1_black") {
     mirror([0,0,1])part1_black(export_r, bb_ext_d, bb_support_dout, bb_support_h, black_center_h, weight_margin);
@@ -123,10 +123,12 @@ scale([1/1,1/1,1/1]){
   else if (export == "part2_black") {
     part2_black(export_r, bb_ext_d, bb_support_dout, bb_support_h, black_center_h, weight_margin);
   }
-  else if (export == "stubs"){
-    stub (export_r, bb_ext_d, bb_support_dout, bb_support_h/2, black_center_h, weight_margin);
+  else if (export == "part1_button"){
+    
   }
-
+  else if (export == "part2_button"){
+    
+  }
 }
 
 // ************************************************************
@@ -139,7 +141,7 @@ module spinner_pokeball (radius, bb_ext_d, bb_support_dout, bb_support_h, black_
   fil1 (radius, bb_ext_d, bb_support_dout, bb_support_h, black_center_h, weight_margin);
   fil2 (radius, bb_ext_d, bb_support_dout, bb_support_h, black_center_h, weight_margin);
   
-  stub (radius, bb_ext_d, bb_support_dout, bb_support_h/2, black_center_h, weight_margin);
+  button (radius, bb_ext_d, bb_support_dout, bb_support_h/2, black_center_h, weight_margin);
 }
 
 // ************************************************************
@@ -223,7 +225,7 @@ module piece_white (radius, bb_ext_d, bb_support_dout, bb_support_h, black_cente
 
   difference () {
     piece_white_full (radius, bb_ext_d, bb_support_dout, bb_support_h, black_center_h, weight_margin);
-    translate ([0,0,-t_eurocent1]) weights (radius, bb_support_h, weight_margin);
+    translate ([0,0,-t_eurocent1]) weights (radius, 3*t_eurocent1, weight_margin);
   }
 
 
@@ -298,18 +300,20 @@ module fil2_full (radius, bb_ext_d, bb_support_dout, bb_support_h, black_center_
 
 // ************************************************************
 
+module part1_button (radius, bb_ext_d, bb_support_dout, bb_support_h, black_center_h, weight_margin) {
+  
+  
+}
 
-module stub (radius, bb_ext_d, bb_support_dout, bb_support_h, black_center_h, weight_margin) {
+module part2_button (radius, bb_ext_d, bb_support_dout, bb_support_h, black_center_h, weight_margin) {
   
-  difference () {
-    translate ([0,0,t_eurocent1]) weights (radius, bb_support_h, weight_margin);
-    difference() {
-      translate([-2*radius, -2*radius, 0]) cube(4*radius);
-      fil1_full (radius, bb_ext_d, bb_support_dout, bb_support_h, black_center_h, weight_margin);
-      fil2_full (radius, bb_ext_d, bb_support_dout, bb_support_h, black_center_h, weight_margin);
-    }
-  }
   
+}
+
+
+module button (radius, bb_ext_d, bb_support_dout, bb_support_h, black_center_h, weight_margin) {
+  part1_button (radius, bb_ext_d, bb_support_dout, bb_support_h, black_center_h, weight_margin);
+  part2_button (radius, bb_ext_d, bb_support_dout, bb_support_h, black_center_h, weight_margin);  
 }
 
 // ************************************************************
