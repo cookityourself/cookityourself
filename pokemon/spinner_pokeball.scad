@@ -249,7 +249,10 @@ module piece_white (radius, bb_ext_d, bb_support_dout, bb_support_h, black_cente
 
 module piece_black (radius, bb_ext_d, bb_support_dout, bb_support_h, black_center_h, weight_margin) {
 
-  piece_black_full (radius, bb_ext_d, bb_support_dout, bb_support_h, black_center_h, weight_margin);
+  difference () {
+    piece_black_full (radius, bb_ext_d, bb_support_dout, bb_support_h, black_center_h, weight_margin);
+    translate ([0,0,-t_eurocent1]) weights (radius, 2.2*t_eurocent1, weight_margin);
+  }
 }
 
 module piece_white_full (radius, bb_ext_d, bb_support_dout, bb_support_h, black_center_h, weight_margin) {
@@ -284,7 +287,7 @@ module piece_black_full (radius, bb_ext_d, bb_support_dout, bb_support_h, black_
 // ************************************************************
 
 
-// Cut the piece to print with filament #2 in two part to be able to print without support
+// Cut the piece to print with filament #2 in two part to be able to insert coins
 module part1_fil2(radius, bb_ext_d, bb_support_dout, bb_support_h, black_center_h, weight_margin) {
   
   part1_black (radius, bb_ext_d, bb_support_dout, bb_support_h, black_center_h, weight_margin);
