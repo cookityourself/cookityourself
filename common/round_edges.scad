@@ -6,3 +6,13 @@ module round_all (radius) {
     }
   }
 }
+
+module round_all_3d (radius) {
+  render () {
+    minkowski () {
+      children ();
+      sphere (radius);
+    }
+  }
+}
+
