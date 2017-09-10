@@ -51,7 +51,7 @@ scale([1/1,1/1,1/1]){
   ladder_sup_d = 15;
   
   wheel_r = cake_height*0.3;
-  puzzle_d = cake_width/5;
+  puzzle_d = cake_width/4;
 
 
   //----------------------------------------------------------
@@ -134,8 +134,8 @@ module rear_support (cake_width, cake_depth, rounding_radius, wheel_r, puzzle_d,
         cube([ladder_sup_w+2*plate_t, ladder_sup_d+2*plate_t, wheel_r]);
       
       // puzzle pieces
-      translate([puzzle_d*2/3,-puzzle_d/4,-wheel_r]) cylinder (wheel_r+plate_t, d=puzzle_d-2*margin);
-      translate([-puzzle_d*2/3,-puzzle_d/4,-wheel_r]) cylinder (wheel_r+plate_t, d=puzzle_d-2*margin);
+      translate([-puzzle_d/2+margin,-puzzle_d/2+margin,-wheel_r]) cube ([puzzle_d-2*margin, puzzle_d-2*margin, wheel_r+plate_t]);
+
     }
     // hole for ladder support
     translate ([-ladder_sup_w/2-margin,cake_depth*(-0.5+ladder_pos)-margin,-wheel_r*3/2])
@@ -165,14 +165,11 @@ module front_support (cake_width, cake_depth, rounding_radius, wheel_r, puzzle_d
       translate ([-plate_w/2-plate_t, wheels_pos,  0]) wheel (wheel_r, plate_t);
 
       // puzzle pieces
-      translate([puzzle_d*2/3,-puzzle_d/4,-wheel_r]) cylinder (wheel_r+plate_t, d=puzzle_d+plate_t);
-      translate([-puzzle_d*2/3,-puzzle_d/4,-wheel_r]) cylinder (wheel_r+plate_t, d=puzzle_d+plate_t);
-
+      translate([-puzzle_d/2-plate_t,-puzzle_d/2-plate_t,-wheel_r]) cube ([puzzle_d+2*plate_t, puzzle_d+2*plate_t, wheel_r+plate_t]);
 
     }
     // hole for the puzzle pieces
-    translate([puzzle_d*2/3,-puzzle_d/4,-wheel_r*3/2]) cylinder (wheel_r*2, d=puzzle_d);
-    translate([-puzzle_d*2/3,-puzzle_d/4,-wheel_r*3/2]) cylinder (wheel_r*2, d=puzzle_d);
+    translate([-puzzle_d/2,-puzzle_d/2,-wheel_r*3/2]) cube ([puzzle_d, puzzle_d, wheel_r*2]);
     
     // cut the upper part of the wheels to ease printing
     translate ([-plate_w,-plate_d*3/2,plate_t/2]) cube ([2*plate_w, 2*plate_d, 2*wheel_r]);
