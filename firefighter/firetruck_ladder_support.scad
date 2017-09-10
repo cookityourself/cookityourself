@@ -27,7 +27,7 @@ scale([1/1,1/1,1/1]){
   
   // Choose here what you want to export:
 
-  export = "preview"; 
+  export = "siren"; 
 
   // "preview" : not designed for printing, final view of the cake with its support
   // "rear_support" : rear half of the support of the firetruck cake
@@ -52,6 +52,7 @@ scale([1/1,1/1,1/1]){
   rounding_radius = 20;
   
   plate_t = 2; // plate thickness
+  margin = 0.4;
   
   ladder_angle = 15;
   ladder_pos = 0.75; // in percentage of the cake depth
@@ -60,6 +61,11 @@ scale([1/1,1/1,1/1]){
   
   wheel_r = cake_height*0.3;
   puzzle_d = cake_width/4;
+  
+  // dimensions of Lego Duplo Siren reference #52189c02
+  siren_w = 63;
+  siren_d = 16;
+  siren_h = 25;
 
 
   //----------------------------------------------------------
@@ -67,18 +73,21 @@ scale([1/1,1/1,1/1]){
   if (export == "ladder") {
     mirror ([0,0,1]) translate ([0,0,-plate_t])
     rotate ([ladder_angle, 0, 0]) translate ([0,0,-cake_height-(cake_depth*(-0.5+ladder_pos)+ladder_sup_d)*tan(ladder_angle)])
-      ladder (cake_width, cake_depth, cake_height, rounding_radius, wheel_r, plate_t, ladder_sup_w, ladder_sup_d, ladder_pos, ladder_angle);
+      ladder (cake_width, cake_depth, cake_height, rounding_radius, wheel_r, plate_t, margin, ladder_sup_w, ladder_sup_d, ladder_pos, ladder_angle);
   }
   else if (export == "rear_support") {
     mirror ([0,0,1]) translate ([0,0,-plate_t/2])
-      rear_support (cake_width, cake_depth, rounding_radius, wheel_r, puzzle_d, plate_t, ladder_sup_w, ladder_sup_d, ladder_pos);
+      rear_support (cake_width, cake_depth, rounding_radius, wheel_r, puzzle_d, plate_t, margin, ladder_sup_w, ladder_sup_d, ladder_pos);
   }
   else if (export == "front_support") {
     mirror ([0,0,1]) translate ([0,0,-plate_t/2])
-      front_support (cake_width, cake_depth, rounding_radius, wheel_r, puzzle_d, plate_t);
+      front_support (cake_width, cake_depth, rounding_radius, wheel_r, puzzle_d, plate_t, margin);
+  }
+  else if (export == "siren") {
+    siren (siren_w, siren_d, siren_h, plate_t, margin) ;
   }
   else {
-    fire_truck_cake(cake_width, cake_depth, cake_height, rounding_radius, wheel_r, puzzle_d, plate_t, ladder_sup_w, ladder_sup_d, ladder_pos, ladder_angle);
+    fire_truck_cake(cake_width, cake_depth, cake_height, rounding_radius, wheel_r, puzzle_d, plate_t, margin, ladder_sup_w, ladder_sup_d, ladder_pos, ladder_angle);
   }
 
   
@@ -91,25 +100,25 @@ scale([1/1,1/1,1/1]){
 
 // ************************************************************
 
-module fire_truck_cake (cake_width, cake_depth, cake_height, rounding_radius, wheel_r, puzzle_d, plate_t, ladder_sup_w, ladder_sup_d, ladder_pos, ladder_angle) {
+module fire_truck_cake (cake_width, cake_depth, cake_height, rounding_radius, wheel_r, puzzle_d, plate_t, margin, ladder_sup_w, ladder_sup_d, ladder_pos, ladder_angle) {
 
   // cake
   color ("red") translate([0,0,cake_height/2]) round_all_3d (rounding_radius) cube([cake_width-2*rounding_radius,cake_depth-2*rounding_radius, cake_height-2*rounding_radius], center = true);
   
   // ladder
-  color ("Gainsboro") ladder (cake_width, cake_depth, cake_height, rounding_radius, wheel_r, plate_t, ladder_sup_w, ladder_sup_d, ladder_pos, ladder_angle);
+  color ("Gainsboro") ladder (cake_width, cake_depth, cake_height, rounding_radius, wheel_r, plate_t, margin, ladder_sup_w, ladder_sup_d, ladder_pos, ladder_angle);
   
   // rear support 
-  color ("Firebrick") rear_support (cake_width, cake_depth, rounding_radius, wheel_r, puzzle_d, plate_t, ladder_sup_w, ladder_sup_d, ladder_pos);
+  color ("Firebrick") rear_support (cake_width, cake_depth, rounding_radius, wheel_r, puzzle_d, plate_t, margin, ladder_sup_w, ladder_sup_d, ladder_pos);
 
   // front support
-  color ("DarkRed") front_support (cake_width, cake_depth, rounding_radius, wheel_r, puzzle_d, plate_t);
+  color ("DarkRed") front_support (cake_width, cake_depth, rounding_radius, wheel_r, puzzle_d, plate_t, margin);
 
 }
 
 // ************************************************************
 
-module ladder (cake_width, cake_depth, cake_height, rounding_radius, wheel_r, plate_t, ladder_sup_w, ladder_sup_d,ladder_pos, ladder_angle) {
+module ladder (cake_width, cake_depth, cake_height, rounding_radius, wheel_r, plate_t, margin, ladder_sup_w, ladder_sup_d,ladder_pos, ladder_angle) {
   
   // support
   translate ([-ladder_sup_w/2,cake_depth*(-0.5+ladder_pos),-wheel_r])
@@ -132,12 +141,11 @@ module ladder (cake_width, cake_depth, cake_height, rounding_radius, wheel_r, pl
 
 // ************************************************************
 
-module rear_support (cake_width, cake_depth, rounding_radius, wheel_r, puzzle_d, plate_t, ladder_sup_w, ladder_sup_d, ladder_pos) {
+module rear_support (cake_width, cake_depth, rounding_radius, wheel_r, puzzle_d, plate_t, margin, ladder_sup_w, ladder_sup_d, ladder_pos) {
 
   plate_w = (cake_width-2*rounding_radius)*1.2;
   plate_d = (cake_depth-2*rounding_radius)/2;
   wheels_pos = cake_depth*(-0.5+0.7);
-  margin = 0.4;
 
 
   difference () {
@@ -169,7 +177,7 @@ module rear_support (cake_width, cake_depth, rounding_radius, wheel_r, puzzle_d,
 
 // ************************************************************
 
-module front_support (cake_width, cake_depth, rounding_radius, wheel_r, puzzle_d, plate_t) {
+module front_support (cake_width, cake_depth, rounding_radius, wheel_r, puzzle_d, plate_t, margin) {
 
   plate_w = (cake_width-2*rounding_radius)*1.2;
   plate_d = (cake_depth-2*rounding_radius)/2;
@@ -202,6 +210,25 @@ module front_support (cake_width, cake_depth, rounding_radius, wheel_r, puzzle_d
 module wheel (wheel_r, plate_t) {
   rotate ([0,90,0]) cylinder(plate_t, r=wheel_r);
 }
+
+
+// ************************************************************
+
+module siren (siren_w, siren_d, siren_h, plate_t, margin) {
+  
+  difference () {
+    cube ([siren_w+2*(plate_t+margin), siren_d+2*(plate_t+margin), siren_h+2*(plate_t+margin)]);
+    translate ([plate_t, plate_t, plate_t]) cube ([siren_w+2*margin, siren_d+2*margin, 2*siren_h]);
+  }
+}
+
+// ************************************************************
+
+
+// ************************************************************
+
+
+// ************************************************************
 
 
 // ************************************************************
