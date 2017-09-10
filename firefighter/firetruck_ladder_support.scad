@@ -30,6 +30,14 @@ scale([1/1,1/1,1/1]){
   export = "preview"; 
 
   // "preview" : not designed for printing, final view of the cake with its support
+  // "rear_support" : rear half of the support of the firetruck cake
+  // "front_support" : front half of the support of the firetruck cake
+  // "ladder" : support of the ladder cake
+  // "siren" : a piece to fit a Lego Duplo Siren reference #52189c02
+  // "wheel_cutter"
+  // "mudguard_cutter"
+  // "eyes_cutter"
+  // "doors_cutter"
   
   // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
   
@@ -56,7 +64,20 @@ scale([1/1,1/1,1/1]){
 
   //----------------------------------------------------------
 
-  if (export == "preview") {
+  if (export == "ladder") {
+    mirror ([0,0,1]) translate ([0,0,-plate_t])
+    rotate ([ladder_angle, 0, 0]) translate ([0,0,-cake_height-(cake_depth*(-0.5+ladder_pos)+ladder_sup_d)*tan(ladder_angle)])
+      ladder (cake_width, cake_depth, cake_height, rounding_radius, wheel_r, plate_t, ladder_sup_w, ladder_sup_d, ladder_pos, ladder_angle);
+  }
+  else if (export == "rear_support") {
+    mirror ([0,0,1]) translate ([0,0,-plate_t/2])
+      rear_support (cake_width, cake_depth, rounding_radius, wheel_r, puzzle_d, plate_t, ladder_sup_w, ladder_sup_d, ladder_pos);
+  }
+  else if (export == "front_support") {
+    mirror ([0,0,1]) translate ([0,0,-plate_t/2])
+      front_support (cake_width, cake_depth, rounding_radius, wheel_r, puzzle_d, plate_t);
+  }
+  else {
     fire_truck_cake(cake_width, cake_depth, cake_height, rounding_radius, wheel_r, puzzle_d, plate_t, ladder_sup_w, ladder_sup_d, ladder_pos, ladder_angle);
   }
 
