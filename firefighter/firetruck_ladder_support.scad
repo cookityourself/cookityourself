@@ -41,7 +41,9 @@ scale([1/1,1/1,1/1]){
   // "windshield_cutter"
   // "eyes_cutter"
   // "doors_cutter"
+  // "ladder_hole_cutter" : a cookie cutter to make room for the ladder support
   // "rounding_cutter"
+  // "hose_support" : a support for a hose made of licorice rolls
   
   // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
   
@@ -160,11 +162,23 @@ module fire_truck_cake (
   color ("SlateBlue") translate ([plate_w/2+cake_cutter_h/2, cake_depth*(-0.5+0.23), 0]) rotate ([0,90,0]) mudguard_cutter (wheel_r, cutter_t, cake_cutter_h);
   
   // windshield_cutter
-  color ("SlateBlue") translate ([0, -cake_depth/2, cake_height*0.7]) rotate ([90,0,0]) windshield_cutter (windshield_w, windshield_h, cutter_t, fondant_cutter_h);
+  color ("SlateBlue") translate ([0, -cake_depth/2, cake_height*0.65]) rotate ([90,0,0]) windshield_cutter (windshield_w, windshield_h, cutter_t, fondant_cutter_h);
   
   
-  // nose and smile
-  color ("Gainsboro") translate ([0, -cake_depth/2, cake_height*0.35]) rotate ([0,45,0]) cube (5, center = true);
+  // eyes, nose and smile
+  color ("White") translate ([0, -cake_depth/2+4, cake_height*0.65]) rotate ([90,0,0]) hull () {
+      translate ([-windshield_w/2+windshield_h/2, 0, 0]) cylinder (5, d= windshield_h);
+      translate ([windshield_w/2-windshield_h/2, 0, 0]) cylinder (5, d= windshield_h);
+  }  
+  translate ([11, -cake_depth/2, cake_height*0.6]) rotate ([90,0,0]) {
+    color ("Black") cylinder (5, d=10);
+    translate ([2,2.5,0]) color ("White") cylinder (5, d=2);
+  }
+  translate ([-11, -cake_depth/2, cake_height*0.6]) rotate ([90,0,0]) {
+    color ("Black") cylinder (5, d=10);
+    translate ([2,2.5,0]) color ("White") cylinder (5, d=2);
+  }
+  color ("Gainsboro") translate ([0, -cake_depth/2, cake_height*0.33]) rotate ([0,45,0]) cube (5, center = true);
   color ("White") translate ([0, -cake_depth/2+3, cake_height*0.25]) rotate ([90,0,0])  difference () {
     resize ([cake_width/4, 10, 5]) cylinder(1);
     resize ([cake_width/4-1, 10-1, 20]) cylinder(1, d= 1, center = true);
