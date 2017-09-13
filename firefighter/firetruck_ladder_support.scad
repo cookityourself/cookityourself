@@ -31,7 +31,7 @@ scale([1/1,1/1,1/1]){
   
   // Choose here what you want to export:
 
-  export = "ladder"; 
+  export = "preview"; 
 
   // "preview" : not designed for printing, final view of the cake with its support
   // "rear_support" : rear half of the support of the firetruck cake
@@ -65,6 +65,7 @@ scale([1/1,1/1,1/1]){
   plate_d = (cake_depth-2*rounding_radius)/2;
   plate_t = 2; // plate thickness
 
+  ladder_d = 200;
   ladder_angle = 15;
   ladder_pos = 0.75; // in percentage of the cake depth
   ladder_sup_w = (cake_width-2*rounding_radius)*0.5;
@@ -95,7 +96,7 @@ scale([1/1,1/1,1/1]){
   if (export == "ladder") {
     mirror ([0,0,1]) translate ([0,0,-plate_t])
     rotate ([ladder_angle, 0, 0]) translate ([0,0,-cake_height-(cake_depth*(-0.5+ladder_pos)+ladder_sup_d)*tan(ladder_angle)])
-      ladder (cake_width, cake_depth, cake_height, rounding_radius, wheel_r, plate_t, margin, ladder_sup_w, ladder_sup_d, ladder_pos, ladder_angle);
+      ladder (cake_width, cake_depth, cake_height, rounding_radius, wheel_r, plate_t, margin, ladder_sup_w, ladder_sup_d, ladder_d, ladder_pos, ladder_angle);
   }
   else if (export == "rear_support") {
     mirror ([0,0,1]) translate ([0,0,-plate_t/2])
@@ -118,7 +119,7 @@ scale([1/1,1/1,1/1]){
     windshield_cutter (windshield_w, windshield_h, cutter_t, fondant_cutter_h);
   }
   else {
-    fire_truck_cake(cake_width, cake_depth, cake_height, rounding_radius, wheel_r, puzzle_d, plate_w, plate_d, plate_t, margin, ladder_sup_w, ladder_sup_d, ladder_pos, ladder_angle, windshield_w, windshield_h, cutter_t, cake_cutter_h, fondant_cutter_h);
+    fire_truck_cake(cake_width, cake_depth, cake_height, rounding_radius, wheel_r, puzzle_d, plate_w, plate_d, plate_t, margin, ladder_sup_w, ladder_sup_d, ladder_d, ladder_pos, ladder_angle, siren_w, siren_d, siren_h, windshield_w, windshield_h, cutter_t, cake_cutter_h, fondant_cutter_h);
   }
 
   
@@ -135,11 +136,16 @@ module fire_truck_cake (
   cake_width, cake_depth, cake_height, rounding_radius, 
   wheel_r, puzzle_d, 
   plate_w, plate_d, plate_t, margin, 
-  ladder_sup_w, ladder_sup_d, ladder_pos, ladder_angle, 
+  ladder_sup_w, ladder_sup_d, 
+  ladder_d, ladder_pos, ladder_angle, 
+  siren_w, siren_d, siren_h,
   windshield_w, windshield_h, 
   cutter_t, cake_cutter_h, fondant_cutter_h) {
 
-  // cake
+  // ---------------------------------------
+  // cake (to cook)
+  // ---------------------------------------
+    
     // main cake
   color ("red") translate([0,0,cake_height/2]) round_all_3d (rounding_radius) cube([cake_width-2*rounding_radius,cake_depth-2*rounding_radius, cake_height-2*rounding_radius], center = true);
     // wheels cakes
@@ -148,27 +154,9 @@ module fire_truck_cake (
   color ("black") translate ([-plate_w/2, cake_depth*(-0.5+0.7), 0]) mirror ([1,0,0]) rotate ([0,90,0]) cylinder (wheels_h, r=wheel_r);
   color ("black") translate ([plate_w/2, cake_depth*(-0.5+0.23), 0]) rotate ([0,90,0]) cylinder (wheels_h, r=wheel_r);
   color ("black") translate ([-plate_w/2, cake_depth*(-0.5+0.23), 0]) mirror ([1,0,0]) rotate ([0,90,0]) cylinder (wheels_h, r=wheel_r);
-  
-  // ladder
-  color ("Gainsboro") ladder (cake_width, cake_depth, cake_height, rounding_radius, wheel_r, plate_t, margin, ladder_sup_w, ladder_sup_d, ladder_pos, ladder_angle);
-  
-  // rear support 
-  color ("Snow", 0.8) rear_support (cake_depth, wheel_r, puzzle_d, plate_w, plate_d, plate_t, margin, ladder_sup_w, ladder_sup_d, ladder_pos);
-
-  // front support
-  color ("AntiqueWhite", 0.8) front_support (cake_depth, wheel_r, puzzle_d, plate_w, plate_d, plate_t, margin);
-
-  // wheel cutter
-  color ("SlateBlue") translate ([plate_w, cake_depth*(-0.5+0.7), 0]) rotate ([0,90,0]) wheel_cutter (wheel_r, cutter_t, cake_cutter_h);
-  
-  // mudguard cutter
-  color ("SlateBlue") translate ([plate_w/2+cake_cutter_h/2, cake_depth*(-0.5+0.23), 0]) rotate ([0,90,0]) mudguard_cutter (wheel_r, cutter_t, cake_cutter_h);
-  
-  // windshield_cutter
-  *color ("SlateBlue") translate ([0, -cake_depth/2, cake_height*0.65]) rotate ([90,0,0]) windshield_cutter (windshield_w, windshield_h, cutter_t, fondant_cutter_h);
-  
-  
-  // eyes
+    // ladder cake
+  color ("Gainsboro") translate ([-(cake_width-2*rounding_radius)*0.75/2, -ladder_d/2+10, cake_height+wheel_r+24]) rotate ([-ladder_angle, 0, 0]) cube ([(cake_width-2*rounding_radius)*0.75, ladder_d, 20]);
+    // eyes
   color ("White") translate ([0, -cake_depth/2+4, cake_height*0.65]) rotate ([90,0,0]) hull () {
       translate ([-windshield_w/2+windshield_h/2, 0, 0]) cylinder (5, d= windshield_h);
       translate ([windshield_w/2-windshield_h/2, 0, 0]) cylinder (5, d= windshield_h);
@@ -181,14 +169,41 @@ module fire_truck_cake (
     color ("Black") cylinder (5, d=10);
     translate ([-2.5,2,0.1]) color ("White") cylinder (5, d=2);
   }  
-  // nose
+    // nose
   color ("Gainsboro") translate ([0, -cake_depth/2, cake_height*0.33]) rotate ([0,45,0]) cube (5, center = true);
-  // smile
+    // smile
   color ("White") translate ([0, -cake_depth/2+3, cake_height*0.25]) rotate ([90,0,0])  difference () {
     resize ([cake_width/4, 10, 5]) cylinder(1);
     resize ([cake_width/4-1, 10-1, 20]) cylinder(1, d= 1, center = true);
     translate([-cake_width/2, 0, -5]) cube([cake_width, 20, 20]);
   }
+  
+  
+  // ---------------------------------------
+  // pieces to print
+  // ---------------------------------------
+  
+  // ladder
+  color ("Gainsboro") ladder (cake_width, cake_depth, cake_height, rounding_radius, wheel_r, plate_t, margin, ladder_sup_w, ladder_sup_d, ladder_d, ladder_pos, ladder_angle);
+  
+  // rear support 
+  color ("Snow", 0.8) rear_support (cake_depth, wheel_r, puzzle_d, plate_w, plate_d, plate_t, margin, ladder_sup_w, ladder_sup_d, ladder_pos);
+
+  // front support
+  color ("AntiqueWhite", 0.8) front_support (cake_depth, wheel_r, puzzle_d, plate_w, plate_d, plate_t, margin);
+
+  // siren
+  color ("Blue", 0.7) translate ([-(cake_width-rounding_radius)/2, -cake_depth/2+rounding_radius, cake_height-siren_h/2]) siren (siren_w, siren_d, siren_h, plate_t, margin);
+
+  // wheel cutter
+  color ("SlateBlue") translate ([plate_w, cake_depth*(-0.5+0.7), 0]) rotate ([0,90,0]) wheel_cutter (wheel_r, cutter_t, cake_cutter_h);
+  
+  // mudguard cutter
+  color ("SlateBlue") translate ([plate_w/2+cake_cutter_h/2, cake_depth*(-0.5+0.23), 0]) rotate ([0,90,0]) mudguard_cutter (wheel_r, cutter_t, cake_cutter_h);
+  
+  // windshield_cutter
+  color ("SlateBlue") translate ([0, -cake_depth/2, cake_height*0.65]) rotate ([90,0,0]) windshield_cutter (windshield_w, windshield_h, cutter_t, fondant_cutter_h);
+  
   
   // bumper
   color ("Black") translate ([0, -cake_depth/2+3, cake_height*0]) 
@@ -199,9 +214,10 @@ module fire_truck_cake (
 
 // ************************************************************
 
-module ladder (cake_width, cake_depth, cake_height, rounding_radius, wheel_r, plate_t, margin, ladder_sup_w, ladder_sup_d,ladder_pos, ladder_angle) {
+module ladder (cake_width, cake_depth, cake_height, rounding_radius, wheel_r, plate_t, margin, ladder_sup_w, ladder_sup_d, ladder_d, ladder_pos, ladder_angle) {
   
   logo_t = 0.5;
+  ladder_w = (cake_width-2*rounding_radius)*0.75;
   
   // support
   translate ([-ladder_sup_w/2,cake_depth*(-0.5+ladder_pos),-wheel_r])
@@ -214,8 +230,6 @@ module ladder (cake_width, cake_depth, cake_height, rounding_radius, wheel_r, pl
   
   
   // ladder
-  ladder_w = (cake_width-2*rounding_radius)*0.75;
-  ladder_d = cake_depth;
   translate ([-ladder_w/2,cake_depth*(-0.5+ladder_pos),cake_height+ladder_sup_d*tan(ladder_angle)]) 
     rotate ([-ladder_angle, 0, 0]) translate ([0,-ladder_d*3/4,0]) 
     cube([ladder_w, ladder_d, plate_t]);
