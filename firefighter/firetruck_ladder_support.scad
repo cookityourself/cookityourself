@@ -21,6 +21,8 @@
 use <../common/ciy_cookie_cutter_base.scad>
 use <../common/cutterize.scad>
 use <../common/round_edges.scad>
+use <../common/ciy_logo.scad>
+use <../libs/recycling_symbol_library/recycling_symbol.scad>
 
 
 scale([1/1,1/1,1/1]){
@@ -29,7 +31,7 @@ scale([1/1,1/1,1/1]){
   
   // Choose here what you want to export:
 
-  export = "preview"; 
+  export = "ladder"; 
 
   // "preview" : not designed for printing, final view of the cake with its support
   // "rear_support" : rear half of the support of the firetruck cake
@@ -141,19 +143,20 @@ module fire_truck_cake (
     // main cake
   color ("red") translate([0,0,cake_height/2]) round_all_3d (rounding_radius) cube([cake_width-2*rounding_radius,cake_depth-2*rounding_radius, cake_height-2*rounding_radius], center = true);
     // wheels cakes
-  color ("red") translate ([plate_w/2, cake_depth*(-0.5+0.7), 0]) rotate ([0,90,0]) cylinder (wheel_r, r=wheel_r);
-  color ("red") translate ([-plate_w/2, cake_depth*(-0.5+0.7), 0]) mirror ([1,0,0]) rotate ([0,90,0]) cylinder (wheel_r, r=wheel_r);
-  color ("red") translate ([plate_w/2, cake_depth*(-0.5+0.23), 0]) rotate ([0,90,0]) cylinder (wheel_r, r=wheel_r);
-  color ("red") translate ([-plate_w/2, cake_depth*(-0.5+0.23), 0]) mirror ([1,0,0]) rotate ([0,90,0]) cylinder (wheel_r, r=wheel_r);
+  wheels_h = 15;
+  color ("black") translate ([plate_w/2, cake_depth*(-0.5+0.7), 0]) rotate ([0,90,0]) cylinder (wheels_h, r=wheel_r);
+  color ("black") translate ([-plate_w/2, cake_depth*(-0.5+0.7), 0]) mirror ([1,0,0]) rotate ([0,90,0]) cylinder (wheels_h, r=wheel_r);
+  color ("black") translate ([plate_w/2, cake_depth*(-0.5+0.23), 0]) rotate ([0,90,0]) cylinder (wheels_h, r=wheel_r);
+  color ("black") translate ([-plate_w/2, cake_depth*(-0.5+0.23), 0]) mirror ([1,0,0]) rotate ([0,90,0]) cylinder (wheels_h, r=wheel_r);
   
   // ladder
   color ("Gainsboro") ladder (cake_width, cake_depth, cake_height, rounding_radius, wheel_r, plate_t, margin, ladder_sup_w, ladder_sup_d, ladder_pos, ladder_angle);
   
   // rear support 
-  color ("Firebrick") rear_support (cake_depth, wheel_r, puzzle_d, plate_w, plate_d, plate_t, margin, ladder_sup_w, ladder_sup_d, ladder_pos);
+  color ("Snow", 0.8) rear_support (cake_depth, wheel_r, puzzle_d, plate_w, plate_d, plate_t, margin, ladder_sup_w, ladder_sup_d, ladder_pos);
 
   // front support
-  color ("DarkRed") front_support (cake_depth, wheel_r, puzzle_d, plate_w, plate_d, plate_t, margin);
+  color ("AntiqueWhite", 0.8) front_support (cake_depth, wheel_r, puzzle_d, plate_w, plate_d, plate_t, margin);
 
   // wheel cutter
   color ("SlateBlue") translate ([plate_w, cake_depth*(-0.5+0.7), 0]) rotate ([0,90,0]) wheel_cutter (wheel_r, cutter_t, cake_cutter_h);
@@ -162,34 +165,43 @@ module fire_truck_cake (
   color ("SlateBlue") translate ([plate_w/2+cake_cutter_h/2, cake_depth*(-0.5+0.23), 0]) rotate ([0,90,0]) mudguard_cutter (wheel_r, cutter_t, cake_cutter_h);
   
   // windshield_cutter
-  color ("SlateBlue") translate ([0, -cake_depth/2, cake_height*0.65]) rotate ([90,0,0]) windshield_cutter (windshield_w, windshield_h, cutter_t, fondant_cutter_h);
+  *color ("SlateBlue") translate ([0, -cake_depth/2, cake_height*0.65]) rotate ([90,0,0]) windshield_cutter (windshield_w, windshield_h, cutter_t, fondant_cutter_h);
   
   
-  // eyes, nose and smile
+  // eyes
   color ("White") translate ([0, -cake_depth/2+4, cake_height*0.65]) rotate ([90,0,0]) hull () {
       translate ([-windshield_w/2+windshield_h/2, 0, 0]) cylinder (5, d= windshield_h);
       translate ([windshield_w/2-windshield_h/2, 0, 0]) cylinder (5, d= windshield_h);
   }  
   translate ([11, -cake_depth/2, cake_height*0.6]) rotate ([90,0,0]) {
     color ("Black") cylinder (5, d=10);
-    translate ([2,2.5,0]) color ("White") cylinder (5, d=2);
+    translate ([-2.5,2,0.1]) color ("White") cylinder (5, d=2);
   }
   translate ([-11, -cake_depth/2, cake_height*0.6]) rotate ([90,0,0]) {
     color ("Black") cylinder (5, d=10);
-    translate ([2,2.5,0]) color ("White") cylinder (5, d=2);
-  }
+    translate ([-2.5,2,0.1]) color ("White") cylinder (5, d=2);
+  }  
+  // nose
   color ("Gainsboro") translate ([0, -cake_depth/2, cake_height*0.33]) rotate ([0,45,0]) cube (5, center = true);
+  // smile
   color ("White") translate ([0, -cake_depth/2+3, cake_height*0.25]) rotate ([90,0,0])  difference () {
     resize ([cake_width/4, 10, 5]) cylinder(1);
     resize ([cake_width/4-1, 10-1, 20]) cylinder(1, d= 1, center = true);
     translate([-cake_width/2, 0, -5]) cube([cake_width, 20, 20]);
   }
   
+  // bumper
+  color ("Black") translate ([0, -cake_depth/2+3, cake_height*0]) 
+    difference () {
+    }
+  
 }
 
 // ************************************************************
 
 module ladder (cake_width, cake_depth, cake_height, rounding_radius, wheel_r, plate_t, margin, ladder_sup_w, ladder_sup_d,ladder_pos, ladder_angle) {
+  
+  logo_t = 0.5;
   
   // support
   translate ([-ladder_sup_w/2,cake_depth*(-0.5+ladder_pos),-wheel_r])
@@ -207,6 +219,13 @@ module ladder (cake_width, cake_depth, cake_height, rounding_radius, wheel_r, pl
   translate ([-ladder_w/2,cake_depth*(-0.5+ladder_pos),cake_height+ladder_sup_d*tan(ladder_angle)]) 
     rotate ([-ladder_angle, 0, 0]) translate ([0,-ladder_d*3/4,0]) 
     cube([ladder_w, ladder_d, plate_t]);
+
+
+  // CIY logo
+  translate ([2,cake_depth*(-0.5+ladder_pos)+ladder_sup_d/2,-wheel_r-logo_t]) ciy_logo(logo_size = 10, logo_height=logo_t, logo_orientation = 0);
+    
+  // recycling symbol
+  translate ([0, cake_depth*(-0.5+ladder_pos)-ladder_sup_d/2+7, cake_height-10]) rotate ([-90,0,0]) recycling_symbol("PLA", 10, logo_t);
 
 }
 
@@ -241,6 +260,12 @@ module rear_support (cake_depth, wheel_r, puzzle_d, plate_w, plate_d, plate_t, m
     // cut the upper part of the wheels to ease printing
     translate ([-plate_w,-plate_d/2,plate_t/2]) cube ([2*plate_w, 2*plate_d, 2*wheel_r]);
     }
+    
+  // CIY logo
+  translate ([0, plate_d*0.45, -plate_t]) ciy_logo(logo_size = 12, logo_height=0.5, logo_orientation = 0);
+    
+  // recycling symbol
+  translate ([0, plate_d*0.28, -plate_t]) recycling_symbol("PLA", 12, 0.5);
 }
 
 // ************************************************************
@@ -268,6 +293,12 @@ module front_support (cake_depth, wheel_r, puzzle_d, plate_w, plate_d, plate_t, 
     // cut the upper part of the wheels to ease printing
     translate ([-plate_w,-plate_d*3/2,plate_t/2]) cube ([2*plate_w, 2*plate_d, 2*wheel_r]);
     }
+    
+  // CIY logo
+  translate ([0, -plate_d*0.45, -plate_t]) ciy_logo(logo_size = 15, logo_height=0.5, logo_orientation = 0);
+    
+  // recycling symbol
+  translate ([0, -plate_d*0.7, -plate_t]) recycling_symbol("PLA", 15, 0.5);
 }
 
 // ************************************************************
