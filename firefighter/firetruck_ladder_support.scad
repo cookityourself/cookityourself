@@ -31,13 +31,14 @@ scale([1/1,1/1,1/1]){
   
   // Choose here what you want to export:
 
-  export = "preview"; 
+  export = "siren_top"; 
 
   // "preview" : not designed for printing, final view of the cake with its support
   // "rear_support" : rear half of the support of the firetruck cake
   // "front_support" : front half of the support of the firetruck cake
   // "ladder" : support of the ladder cake
   // "siren" : a piece to fit a Lego Duplo Siren reference #52189c02
+  // "siren_top" : a piece to cover the Lego Duplo Siren when put in the siren piece
   // "wheel_cutter" : a cookie cutter to extract the wheels from your cake
   // "mudguard_cutter" : a cookie cutter to make the firetruck's mudguards
   // "windshield_cutter"
@@ -108,6 +109,9 @@ scale([1/1,1/1,1/1]){
   }
   else if (export == "siren") {
     siren (siren_w, siren_d, siren_h, plate_t, margin) ;
+  }
+  else if (export == "siren_top") {
+    siren_top (siren_w, siren_d, plate_t, margin) ;
   }
   else if (export == "wheel_cutter") {
     wheel_cutter (wheel_r, cutter_t, cake_cutter_h);
@@ -351,6 +355,17 @@ module siren (siren_w, siren_d, siren_h, plate_t, margin) {
     cube ([siren_w+2*(plate_t+margin), siren_d+2*(plate_t+margin), siren_h+2*(plate_t+margin)]);
     translate ([plate_t, plate_t, plate_t]) cube ([siren_w+2*margin, siren_d+2*margin, 2*siren_h]);
   }
+}
+
+module siren_top (siren_w, siren_d, plate_t, margin) {
+  
+  top_w = 30;
+  top_d = siren_d+margin;
+  
+  translate ([-top_w/2, 0, 0]) cube ([top_w, top_d, plate_t]);
+  translate ([-2.5, 0, 0]) cube ([5, top_d, 5+plate_t]);
+  translate ([-top_w/2, 0, 0]) cube ([2, top_d, 5+plate_t]);
+  translate ([top_w/2, 0, 0]) cube ([2, top_d, 5+plate_t]);
 }
 
 // ************************************************************
