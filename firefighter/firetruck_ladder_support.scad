@@ -31,7 +31,7 @@ scale([1/1,1/1,1/1]){
   
   // Choose here what you want to export:
 
-  export = "preview"; 
+  export = "doors_texture"; 
 
   // "preview" : not designed for printing, final view of the cake with its support
   // "rear_support" : rear half of the support of the firetruck cake
@@ -41,10 +41,11 @@ scale([1/1,1/1,1/1]){
   // "siren_top" : a piece to cover the Lego Duplo Siren when put in the siren piece
   // "wheel_cutter" : a cookie cutter to extract the wheels from your cake
   // "mudguard_cutter" : a cookie cutter to make the firetruck's mudguards
-  // "windshield_cutter"
+  // "windshield_cutter" : a cookie cutter to cut the windshield from fondant
   // "eyes_cutter"
-  // "doors_cutter"
-  // "ladder_hole_cutter" : a cookie cutter to make room for the ladder support
+  // "doors_cutter" : a cookie cutter to cut the doors from fondant
+  // "doors_texture" : a stamp to apply a texture of roller shutters on your fondant
+  // "ladder_support_cutter" : a cookie cutter to make room for the ladder support
   // "rounding_cutter"
   // "hose_support" : a support for a hose made of licorice rolls
   
@@ -52,7 +53,7 @@ scale([1/1,1/1,1/1]){
   
   //----------------------------------------------------------
 
-  $fn = 100;
+  $fn = 1000;
   //$fn = 30; // debug
 
   margin = 0.4;
@@ -116,6 +117,9 @@ scale([1/1,1/1,1/1]){
   else if (export == "siren_top") {
     siren_top (siren_w, siren_d, plate_t, margin) ;
   }
+  else if (export == "ladder_support_cutter") {
+    ladder_support_cutter (cake_height, wheel_r, cutter_t, ladder_sup_w, ladder_sup_d);
+  }
   else if (export == "wheel_cutter") {
     wheel_cutter (wheel_r, cutter_t, cake_cutter_h);
   }
@@ -125,7 +129,14 @@ scale([1/1,1/1,1/1]){
   else if (export == "windshield_cutter") {
     windshield_cutter (windshield_w, windshield_h, cutter_t, fondant_cutter_h);
   }
+  else if (export == "doors_cutter") {
+    doors_cutter (doors_big_h, doors_w, cutter_t, fondant_cutter_h);
+  }
+  else if (export == "doors_texture") {
+    doors_texture (doors_big_h, doors_w, cutter_t, plate_t);
+  }
   else {
+    $fn = 30;
     fire_truck_cake(cake_width, cake_depth, cake_height, rounding_radius, wheel_r, puzzle_d, plate_w, plate_d, plate_t, margin, ladder_sup_w, ladder_sup_d, ladder_d, ladder_pos, ladder_angle, siren_w, siren_d, siren_h, windshield_w, windshield_h, cutter_t, cake_cutter_h, fondant_cutter_h, doors_w, doors_big_h, doors_small_h);
   }
 
@@ -227,6 +238,11 @@ module fire_truck_cake (
   // windshield_cutter
   *color ("SlateBlue") translate ([0, -cake_depth/2, cake_height*0.65]) rotate ([90,0,0]) windshield_cutter (windshield_w, windshield_h, cutter_t, fondant_cutter_h);
   
+  // cutter for the hole for the ladder support
+  color ("SlateBlue") translate ([-ladder_sup_w/2,cake_depth*(-0.5+ladder_pos),-(cake_height+10+wheel_r)-5]) ladder_support_cutter (cake_height, wheel_r, cutter_t, ladder_sup_w, ladder_sup_d);
+  
+  // cutter for the big doors
+  color ("SlateBlue") translate ([plate_w/2+30, -7, 15-cutter_t]) rotate ([0,-90,0]) doors_cutter (doors_big_h, doors_w, cutter_t, fondant_cutter_h);
   
 }
 
@@ -238,8 +254,9 @@ module ladder (cake_width, cake_depth, cake_height, rounding_radius, wheel_r, pl
   ladder_w = (cake_width-2*rounding_radius)*0.75;
   
   // support
-    translate ([-ladder_sup_w/2,cake_depth*(-0.5+ladder_pos),-wheel_r])
-      cube([ladder_sup_w, ladder_sup_d, cake_height+wheel_r]);  translate ([-ladder_sup_w/2,cake_depth*(-0.5+ladder_pos),cake_height])
+  translate ([-ladder_sup_w/2,cake_depth*(-0.5+ladder_pos),-wheel_r])
+      cube([ladder_sup_w, ladder_sup_d, cake_height+wheel_r]);  
+  translate ([-ladder_sup_w/2,cake_depth*(-0.5+ladder_pos),cake_height])
     difference () {
       cube([ladder_sup_w, ladder_sup_d, ladder_sup_d*tan(ladder_angle)]);
       translate ([-ladder_sup_w/2,0,ladder_sup_d*tan(ladder_angle)]) rotate ([-ladder_angle,0,0]) cube([2*ladder_sup_w, 2*ladder_sup_d, ladder_sup_d*tan(ladder_angle)]);
@@ -258,6 +275,15 @@ module ladder (cake_width, cake_depth, cake_height, rounding_radius, wheel_r, pl
   // recycling symbol
   translate ([0, cake_depth*(-0.5+ladder_pos)-ladder_sup_d/2+7, cake_height-10]) rotate ([-90,0,0]) recycling_symbol("PLA", 10, logo_t);
 
+}
+
+module ladder_support_cutter (cake_height, wheel_r, plate_t, ladder_sup_w, ladder_sup_d) {
+
+  difference () {
+    cube([ladder_sup_w, ladder_sup_d, cake_height+10]);  
+    translate ([plate_t, plate_t, -(cake_height+10)/2]) cube([ladder_sup_w-2*plate_t, ladder_sup_d-2*plate_t, 2*(cake_height+10)]);  
+  }
+  
 }
 
 // ************************************************************
@@ -387,21 +413,37 @@ module siren_top (siren_w, siren_d, plate_t, margin) {
 // Cookie Cutters for Decorations
 
 module windshield_cutter (windshield_w, windshield_h, cutter_t, cutter_h) {
-
-//  difference () {
-//    cube([windshield_w+cutter_t, windshield_h+cutter_t, cutter_h], center = true);
-//    cube([windshield_w, windshield_h, 2*cutter_h], center = true);
-//  }  
   
-  cutterize_offset_round (cutter_t/2) hull () {
+  cutterize_offset_round (cutter_t) hull () {
     translate ([-windshield_w/2+windshield_h/2, 0, 0]) cylinder (cutter_h, d= windshield_h);
     translate ([windshield_w/2-windshield_h/2, 0, 0]) cylinder (cutter_h, d= windshield_h);
   }
+}
 
-//  hull () {
-//    resize ([windshield_w, windshield_h, cutter_h]) cylinder (cutter_h, d= windshield_w);
-//    #translate ([windshield_w/2-windshield_h/2, windshield_h/4, 0]) cylinder (cutter_h, d= windshield_h/2);
-//  }
+module doors_cutter (doors_h, doors_w, cutter_t, fondant_cutter_h) {
+
+  
+  difference () {
+    cube ([doors_h+2*cutter_t, doors_w+2*cutter_t, fondant_cutter_h]);
+    translate ([cutter_t, cutter_t, -fondant_cutter_h/2]) cube ([doors_h, doors_w, 2*fondant_cutter_h]);
+  }
+}
+
+module doors_texture (doors_h, doors_w, cutter_t, plate_t) {
+  
+  plate_x = doors_h+2*cutter_t;
+  plate_y = 2*doors_w+4*cutter_t;
+  plate_z = plate_t/2;
+  
+  slice_w = 4;
+  slice_d = 0.8;
+  slice_h = 0.8;
+  
+  cube ([plate_x, plate_y, plate_z]);
+  for (i = [0:doors_h/(slice_w+slice_d)]) {
+    translate ([1.5+i*(slice_w+slice_d), 0, plate_z]) resize ([slice_d, plate_y, 2*slice_h]) rotate([0,45,0]) cube ([slice_d, plate_y, slice_d]);
+  }
+  
 }
 
 module eyes_cutter () {
