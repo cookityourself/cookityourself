@@ -31,21 +31,22 @@ scale([1/1,1/1,1/1]){
   
   // Choose here what you want to export:
 
-  export = "doors_texture"; 
+  export = "ladder_sides_cutter_for_genoise"; 
 
   // "preview" : not designed for printing, final view of the cake with its support
   // "rear_support" : rear half of the support of the firetruck cake
   // "front_support" : front half of the support of the firetruck cake
-  // "ladder" : support of the ladder cake
+  // "ladder_support" : support of the ladder cake
   // "siren" : a piece to fit a Lego Duplo Siren reference #52189c02
   // "siren_top" : a piece to cover the Lego Duplo Siren when put in the siren piece
   // "wheel_cutter" : a cookie cutter to extract the wheels from your cake
   // "mudguard_cutter" : a cookie cutter to make the firetruck's mudguards
   // "windshield_cutter" : a cookie cutter to cut the windshield from fondant
-  // "eyes_cutter"
   // "doors_cutter" : a cookie cutter to cut the doors from fondant
   // "doors_texture" : a stamp to apply a texture of roller shutters on your fondant
   // "ladder_support_cutter" : a cookie cutter to make room for the ladder support
+  // "ladder_sides_cutter" : a cookie cutter to make the sides of the ladder from a cake
+  // "eyes_cutter"
   // "rounding_cutter"
   // "hose_support" : a support for a hose made of licorice rolls
   
@@ -68,6 +69,7 @@ scale([1/1,1/1,1/1]){
   plate_t = 2; // plate thickness
 
   ladder_d = 200;
+  ladder_w = (cake_width-2*rounding_radius)*0.75;
   ladder_angle = 15;
   ladder_pos = 0.75; // in percentage of the cake depth
   ladder_sup_w = (cake_width-2*rounding_radius)*0.5;
@@ -98,10 +100,10 @@ scale([1/1,1/1,1/1]){
 
   //----------------------------------------------------------
 
-  if (export == "ladder") {
+  if (export == "ladder_support") {
     mirror ([0,0,1]) translate ([0,0,-plate_t])
     rotate ([ladder_angle, 0, 0]) translate ([0,0,-cake_height-(cake_depth*(-0.5+ladder_pos)+ladder_sup_d)*tan(ladder_angle)])
-      ladder (cake_width, cake_depth, cake_height, rounding_radius, wheel_r, plate_t, margin, ladder_sup_w, ladder_sup_d, ladder_d, ladder_pos, ladder_angle);
+      ladder_support (cake_width, cake_depth, cake_height, rounding_radius, wheel_r, plate_t, margin, ladder_sup_w, ladder_sup_d, ladder_w, ladder_d, ladder_pos, ladder_angle);
   }
   else if (export == "rear_support") {
     mirror ([0,0,1]) translate ([0,0,-plate_t/2])
@@ -120,6 +122,30 @@ scale([1/1,1/1,1/1]){
   else if (export == "ladder_support_cutter") {
     ladder_support_cutter (cake_height, wheel_r, cutter_t, ladder_sup_w, ladder_sup_d);
   }
+  else if (export == "ladder_sides_cutter_for_genoise") {
+    cutter_w = ladder_d/2;
+    triangle_w = 20;
+    triangle_h = 20;
+    space_w = 10;
+    space_h = 8;
+    ladder_sides_cutter (cutter_w, triangle_w, triangle_h, space_w, space_h, cutter_t, cake_cutter_h);
+  }
+  else if (export == "ladder_sides_cutter_for_fondant") {
+    cutter_w = ladder_d;
+    triangle_w = 20;
+    triangle_h = 20;
+    space_w = 8;
+    space_h = 4;
+    ladder_sides_cutter (cutter_w, triangle_w, triangle_h, space_w, space_h, cutter_t, fondant_cutter_h);
+  }
+  else if (export == "ladder_sides_cutter_for_cake") {
+    cutter_w = ladder_d/2;
+    triangle_w = 20;
+    triangle_h = 20;
+    space_w = 16;
+    space_h = 12;
+    ladder_sides_cutter (cutter_w, triangle_w, triangle_h, space_w, space_h, cutter_t, cake_cutter_h);
+  }
   else if (export == "wheel_cutter") {
     wheel_cutter (wheel_r, cutter_t, cake_cutter_h);
   }
@@ -137,7 +163,7 @@ scale([1/1,1/1,1/1]){
   }
   else {
     $fn = 30;
-    fire_truck_cake(cake_width, cake_depth, cake_height, rounding_radius, wheel_r, puzzle_d, plate_w, plate_d, plate_t, margin, ladder_sup_w, ladder_sup_d, ladder_d, ladder_pos, ladder_angle, siren_w, siren_d, siren_h, windshield_w, windshield_h, cutter_t, cake_cutter_h, fondant_cutter_h, doors_w, doors_big_h, doors_small_h);
+    fire_truck_cake(cake_width, cake_depth, cake_height, rounding_radius, wheel_r, puzzle_d, plate_w, plate_d, plate_t, margin, ladder_sup_w, ladder_sup_d, ladder_w, ladder_d, ladder_pos, ladder_angle, siren_w, siren_d, siren_h, windshield_w, windshield_h, cutter_t, cake_cutter_h, fondant_cutter_h, doors_w, doors_big_h, doors_small_h);
   }
 
   
@@ -145,9 +171,13 @@ scale([1/1,1/1,1/1]){
 
 
 // ************************************************************
+// ************************************************************
 // * Submodules
 // ************************************************************
+// ************************************************************
 
+// ************************************************************
+// preview
 // ************************************************************
 
 module fire_truck_cake (
@@ -155,7 +185,7 @@ module fire_truck_cake (
   wheel_r, puzzle_d, 
   plate_w, plate_d, plate_t, margin, 
   ladder_sup_w, ladder_sup_d, 
-  ladder_d, ladder_pos, ladder_angle, 
+  ladder_w, ladder_d, ladder_pos, ladder_angle, 
   siren_w, siren_d, siren_h,
   windshield_w, windshield_h, 
   cutter_t, cake_cutter_h, fondant_cutter_h,
@@ -174,7 +204,7 @@ module fire_truck_cake (
   color ("black") translate ([plate_w/2, cake_depth*(-0.5+0.23), 0]) rotate ([0,90,0]) cylinder (wheels_h, r=wheel_r);
   color ("black") translate ([-plate_w/2, cake_depth*(-0.5+0.23), 0]) mirror ([1,0,0]) rotate ([0,90,0]) cylinder (wheels_h, r=wheel_r);
     // ladder cake
-  color ("Gainsboro") translate ([-(cake_width-2*rounding_radius)*0.75/2, -ladder_d/2+10, cake_height+wheel_r+24]) rotate ([-ladder_angle, 0, 0]) cube ([(cake_width-2*rounding_radius)*0.75, ladder_d, 20]);
+  color ("Gainsboro") translate ([-(cake_width-2*rounding_radius)*0.75/2, -ladder_d/2+10, cake_height+wheel_r+24]) rotate ([-ladder_angle, 0, 0]) cube ([(cake_width-2*rounding_radius)*0.75, ladder_d, 30]);
     // eyes
   color ("White") translate ([0, -cake_depth/2+4, cake_height*0.67]) rotate ([90,0,0]) hull () {
       translate ([-windshield_w/2+windshield_h/2, 0, 0]) cylinder (5, d= windshield_h);
@@ -216,8 +246,8 @@ module fire_truck_cake (
   // pieces to print
   // ---------------------------------------
   
-  // ladder
-  color ("Gainsboro") ladder (cake_width, cake_depth, cake_height, rounding_radius, wheel_r, plate_t, margin, ladder_sup_w, ladder_sup_d, ladder_d, ladder_pos, ladder_angle);
+  // ladder_support
+  color ("Gainsboro") ladder_support (cake_width, cake_depth, cake_height, rounding_radius, wheel_r, plate_t, margin, ladder_sup_w, ladder_sup_d, ladder_w, ladder_d, ladder_pos, ladder_angle);
   
   // rear support 
   color ("Snow", 0.8) rear_support (cake_depth, wheel_r, puzzle_d, plate_w, plate_d, plate_t, margin, ladder_sup_w, ladder_sup_d, ladder_pos);
@@ -247,13 +277,14 @@ module fire_truck_cake (
 }
 
 // ************************************************************
+// Ladder submodules
+// ************************************************************
 
-module ladder (cake_width, cake_depth, cake_height, rounding_radius, wheel_r, plate_t, margin, ladder_sup_w, ladder_sup_d, ladder_d, ladder_pos, ladder_angle) {
+module ladder_support (cake_width, cake_depth, cake_height, rounding_radius, wheel_r, plate_t, margin, ladder_sup_w, ladder_sup_d, ladder_w, ladder_d, ladder_pos, ladder_angle) {
   
   logo_t = 0.5;
-  ladder_w = (cake_width-2*rounding_radius)*0.75;
   
-  // support
+  // ladder support inside the cake
   translate ([-ladder_sup_w/2,cake_depth*(-0.5+ladder_pos),-wheel_r])
       cube([ladder_sup_w, ladder_sup_d, cake_height+wheel_r]);  
   translate ([-ladder_sup_w/2,cake_depth*(-0.5+ladder_pos),cake_height])
@@ -263,7 +294,7 @@ module ladder (cake_width, cake_depth, cake_height, rounding_radius, wheel_r, pl
     }
   
   
-  // ladder
+  // ladder plate
   translate ([-ladder_w/2,cake_depth*(-0.5+ladder_pos),cake_height+ladder_sup_d*tan(ladder_angle)]) 
     rotate ([-ladder_angle, 0, 0]) translate ([0,-ladder_d*3/4,0]) 
     cube([ladder_w, ladder_d, plate_t]);
@@ -277,15 +308,69 @@ module ladder (cake_width, cake_depth, cake_height, rounding_radius, wheel_r, pl
 
 }
 
-module ladder_support_cutter (cake_height, wheel_r, plate_t, ladder_sup_w, ladder_sup_d) {
+module ladder_support_cutter (cake_height, wheel_r, cutter_t, ladder_sup_w, ladder_sup_d) {
 
   difference () {
     cube([ladder_sup_w, ladder_sup_d, cake_height+10]);  
-    translate ([plate_t, plate_t, -(cake_height+10)/2]) cube([ladder_sup_w-2*plate_t, ladder_sup_d-2*plate_t, 2*(cake_height+10)]);  
+    translate ([cutter_t, cutter_t, -(cake_height+10)/2]) cube([ladder_sup_w-2*cutter_t, ladder_sup_d-2*cutter_t, 2*(cake_height+10)]);  
   }
   
 }
 
+module ladder_sides_cutter (cutter_w, triangle_w, triangle_h, space_w, space_h, cutter_t, cutter_z) {
+
+  logo_t = 0.4;
+
+  
+  module triangle () {
+    translate ([sqrt(2),0,0]) rotate ([0,0,90]) difference () {
+      rotate ([0,0,45]) cube ([1,1,1]);
+      translate ([-2,0,-0.5]) cube ([2,2,2]);
+    }
+  }
+  
+  cutter_h = triangle_h+2*space_h+2*cutter_t;
+  offset_x = 0;
+  offset_y = (cutter_h-triangle_h)/2;
+  nb_up = ceil(cutter_w/(triangle_w+2*space_w));
+  nb_dw = floor(cutter_w/(triangle_w+2*space_w));
+  
+  
+  // assembly plate
+  difference () {
+    cube ([cutter_w, cutter_h, cutter_t]);
+    union () {
+      for (i = [0:nb_up-1]) {
+        translate([offset_x+i*(triangle_w+2*space_w),offset_y,-cutter_h/2]) resize ([triangle_w, triangle_h, cutter_h]) triangle ();
+      }
+      for (i = [0:nb_dw-1]) {
+        translate([offset_x+triangle_w*2+(space_w-triangle_w/2)+i*(triangle_w+2*space_w),offset_y+triangle_h,-cutter_h/2]) rotate ([0,0,180]) resize ([triangle_w, triangle_h, cutter_h]) triangle ();
+      }
+    }
+  }
+  
+  // cutters
+  difference () { 
+    cube([cutter_w, cutter_h, cutter_z]);
+    translate ([-cutter_w/2, cutter_t, -cutter_z/2]) cube ([cutter_w*2, cutter_h-2*cutter_t, 2*cutter_z]);
+  }
+  for (i = [0:nb_up-1]) {
+    translate([offset_x+i*(triangle_w+2*space_w),offset_y,0]) inset_shell_round(cutter_t) resize ([triangle_w, triangle_h, cutter_z]) triangle ();
+  }
+  for (i = [0:nb_dw-1]) {
+    translate([offset_x+triangle_w*2+(space_w-triangle_w/2)+i*(triangle_w+2*space_w),offset_y+triangle_h,0]) rotate ([0,0,180]) inset_shell_round(cutter_t) resize ([triangle_w, triangle_h, cutter_z]) triangle ();
+  }
+  
+  // CIY logo
+  translate ([cutter_w*0.5,0,cutter_z/2]) rotate ([90,0,0]) ciy_logo(logo_size = cutter_z*0.6, logo_height=logo_t, logo_orientation = 0);
+    
+  // recycling symbol
+  translate ([cutter_w*0.8, 0, cutter_z/2]) rotate ([90,0,0]) recycling_symbol("PLA", 6, logo_t);
+}
+
+
+// ************************************************************
+// Truck support submodules
 // ************************************************************
 
 module rear_support (cake_depth, wheel_r, puzzle_d, plate_w, plate_d, plate_t, margin, ladder_sup_w, ladder_sup_d, ladder_pos) {
@@ -326,7 +411,6 @@ module rear_support (cake_depth, wheel_r, puzzle_d, plate_w, plate_d, plate_t, m
   translate ([0, cake_depth*(-0.5+ladder_pos)-plate_t-letters_height, -10]) rotate ([-90,0,0]) recycling_symbol("PLA", 10, letters_height);
 }
 
-// ************************************************************
 
 module front_support (cake_depth, wheel_r, puzzle_d, plate_w, plate_d, plate_t, margin) {
 
@@ -361,6 +445,8 @@ module front_support (cake_depth, wheel_r, puzzle_d, plate_w, plate_d, plate_t, 
 }
 
 // ************************************************************
+// * Wheels submodules
+// ************************************************************
 
 module wheel (wheel_r, plate_t) {
   rotate ([0,90,0]) {
@@ -389,6 +475,8 @@ module mudguard_cutter (wheel_r, cutter_t, cutter_h) {
 } 
 
 // ************************************************************
+// * Siren submodules
+// ************************************************************
 
 module siren (siren_w, siren_d, siren_h, plate_t, margin) {
   
@@ -411,6 +499,7 @@ module siren_top (siren_w, siren_d, plate_t, margin) {
 
 // ************************************************************
 // Cookie Cutters for Decorations
+// ************************************************************
 
 module windshield_cutter (windshield_w, windshield_h, cutter_t, cutter_h) {
   
@@ -448,11 +537,6 @@ module doors_texture (doors_h, doors_w, cutter_t, plate_t) {
 
 module eyes_cutter () {
 }
-
-// ************************************************************
-
-
-// ************************************************************
 
 
 // ************************************************************
