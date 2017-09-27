@@ -31,7 +31,7 @@ scale([1/1,1/1,1/1]){
   
   // Choose here what you want to export:
 
-  export = "ladder_sides_cutter_for_genoise"; 
+  export = "preview"; 
 
   // "preview" : not designed for printing, final view of the cake with its support
   // "rear_support" : rear half of the support of the firetruck cake
@@ -45,8 +45,11 @@ scale([1/1,1/1,1/1]){
   // "doors_cutter" : a cookie cutter to cut the doors from fondant
   // "doors_texture" : a stamp to apply a texture of roller shutters on your fondant
   // "ladder_support_cutter" : a cookie cutter to make room for the ladder support
-  // "ladder_sides_cutter" : a cookie cutter to make the sides of the ladder from a cake
-  // "eyes_cutter"
+  // "ladder_sides_cutter_for_genoise" : a cookie cutter to make the sides of the ladder from a genoise
+  // "ladder_sides_cutter_for_cake" : a cookie cutter to make the sides of the ladder from a cake (larger than genoise)
+  // "ladder_sides_cutter_for_fondant" : a cookie cutter to make the sides of the ladder from fondant  
+  // "ladder_bars_texture" : a stamp to print the bars of the ladder into fondant
+  // "eyes_cutter" : a fondant cutter for making eyes with a large choice of sizes
   // "rounding_cutter"
   // "hose_support" : a support for a hose made of licorice rolls
   
@@ -54,8 +57,8 @@ scale([1/1,1/1,1/1]){
   
   //----------------------------------------------------------
 
-  $fn = 1000;
-  //$fn = 30; // debug
+  //$fn = 1000;
+  $fn = 30; // debug
 
   margin = 0.4;
   
@@ -85,8 +88,9 @@ scale([1/1,1/1,1/1]){
   siren_h = 25;
 
   // dimensions for the cutter set
-  cutter_t = 0.4*3;
+  cake_cutter_t = 0.4*3;
   cake_cutter_h = 30;
+  fondant_cutter_t = 0.4*2;
   fondant_cutter_h = 10;
   
     
@@ -120,7 +124,7 @@ scale([1/1,1/1,1/1]){
     siren_top (siren_w, siren_d, plate_t, margin) ;
   }
   else if (export == "ladder_support_cutter") {
-    ladder_support_cutter (cake_height, wheel_r, cutter_t, ladder_sup_w, ladder_sup_d);
+    ladder_support_cutter (cake_height, wheel_r, cake_cutter_t, ladder_sup_w, ladder_sup_d);
   }
   else if (export == "ladder_sides_cutter_for_genoise") {
     cutter_w = ladder_d/2;
@@ -128,7 +132,7 @@ scale([1/1,1/1,1/1]){
     triangle_h = 20;
     space_w = 10;
     space_h = 8;
-    ladder_sides_cutter (cutter_w, triangle_w, triangle_h, space_w, space_h, cutter_t, cake_cutter_h);
+    ladder_sides_cutter (cutter_w, triangle_w, triangle_h, space_w, space_h, cake_cutter_t, cake_cutter_h);
   }
   else if (export == "ladder_sides_cutter_for_fondant") {
     cutter_w = ladder_d;
@@ -136,7 +140,7 @@ scale([1/1,1/1,1/1]){
     triangle_h = 20;
     space_w = 8;
     space_h = 4;
-    ladder_sides_cutter (cutter_w, triangle_w, triangle_h, space_w, space_h, cutter_t, fondant_cutter_h);
+    ladder_sides_cutter (cutter_w, triangle_w, triangle_h, space_w, space_h, fondant_cutter_t, fondant_cutter_h);
   }
   else if (export == "ladder_sides_cutter_for_cake") {
     cutter_w = ladder_d/2;
@@ -144,26 +148,35 @@ scale([1/1,1/1,1/1]){
     triangle_h = 20;
     space_w = 16;
     space_h = 12;
-    ladder_sides_cutter (cutter_w, triangle_w, triangle_h, space_w, space_h, cutter_t, cake_cutter_h);
+    ladder_sides_cutter (cutter_w, triangle_w, triangle_h, space_w, space_h, cake_cutter_t, cake_cutter_h);
   }
   else if (export == "wheel_cutter") {
-    wheel_cutter (wheel_r, cutter_t, cake_cutter_h);
+    wheel_cutter (wheel_r, cake_cutter_t, cake_cutter_h);
   }
   else if (export == "mudguard_cutter") {
-    mudguard_cutter (wheel_r, cutter_t, cake_cutter_h);
+    mudguard_cutter (wheel_r, cake_cutter_t, cake_cutter_h);
   }
   else if (export == "windshield_cutter") {
-    windshield_cutter (windshield_w, windshield_h, cutter_t, fondant_cutter_h);
+    windshield_cutter (windshield_w, windshield_h, cake_cutter_t, fondant_cutter_h);
   }
   else if (export == "doors_cutter") {
-    doors_cutter (doors_big_h, doors_w, cutter_t, fondant_cutter_h);
+    doors_cutter (doors_big_h, doors_w, fondant_cutter_t, fondant_cutter_h);
   }
   else if (export == "doors_texture") {
-    doors_texture (doors_big_h, doors_w, cutter_t, plate_t);
+    doors_texture (doors_big_h, doors_w, fondant_cutter_t, plate_t);
+  }
+  else if (export == "eyes_cutter") {
+    eyes_cutter (fondant_cutter_t);
+  }
+  else if (export == "ladder_triangle_cutter") {
+    cutter_w = ladder_d;
+    triangle_w = 20;
+    triangle_h = 20;
+    ladder_triangle_cutter (triangle_w, triangle_h, cake_cutter_t, cake_cutter_h);
   }
   else {
     $fn = 30;
-    fire_truck_cake(cake_width, cake_depth, cake_height, rounding_radius, wheel_r, puzzle_d, plate_w, plate_d, plate_t, margin, ladder_sup_w, ladder_sup_d, ladder_w, ladder_d, ladder_pos, ladder_angle, siren_w, siren_d, siren_h, windshield_w, windshield_h, cutter_t, cake_cutter_h, fondant_cutter_h, doors_w, doors_big_h, doors_small_h);
+    fire_truck_cake(cake_width, cake_depth, cake_height, rounding_radius, wheel_r, puzzle_d, plate_w, plate_d, plate_t, margin, ladder_sup_w, ladder_sup_d, ladder_w, ladder_d, ladder_pos, ladder_angle, siren_w, siren_d, siren_h, windshield_w, windshield_h, cake_cutter_t, cake_cutter_h, fondant_cutter_h, doors_w, doors_big_h, doors_small_h);
   }
 
   
@@ -232,7 +245,8 @@ module fire_truck_cake (
     round_all_3d (rounding_radius/4) cube([cake_width-rounding_radius,10, 1], center = true);
   
   // decorations
-  *color ("Gold") translate ([cake_width/2+fondant_t, -cake_depth/2+rounding_radius, cake_height/2-10]) rotate ([90, 0, 90]) cube ([cake_depth-2*rounding_radius, 5, fondant_t]);
+  color ("Gold") translate ([cake_width/2, -cake_depth/2+rounding_radius, cake_height/2-10]) rotate ([90, 0, 90]) cube ([cake_depth/2-3*rounding_radius, 5, fondant_t]);
+  color ("Gold") translate ([cake_width/2, 3*rounding_radius, cake_height/2-10]) rotate ([90, 0, 90]) cube ([cake_depth/3-2*rounding_radius, 5, fondant_t]);
   color ("Gold") translate ([-cake_width/2-fondant_t, -cake_depth/2+rounding_radius, cake_height/2-10]) rotate ([90, 0, 90]) cube ([cake_depth-2*rounding_radius, 5, fondant_t]);
   
   // doors
@@ -322,13 +336,6 @@ module ladder_sides_cutter (cutter_w, triangle_w, triangle_h, space_w, space_h, 
   logo_t = 0.4;
 
   
-  module triangle () {
-    translate ([sqrt(2),0,0]) rotate ([0,0,90]) difference () {
-      rotate ([0,0,45]) cube ([1,1,1]);
-      translate ([-2,0,-0.5]) cube ([2,2,2]);
-    }
-  }
-  
   cutter_h = triangle_h+2*space_h+2*cutter_t;
   offset_x = 0;
   offset_y = (cutter_h-triangle_h)/2;
@@ -366,6 +373,11 @@ module ladder_sides_cutter (cutter_w, triangle_w, triangle_h, space_w, space_h, 
     
   // recycling symbol
   translate ([cutter_w*0.8, 0, cutter_z/2]) rotate ([90,0,0]) recycling_symbol("PLA", 6, logo_t);
+}
+
+module ladder_triangle_cutter (triangle_w, triangle_h, cutter_t, cutter_z) {
+
+  inset_shell_round(cutter_t) resize ([triangle_w, triangle_h, cutter_z]) triangle ();
 }
 
 
@@ -535,8 +547,52 @@ module doors_texture (doors_h, doors_w, cutter_t, plate_t) {
   
 }
 
-module eyes_cutter () {
+module eyes_cutter (fondant_cutter_t) {
+  
+  min_r = 3.5;
+  max_r = 8.5;
+  step_r = 0.5;
+  
+  plate_x = sum(min_r,step_r, max_r-step_r);
+  echo (plate_x);
+  
+  module eyes_set (min_d, max_d, step_r, t) {
+    cutter_h = 5;
+    
+    translate ([-min_r,0,0]) for (i = [min_r:step_r:max_r]) {
+      translate ([sum(2*min_r, 2*step_r, 2*(i-step_r)), max_r, 0]) tube (h=cutter_h, r=i, t=t);
+      translate ([sum(2*min_r, 2*step_r, 2*(i-step_r)), -max_r, 0]) tube (h=cutter_h, r=i, t=t);
+    }
+  }
+  
+  difference () {
+    translate ([0,-2*max_r, 0]) cube ([2*plate_x,2*2*max_r,1]);
+    translate ([0,0,-2]) eyes_set(min_r, max_r, step_r, max_r);
+  }
+  eyes_set(min_r, max_r, step_r, fondant_cutter_t);
 }
+
+
+// ************************************************************
+// Utilities
+// ************************************************************
+
+function sum (min, step, max) = (min>=max ? min : max+sum(min, step, max-step));
+
+module tube (h, r, t) {
+  difference () {
+    cylinder (h=h, r=r);
+    translate([0,0,-h/2]) cylinder (h=h*2, r=r-t);
+  }
+}
+
+module triangle () {
+  translate ([sqrt(2),0,0]) rotate ([0,0,90]) difference () {
+    rotate ([0,0,45]) cube ([1,1,1]);
+    translate ([-2,0,-0.5]) cube ([2,2,2]);
+  }
+}
+  
 
 
 // ************************************************************
