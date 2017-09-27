@@ -31,7 +31,7 @@ scale([1/1,1/1,1/1]){
   
   // Choose here what you want to export:
 
-  export = "preview"; 
+  export = "ladder_texture"; 
 
   // "preview" : not designed for printing, final view of the cake with its support
   // "rear_support" : rear half of the support of the firetruck cake
@@ -57,8 +57,8 @@ scale([1/1,1/1,1/1]){
   
   //----------------------------------------------------------
 
-  //$fn = 1000;
-  $fn = 30; // debug
+  $fn = 1000;
+  //$fn = 30; // debug
 
   margin = 0.4;
   
@@ -150,6 +150,15 @@ scale([1/1,1/1,1/1]){
     space_h = 12;
     ladder_sides_cutter (cutter_w, triangle_w, triangle_h, space_w, space_h, cake_cutter_t, cake_cutter_h);
   }
+  else if (export == "ladder_triangle_cutter") {
+    cutter_w = ladder_d;
+    triangle_w = 20;
+    triangle_h = 20;
+    ladder_triangle_cutter (triangle_w, triangle_h, cake_cutter_t, cake_cutter_h);
+  }
+  else if (export == "ladder_texture") {
+    ladder_texture (ladder_w, ladder_d);
+  }
   else if (export == "wheel_cutter") {
     wheel_cutter (wheel_r, cake_cutter_t, cake_cutter_h);
   }
@@ -167,12 +176,6 @@ scale([1/1,1/1,1/1]){
   }
   else if (export == "eyes_cutter") {
     eyes_cutter (fondant_cutter_t);
-  }
-  else if (export == "ladder_triangle_cutter") {
-    cutter_w = ladder_d;
-    triangle_w = 20;
-    triangle_h = 20;
-    ladder_triangle_cutter (triangle_w, triangle_h, cake_cutter_t, cake_cutter_h);
   }
   else {
     $fn = 30;
@@ -378,6 +381,25 @@ module ladder_sides_cutter (cutter_w, triangle_w, triangle_h, space_w, space_h, 
 module ladder_triangle_cutter (triangle_w, triangle_h, cutter_t, cutter_z) {
 
   inset_shell_round(cutter_t) resize ([triangle_w, triangle_h, cutter_z]) triangle ();
+}
+
+
+module ladder_texture (ladder_w, ladder_d) {
+
+  slice_w = 10;
+  slice_d = 5;
+  plate_z = 1+slice_d/2;
+  
+  plate_y = ladder_w+10;
+  plate_x = ladder_d+slice_d/2;
+  
+  difference () {
+  cube ([plate_x, plate_y, plate_z]);
+  for (i = [0:plate_x/(slice_w+slice_d)]) {
+    translate ([1+slice_d/2+i*(slice_w+slice_d), -plate_y/2, plate_z]) rotate ([-90,0,0]) cylinder (h=2*plate_y, r=slice_d/2);
+  }
+}
+
 }
 
 
