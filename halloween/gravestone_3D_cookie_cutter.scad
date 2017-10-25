@@ -1,5 +1,5 @@
 $fn=90;
-use<libs/cookityourself/common/cutterize.scad>
+use<../common/cutterize.scad>
 fullRender=false;
 wallThickness=0.8;
 
