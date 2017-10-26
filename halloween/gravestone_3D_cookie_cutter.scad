@@ -1,6 +1,40 @@
-$fn=90;
+// ************************************************************
+// * EN
+// * This model is gracefully offered by cookityourself.
+// * Feel free to do what you want with it.
+// * Please just add a link to our website www.ciy.fr 
+// * if you use some of our code in your own creations.
+// ************************************************************
+// * FR
+// * Ce modèle vous est gracieusement offert par cookityourself.
+// * Vous êtes libres de l'utiliser comme bon vous semble.
+// * Nous vous demandons seulement de faire un lien vers notre 
+// * site web www.ciy.fr si vous utilisez tout ou partie de ce 
+// * code pour l'une de vos créations.
+// ************************************************************
+// Model for a Gravestone 3D cookie cutter.
+// Choose the name of the part you want to export to create
+// the files to slice and print.
+// ************************************************************
+
 use<../common/cutterize.scad>
-fullRender=false;
+
+
+// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+// Choose here what you want to export:
+
+export = "base"; 
+
+// "preview" : view of all parts, not designed for printing.
+// "topStone" : stone with "RIP" engraving
+// "base" : support for the gravestone to stand up
+
+// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+//----------------------------------------------------------
+
+$fn=500;
 wallThickness=0.8;
 
 stoneThickness=7;
@@ -9,9 +43,20 @@ baseThickness=10;
 tabsWidth=stoneWidth/3;
 barThickness=1;
 
-translate([0,23,-42])rotate([-90,0,0]) 
-	topStone();
-base();
+
+if (export == "topStone") {
+  translate([0,0,stoneThickness/2+wallThickness]) rotate([0,180,0]) topStone();
+}
+else if (export == "base") {
+  translate([0,0,baseThickness/2+wallThickness]) rotate([0,180,0])base();
+}
+else {
+  $fn = 30;
+  translate([0,23,-42])rotate([-90,0,0]) 
+    topStone();
+  base();
+}
+
 
 module topStone(){
 cutterize_offset_round(wallThickness) 
