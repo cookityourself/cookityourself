@@ -19,7 +19,7 @@ scale([1/1,1/1,1/1]){
   
   // Choose here what you want to export:
 
-  export = "preview"; 
+  export = "button"; 
 
   // "preview" : not designed for printing, final view of the spinner
   
@@ -322,7 +322,7 @@ module button (bb_int_d, bb_ext_d, bb_support_h) {
   
   button_h = bb_support_h/2-1;
   button_ext_d = bb_ext_d;
-  button_ext_h = 1;
+  button_ext_h = 2;
   button_int_d = bb_ext_d-4;
   button_int_h = button_ext_h;
   
