@@ -21,48 +21,45 @@
 
 preview();
 
-module preview (file) {
+module preview () {
   file = "meeple.dxf";
   height = 40;
   chamfer = 2;
   radius = 5;
   steps = 20;
 
-  color("blue") translate([-200,0,0]) molderize (file, height);
-  color("red") translate([-200,-200,0]) molderize_n_chamfer (file, height, chamfer);
-  molderize_n_fillet (file, height, radius, steps);
+  module shape () {
+     import(file);
+  }
+
+  color("blue") translate([-200,0,0]) molderize (height) shape ();
+  color("red") translate([-200,-200,0]) molderize_n_chamfer (height, chamfer) shape ();
+  molderize_n_fillet (height, radius, steps) shape ();
 }
 
 
 function filletDepth(radius, step_height, step) = radius * cos(asin(step_height * step / radius));
 
-module molderize (file, height) {
-  linear_extrude(height) import(file);
+module molderize (height) {
+  linear_extrude(height) children();
 }
 
-module molderize_n_chamfer (file, height, chamfer, steps) {
-  module shape () {
-     import(file);
-  }
-  
-  linear_extrude(height-chamfer) shape();
+module molderize_n_chamfer (height, chamfer, steps) {
+  linear_extrude(height-chamfer) children();
   d= chamfer/steps;
   for (i = [0:steps]) {
       x = -d * i;
       z = d * i;                  
       translate([0, 0, height-chamfer + z]) 
         linear_extrude(d) 
-          offset(delta = x) shape();
+          offset(delta = x) children();
     //echo (i, x, z);
   }
 }
 
-module molderize_n_fillet (file, height, radius, steps) {
-  module shape () {
-     import(file);
-  }
-  
-  linear_extrude(height-radius) shape();
+module molderize_n_fillet (height, radius, steps) {
+
+  linear_extrude(height-radius) children();
   d= radius/steps;
   for (i = [0:steps]) {
       x = filletDepth(radius, d, i);
@@ -70,7 +67,7 @@ module molderize_n_fillet (file, height, radius, steps) {
       delta = -radius + x;
       translate([0, 0, height-radius + z]) 
         linear_extrude(d) 
-          offset(delta = delta) shape();
+          offset(delta = delta) children();
     //echo (i, d, x, z, delta);
   }
 }
