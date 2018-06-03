@@ -19,7 +19,7 @@
 // ************************************************************
 
 // Note that rendering could be very slow due to high use of minkowski()
-use <../common/round_edges.scad>
+use <../libs/fillet2d3d/files/fillets3d.scad>
 
 scale([1/1,1/1,1/1]){
   // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
@@ -49,7 +49,9 @@ scale([1/1,1/1,1/1]){
   }
   else if (export == "saber_left") {
     saber_left(saber_height, rounding);
-
+  }
+  else if (export == "saber_right") {
+    saber_right(saber_height, rounding);
   }
   else {
     $fn = 30;
@@ -68,7 +70,7 @@ scale([1/1,1/1,1/1]){
 
 
 module knights (knights_height = 40, rounding = 2){
-  linear_extrude(height = knights_height)  
+  topFillet(t =knights_height, r=rounding, s=10, e=1) linear_extrude(height = knights_height)  
     import(file = "meeple_space_knights_characters.dxf");
 }
 
@@ -77,11 +79,13 @@ module saber(){
 }
 
 module saber_left(saber_height = 20, rounding = 2){
-  color("blue") linear_extrude(height = saber_height)  
+  color("blue") topFillet(t =saber_height, r=rounding, s=10, e=1) linear_extrude(height = saber_height)  
     import(file = "meeple_space_knights_saber_left.dxf");
 }
 
 module saber_right(saber_height = 20, rounding = 2){
-  color("red") linear_extrude(height = saber_height)  
+  color("red") topFillet(t =saber_height, r=rounding, s=10, e=1) linear_extrude(height = saber_height)  
     import(file = "meeple_space_knights_saber_right.dxf");
 }
+
+
