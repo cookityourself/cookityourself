@@ -18,15 +18,14 @@
 // the files to slice and print.
 // ************************************************************
 
-// Note that rendering could be very slow due to high use of minkowski()
-use <../libs/fillet2d3d/files/fillets3d.scad>
+use <../common/molderize.scad>
 
 scale([1/1,1/1,1/1]){
   // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
   
   // Choose here what you want to export:
 
-  export = "preview"; 
+  export = "knights"; 
 
   // "preview" : not designed for printing, final view of all the parts
 
@@ -38,12 +37,12 @@ scale([1/1,1/1,1/1]){
   knights_height = 40;
   saber_height = 20;
   rounding = 5;
-  fillets_s = 10; // fillet steps (see library)
+  fillets_s = 20; // fillet steps (see library)
 
   //----------------------------------------------------------
 
   if (export == "knights") {
-    knights(knights_height, rounding, fillets_s);
+    knights_assembly(knights_height, saber_height, rounding, fillets_s);
   }
   else if (export == "saber") {
     saber ();
@@ -56,7 +55,7 @@ scale([1/1,1/1,1/1]){
   }
   else {
     $fn = 30;
-    knights(knights_height, rounding, fillets_s);
+    knights_assembly(knights_height, saber_height, rounding, fillets_s);
     saber_left(saber_height, rounding, fillets_s);
     saber_right(saber_height, rounding, fillets_s);
   }
@@ -75,18 +74,32 @@ module saber(){
 }
 
 module saber_left(saber_height = 20, rounding = 2, fillets_s = 10){
-  color("blue") topFillet(t =saber_height, r=rounding, s=fillets_s, e=1) linear_extrude(height = saber_height)  
-    import(file = "meeple_space_knights_saber_left.dxf");
+  module shape () {
+    import ("meeple_space_knights_saber_left.dxf");
+  }
+  color("blue") molderize_n_fillet(height =saber_height, radius=rounding, steps=fillets_s) shape ();
 }
 
 module saber_right(saber_height = 20, rounding = 2, fillets_s = 10){
-  color("red") topFillet(t =saber_height, r=rounding, s=fillets_s, e=1) linear_extrude(height = saber_height)  
-    import(file = "meeple_space_knights_saber_right.dxf");
+  module shape () {
+    import ("meeple_space_knights_saber_right.dxf");
+  }
+  color("red") molderize_n_fillet(height =saber_height, radius=rounding, steps=fillets_s) shape ();
 }
 
 module knights (knights_height = 40, rounding = 2, fillets_s = 10){
-  topFillet(t =knights_height, r=rounding, s=fillets_s, e=1) linear_extrude(height = knights_height)  
-    import(file = "meeple_space_knights_characters.dxf");
+  module shape () {
+    import ("meeple_space_knights_characters.dxf");
+  }
+  molderize_n_fillet(height =knights_height, radius=rounding, steps=fillets_s) shape (); 
+}
+
+module knights_assembly (knights_height = 40, saber_height = 20, rounding = 2, fillets_s = 10){
+  difference () {
+    knights(knights_height, rounding, fillets_s);
+    saber_left(saber_height, rounding, fillets_s);
+    saber_right(saber_height, rounding, fillets_s);
+  }
 }
 
 
