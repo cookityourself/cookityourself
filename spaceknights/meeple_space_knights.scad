@@ -38,26 +38,27 @@ scale([1/1,1/1,1/1]){
   knights_height = 40;
   saber_height = 20;
   rounding = 5;
+  fillets_s = 10; // fillet steps (see library)
 
   //----------------------------------------------------------
 
   if (export == "knights") {
-    knights(knights_height, rounding);
+    knights(knights_height, rounding, fillets_s);
   }
   else if (export == "saber") {
     saber ();
   }
   else if (export == "saber_left") {
-    saber_left(saber_height, rounding);
+    saber_left(saber_height, rounding, fillets_s);
   }
   else if (export == "saber_right") {
-    saber_right(saber_height, rounding);
+    saber_right(saber_height, rounding, fillets_s);
   }
   else {
     $fn = 30;
-    knights(knights_height, rounding);
-    saber_left(saber_height, rounding);
-    saber_right(saber_height, rounding);
+    knights(knights_height, rounding, fillets_s);
+    saber_left(saber_height, rounding, fillets_s);
+    saber_right(saber_height, rounding, fillets_s);
   }
 
 }
@@ -69,23 +70,23 @@ scale([1/1,1/1,1/1]){
 // ************************************************************
 
 
-module knights (knights_height = 40, rounding = 2){
-  topFillet(t =knights_height, r=rounding, s=10, e=1) linear_extrude(height = knights_height)  
-    import(file = "meeple_space_knights_characters.dxf");
-}
-
 module saber(){
   color("green") rotate_extrude()  import(file = "meeple_space_knights_saber.dxf");
 }
 
-module saber_left(saber_height = 20, rounding = 2){
-  color("blue") topFillet(t =saber_height, r=rounding, s=10, e=1) linear_extrude(height = saber_height)  
+module saber_left(saber_height = 20, rounding = 2, fillets_s = 10){
+  color("blue") topFillet(t =saber_height, r=rounding, s=fillets_s, e=1) linear_extrude(height = saber_height)  
     import(file = "meeple_space_knights_saber_left.dxf");
 }
 
-module saber_right(saber_height = 20, rounding = 2){
-  color("red") topFillet(t =saber_height, r=rounding, s=10, e=1) linear_extrude(height = saber_height)  
+module saber_right(saber_height = 20, rounding = 2, fillets_s = 10){
+  color("red") topFillet(t =saber_height, r=rounding, s=fillets_s, e=1) linear_extrude(height = saber_height)  
     import(file = "meeple_space_knights_saber_right.dxf");
+}
+
+module knights (knights_height = 40, rounding = 2, fillets_s = 10){
+  topFillet(t =knights_height, r=rounding, s=fillets_s, e=1) linear_extrude(height = knights_height)  
+    import(file = "meeple_space_knights_characters.dxf");
 }
 
 
