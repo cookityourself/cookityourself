@@ -18,15 +18,20 @@
 // the files to slice and print.
 // ************************************************************
 
-file = "meeple.dxf";
-height = 40;
-chamfer = 2;
-radius = 2;
-steps = 1;
 
-color("blue") translate([-200,0,0]) molderize (file, height);
-//color("red") translate([-200,-200,0]) molderize_n_chamfer (file, height, chamfer);
-molderize_n_fillet (file, height, radius, steps);
+preview();
+
+module preview (file) {
+  file = "meeple.dxf";
+  height = 40;
+  chamfer = 2;
+  radius = 5;
+  steps = 20;
+
+  color("blue") translate([-200,0,0]) molderize (file, height);
+  color("red") translate([-200,-200,0]) molderize_n_chamfer (file, height, chamfer);
+  molderize_n_fillet (file, height, radius, steps);
+}
 
 
 function filletDepth(radius, step_height, step) = radius * cos(asin(step_height * step / radius));
@@ -35,20 +40,37 @@ module molderize (file, height) {
   linear_extrude(height) import(file);
 }
 
-//module molderize_n_chamfer (file, height, chamfer) {
-//  linear_extrude(height, scale = 0.5) import(file);
-//}
+module molderize_n_chamfer (file, height, chamfer, steps) {
+  module shape () {
+     import(file);
+  }
+  
+  linear_extrude(height-chamfer) shape();
+  d= chamfer/steps;
+  for (i = [0:steps]) {
+      x = -d * i;
+      z = d * i;                  
+      translate([0, 0, height-chamfer + z]) 
+        linear_extrude(d) 
+          offset(delta = x) shape();
+    //echo (i, x, z);
+  }
+}
 
 module molderize_n_fillet (file, height, radius, steps) {
-  linear_extrude(height-radius) import(file);
+  module shape () {
+     import(file);
+  }
+  
+  linear_extrude(height-radius) shape();
   d= radius/steps;
-  
-    for (i = [0:steps]) {
-        x = filletDepth(radius, d, i);
-        z = d * (i + 1);                  
-        translate([0, 0, height-radius + z]) 
-          linear_extrude(d) 
-            offset(delta = -radius + x) import(file);
-    }
-  
+  for (i = [0:steps]) {
+      x = filletDepth(radius, d, i);
+      z = d * i;                  
+      delta = -radius + x;
+      translate([0, 0, height-radius + z]) 
+        linear_extrude(d) 
+          offset(delta = delta) shape();
+    //echo (i, d, x, z, delta);
+  }
 }
