@@ -30,22 +30,32 @@ scale([1/1,1/1,1/1]){
 
   // "preview" : not designed for printing, final view of all the parts
 
+  //----------------------------------------------------------
+  
   //$fn = 1000;
   $fn = 30; // debug
+  
+  knights_height = 40;
+  saber_height = 20;
+  rounding = 5;
 
   //----------------------------------------------------------
 
   if (export == "knights") {
-    knights();
+    knights(knights_height, rounding);
   }
-  else if (export == "") {
-    eyes_cutter (fondant_cutter_t);
+  else if (export == "saber") {
+    saber ();
+  }
+  else if (export == "saber_left") {
+    saber_left(saber_height, rounding);
+
   }
   else {
     $fn = 30;
-    knights();
-    saber_left();
-    saber_right();
+    knights(knights_height, rounding);
+    saber_left(saber_height, rounding);
+    saber_right(saber_height, rounding);
   }
 
 }
@@ -57,14 +67,21 @@ scale([1/1,1/1,1/1]){
 // ************************************************************
 
 
-module knights (){
-linear_extrude(height = 40)  import(file = "meeple_space_knights_characters.dxf");
+module knights (knights_height = 40, rounding = 2){
+  linear_extrude(height = knights_height)  
+    import(file = "meeple_space_knights_characters.dxf");
 }
 
-module saber_left(){
-color("blue") linear_extrude(height = 20)  import(file = "meeple_space_knights_saber_left.dxf");
+module saber(){
+  color("green") rotate_extrude()  import(file = "meeple_space_knights_saber.dxf");
 }
 
-module saber_right(){
-color("red") linear_extrude(height = 20)  import(file = "meeple_space_knights_saber_right.dxf");
+module saber_left(saber_height = 20, rounding = 2){
+  color("blue") linear_extrude(height = saber_height)  
+    import(file = "meeple_space_knights_saber_left.dxf");
+}
+
+module saber_right(saber_height = 20, rounding = 2){
+  color("red") linear_extrude(height = saber_height)  
+    import(file = "meeple_space_knights_saber_right.dxf");
 }
