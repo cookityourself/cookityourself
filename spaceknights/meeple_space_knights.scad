@@ -20,39 +20,78 @@
 
 use <../common/molderize.scad>
 
-scale([1/1,1/1,1/1]){
+scale([1,1,1]){
   // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
   
   // Choose here what you want to export:
 
-  export = "preview"; 
+  export = "sabers"; 
 
   // "preview" : not designed for printing, final view of all the parts
+  // "knight_right" : center and export the knights at the right
+  // "knight_left" : export the knights at the left
+  // "sabers" : export the crossing sabers
 
   //----------------------------------------------------------
   
-  //$fn = 1000;
-  $fn = 30; // debug
+  $fn = 1000;
+  //$fn = 30; // debug
   
-  knights_height = 40;
-  saber_height = 20;
+//  knights_height = 40;
+//  saber_height = 20;
+//  margin = 0.2; // margin for assembly
+//  rounding = 5;
+//  fillets_s = 20; // fillet steps (see library)
+//  scaling = 0.8;
+
+  knights_height = 6;
+  saber_height = 4;
   margin = 0.2; // margin for assembly
-  rounding = 5;
+  rounding = 3;
   fillets_s = 20; // fillet steps (see library)
+  scaling = 0.2;
 
   //----------------------------------------------------------
 
   if (export == "knights") {
     knights_assembly(knights_height, saber_height, margin, rounding, fillets_s);
   }
+  else if (export == "knight_right") {
+    scale([scaling,scaling,1]){
+      translate([-200,0,0]) difference () {
+        knights_assembly(knights_height, saber_height, margin, rounding, fillets_s);
+        translate([0,-1,-1])cube(200, center = false);
+      }
+    }
+  }
+  else if (export == "knight_left") {
+    scale([scaling,scaling,1]){
+      difference () {
+        knights_assembly(knights_height, saber_height, margin, rounding, fillets_s);
+        translate([200,-1,-1]) cube(200, center = false);
+      }
+    }
+  }
+  else if (export == "sabers") {
+    scale([scaling,scaling,1]){
+      saber_left(saber_height, 0, rounding, fillets_s);
+      saber_right(saber_height, 0, rounding, fillets_s);
+    }
+  }
+  else if (export == "saber_left") {
+    saber_left(saber_height, 0, rounding, fillets_s);
+  }
+  else if (export == "saber_right") {
+    saber_right(saber_height, 0, rounding, fillets_s);
+  }
   else if (export == "saber") {
     saber ();
   }
-  else if (export == "saber_left") {
-    saber_left(saber_height, margin, rounding, fillets_s);
-  }
-  else if (export == "saber_right") {
-    saber_right(saber_height, margin, rounding, fillets_s);
+  else if (export == "one_piece") {
+    margin = 0; // margin for assembly
+    knights_assembly(knights_height, saber_height, margin, rounding, fillets_s);
+    saber_left(saber_height, 0, rounding, fillets_s);
+    saber_right(saber_height, 0, rounding, fillets_s);
   }
   else {
     $fn = 30;
