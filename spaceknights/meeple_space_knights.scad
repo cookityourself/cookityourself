@@ -19,13 +19,15 @@
 // ************************************************************
 
 use <../common/molderize.scad>
+use <../common/cutterize.scad>
+use <../common/ciy_logo.scad>
 
 scale([1,1,1]){
   // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
   
   // Choose here what you want to export:
 
-  export = "sabers"; 
+  export = "preview"; 
 
   // "preview" : not designed for printing, final view of all the parts
   // "knight_right" : center and export the knights at the right
@@ -44,22 +46,25 @@ scale([1,1,1]){
 //  fillets_s = 20; // fillet steps (see library)
 //  scaling = 0.8;
 
-  knights_height = 6;
+  knights_height = 10;
   saber_height = 4;
   margin = 0.2; // margin for assembly
-  rounding = 3;
+  rounding_factor = 0.5;
   fillets_s = 20; // fillet steps (see library)
   scaling = 0.2;
+  mold_width = 10;
+  pressing_height = 5;
+  thickness = 2;
 
   //----------------------------------------------------------
 
   if (export == "knights") {
-    knights_assembly(knights_height, saber_height, margin, rounding, fillets_s);
+    knights_assembly(knights_height, saber_height, margin, rounding_factor, fillets_s);
   }
   else if (export == "knight_right") {
     scale([scaling,scaling,1]){
       translate([-200,0,0]) difference () {
-        knights_assembly(knights_height, saber_height, margin, rounding, fillets_s);
+        knights_assembly(knights_height, saber_height, margin, rounding_factor, fillets_s, mold_width);
         translate([0,-1,-1])cube(200, center = false);
       }
     }
@@ -67,37 +72,38 @@ scale([1,1,1]){
   else if (export == "knight_left") {
     scale([scaling,scaling,1]){
       difference () {
-        knights_assembly(knights_height, saber_height, margin, rounding, fillets_s);
+        knights_assembly(knights_height, saber_height, margin, rounding_factor, fillets_s);
         translate([200,-1,-1]) cube(200, center = false);
       }
     }
   }
   else if (export == "sabers") {
     scale([scaling,scaling,1]){
-      saber_left(saber_height, 0, rounding, fillets_s);
-      saber_right(saber_height, 0, rounding, fillets_s);
+      saber_left(saber_height, 0, saber_height*rounding_factor, fillets_s);
+      saber_right(saber_height, 0, saber_height*rounding_factor, fillets_s);
     }
   }
   else if (export == "saber_left") {
-    saber_left(saber_height, 0, rounding, fillets_s);
+    saber_left(saber_height, 0, saber_height*rounding_factor, fillets_s);
   }
   else if (export == "saber_right") {
-    saber_right(saber_height, 0, rounding, fillets_s);
+    saber_right(saber_height, 0, saber_height*rounding_factor, fillets_s);
   }
   else if (export == "saber") {
     saber ();
   }
   else if (export == "one_piece") {
     margin = 0; // margin for assembly
-    knights_assembly(knights_height, saber_height, margin, rounding, fillets_s);
-    saber_left(saber_height, 0, rounding, fillets_s);
-    saber_right(saber_height, 0, rounding, fillets_s);
+    knights_assembly(knights_height, saber_height, margin, rounding_factor, fillets_s);
+    saber_left(saber_height, 0, saber_height*rounding_factor, fillets_s);
+    saber_right(saber_height, 0, saber_height*rounding_factor, fillets_s);
   }
   else {
     $fn = 30;
-    knights_assembly(knights_height, saber_height, margin, rounding, fillets_s);
-    saber_left(saber_height, 0, rounding, fillets_s);
-    saber_right(saber_height, 0, rounding, fillets_s);
+    pressing_support(pressing_height, mold_width, thickness, rounding_factor, fillets_s) ;
+    knights_assembly(knights_height, saber_height, margin, rounding_factor, fillets_s);
+    saber_left(saber_height, 0, saber_height*rounding_factor, fillets_s);
+    saber_right(saber_height, 0, saber_height*rounding_factor, fillets_s);
   }
 
 }
@@ -127,19 +133,43 @@ module saber_right(saber_height = 20, margin = 0, rounding = 2, fillets_s = 10){
   color("red") molderize_n_fillet(height =saber_height, radius=rounding, steps=fillets_s) offset(delta=margin) shape ();
 }
 
-module knights (knights_height = 40, rounding = 2, fillets_s = 10){
+module knights (knights_height = 40, rounding = 2, fillets_s = 10, mold_width = 20){
   module shape () {
     import ("meeple_space_knights_characters.dxf");
   }
   molderize_n_fillet(height =knights_height, radius=rounding, steps=fillets_s) shape (); 
 }
 
-module knights_assembly (knights_height = 40, saber_height = 20, margin = 0, rounding = 2, fillets_s = 10){
+module knights_assembly (knights_height = 40, saber_height = 20, margin = 0, rounding_factor = 0.1, fillets_s = 10, mold_width = 20){
   difference () {
-    knights(knights_height, rounding, fillets_s);
-    saber_left(saber_height+margin, margin, rounding, fillets_s);
-    saber_right(saber_height+margin, margin, rounding, fillets_s);
+    knights(knights_height, knights_height*rounding_factor, fillets_s, mold_width);
+    saber_left(saber_height+margin, margin, saber_height*rounding_factor, fillets_s);
+    saber_right(saber_height+margin, margin, saber_height*rounding_factor, fillets_s);
   }
 }
 
+module pressing_support(pressing_height, mold_width, thickness, rounding_factor, fillets_s) {
+  module shape () {
+    import ("meeple_space_knights_characters.dxf");
+    import ("meeple_space_knights_saber_left.dxf");
+    import ("meeple_space_knights_saber_right.dxf");  
+}
+  difference () {
+    union () {
+      color("linen") linear_extrude(thickness) offset (r = mold_width) hull() shape (); 
+      color("linen") cutterize_3d_fillet(height =pressing_height, thickness=thickness) offset (r = mold_width) hull() shape (); 
+    }
+    translate([195,200,pressing_height+0.4]) 
+      color("teal") mirror([0,0,1]) 
+        molderize_n_fillet(height =pressing_height, radius=pressing_height*0.8, steps=fillets_s) 
+          mirror([1,0,0]) ciy_logo_2d(logo_size = 40, logo_orientation = -5);
+    translate([200,60,pressing_height]) 
+      color("teal") mirror([0,0,1]) 
+        molderize_n_fillet(height =pressing_height, radius=pressing_height*0.8, steps=fillets_s) 
+          mirror([1,0,0]) text("200°C max", halign = "center", valign = "center", size = 10, font = "Cantarell:style=Bold");
+    #translate([200,45,pressing_height]) 
+      color("teal") mirror([0,0,1]) 
+        molderize_n_fillet(height =pressing_height, radius=pressing_height*0.8, steps=fillets_s) 
+          mirror([1,0,0]) text("silicone", halign = "center", valign = "center", size = 10, font = "Cantarell:style=Bold");  }
+}
 
