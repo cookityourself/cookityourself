@@ -46,15 +46,15 @@ scale([1,1,1]){
 //  fillets_s = 20; // fillet steps (see library)
 //  scaling = 0.8;
 
-  knights_height = 10;
-  saber_height = 4;
+  thickness = 2;
+  mold_width = 10;
+  pressing_height = 5+thickness;
+  knights_height = 10+thickness;
+  saber_height = 4+thickness;
   margin = 0.2; // margin for assembly
   rounding_factor = 0.5;
   fillets_s = 20; // fillet steps (see library)
   scaling = 0.2;
-  mold_width = 10;
-  pressing_height = 5;
-  thickness = 2;
 
   //----------------------------------------------------------
 
@@ -159,15 +159,24 @@ module pressing_support(pressing_height, mold_width, thickness, rounding_factor,
       color("linen") linear_extrude(thickness) offset (r = mold_width) hull() shape (); 
       color("linen") cutterize_3d_fillet(height =pressing_height, thickness=thickness) offset (r = mold_width) hull() shape (); 
     }
-    translate([195,200,pressing_height+0.4]) 
+    text_depth = pressing_height-thickness+0.3;
+    translate([200,210,text_depth]) 
       color("teal") mirror([0,0,1]) 
         molderize_n_fillet(height =pressing_height, radius=pressing_height*0.8, steps=fillets_s) 
-          mirror([1,0,0]) ciy_logo_2d(logo_size = 40, logo_orientation = -5);
-    translate([200,60,pressing_height]) 
+          mirror([1,0,0]) text("Happy 40", halign = "center", valign = "center", size = 15, font = "Cantarell:style=Bold");
+    translate([200,190,text_depth]) 
+      color("teal") mirror([0,0,1]) 
+        molderize_n_fillet(height =pressing_height, radius=pressing_height*0.8, steps=fillets_s) 
+          mirror([1,0,0]) text("Adrien", halign = "center", valign = "center", size = 15, font = "Cantarell:style=Bold");
+    translate([200,20,text_depth]) 
+      color("teal") mirror([0,0,1]) 
+        molderize_n_fillet(height =pressing_height, radius=pressing_height*0.8, steps=fillets_s) 
+          mirror([1,0,0]) ciy_logo_2d(logo_size = 20, logo_orientation = 0);
+    translate([200,60,text_depth]) 
       color("teal") mirror([0,0,1]) 
         molderize_n_fillet(height =pressing_height, radius=pressing_height*0.8, steps=fillets_s) 
           mirror([1,0,0]) text("200°C max", halign = "center", valign = "center", size = 10, font = "Cantarell:style=Bold");
-    #translate([200,45,pressing_height]) 
+    translate([200,45,text_depth]) 
       color("teal") mirror([0,0,1]) 
         molderize_n_fillet(height =pressing_height, radius=pressing_height*0.8, steps=fillets_s) 
           mirror([1,0,0]) text("silicone", halign = "center", valign = "center", size = 10, font = "Cantarell:style=Bold");  }
