@@ -27,9 +27,9 @@ scale([1,1,1]){
   
   // Choose here what you want to export:
 
-  export = "sabers"; 
+  export = "pressing_support_part1"; 
 
-  // "preview" : not designed for printing, final view of all the parts
+  // "all" : not designed for printing, final view of all the parts
   // "knight_right" : center and export the knights at the right
   // "knight_left" : export the knights at the left
   // "sabers" : export the crossing sabers
@@ -42,22 +42,22 @@ scale([1,1,1]){
   
   thickness = 2;
   mold_width = 10;
-  pressing_h = 5;
+  pressing_h = 3;
   cut_offset = 300;
   
-//  knights_h = 10;
-//  saber_h = 4;
-//  margin = 0.15; // margin for assembly
-//  rounding_factor = 0.5;
-//  fillets_s = 20; // fillet steps (see library)
-//  scaling = 0.2;
-
-  knights_h = 40;
-  saber_h = 20;
+  knights_h = 10;
+  saber_h = 4;
   margin = 0.15; // margin for assembly
-  rounding_factor = 0.2;
+  rounding_factor = 0.5;
   fillets_s = 20; // fillet steps (see library)
-  scaling = 1;
+  scaling = 0.2;
+
+//  knights_h = 40;
+//  saber_h = 20;
+//  margin = 0.15; // margin for assembly
+//  rounding_factor = 0.2;
+//  fillets_s = 20; // fillet steps (see library)
+//  scaling = 0.8;
 
   pressing_height = pressing_h+thickness;
   knights_height = knights_h+thickness;
@@ -114,7 +114,9 @@ scale([1,1,1]){
     pressing_support_part0(pressing_height, mold_width, thickness, rounding_factor, fillets_s, cut_offset) ;
   }
   else if (export == "pressing_support_part1") {
-    pressing_support_part1(pressing_height, mold_width, thickness, rounding_factor, fillets_s, cut_offset) ;
+    scale([scaling,scaling,1]){
+      pressing_support_part1(pressing_height, mold_width, thickness, rounding_factor, fillets_s, cut_offset) ;
+    }
   }
   else if (export == "pressing_support_part2") {
     pressing_support_part2(pressing_height, mold_width, thickness, cut_offset) ;
@@ -127,12 +129,43 @@ scale([1,1,1]){
     pressing_support_part1(pressing_height, mold_width, thickness, rounding_factor, fillets_s, cut_offset) ;
     pressing_support_part2(pressing_height, mold_width, thickness, cut_offset) ;
     pressing_support_part3(pressing_height, mold_width, thickness, cut_offset) ;
-  }  else if (export == "one_piece") {
+  }  
+  else if (export == "one_piece") {
     margin = 0; // margin for assembly
     knights_assembly(knights_height, saber_height, margin, rounding_factor, fillets_s);
     saber_left(saber_height, 0, saber_height*rounding_factor, fillets_s);
     saber_right(saber_height, 0, saber_height*rounding_factor, fillets_s);
-  }
+  }  
+  else if (export == "all") {
+    // knight right
+    scale([scaling,scaling,1]) {
+      translate([0,0,0])  union () {
+        pressing_support_part2(pressing_height, mold_width, thickness, cut_offset) ;
+        difference () {
+          knights_assembly(knights_height, saber_height, margin, rounding_factor, fillets_s, mold_width);
+          translate([0,-1,-1])cube(200, center = false);
+        }
+      }
+    }
+    // knight left
+    scale([scaling,scaling,1]){
+      pressing_support_part3(pressing_height, mold_width, thickness, cut_offset) ;
+      difference () {
+        knights_assembly(knights_height, saber_height, margin, rounding_factor, fillets_s);
+        translate([200,-1,-1]) cube(200, center = false);
+      }
+    }
+    // sabers
+    scale([scaling,scaling,1]){
+      saber_left(saber_height, 0, saber_height*rounding_factor, fillets_s);
+      saber_right(saber_height, 0, saber_height*rounding_factor, fillets_s);
+      pressing_support_part0(pressing_height, mold_width, thickness, rounding_factor, fillets_s, cut_offset) ;
+    }    
+    // support part 1
+    scale([scaling,scaling,1]){
+    pressing_support_part1(pressing_height, mold_width, thickness, rounding_factor, fillets_s, cut_offset) ;    
+    }
+  }  
   else {
     $fn = 30;
     pressing_support_part1(pressing_height, mold_width, thickness, rounding_factor, fillets_s) ;
