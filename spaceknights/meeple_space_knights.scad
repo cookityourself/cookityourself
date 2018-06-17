@@ -27,13 +27,15 @@ scale([1,1,1]){
   
   // Choose here what you want to export:
 
-  export = "pressing_support_part1"; 
+  export = "knight_right_plain"; 
 
   // "all" : not designed for printing, final view of all the parts
   // "knight_right" : center and export the knights at the right
   // "knight_left" : export the knights at the left
   // "sabers" : export the crossing sabers
   // "pressing_support_part1" : export the bottom of the pressing support
+
+  // "knight_right_plain" : to create a mold with only one meeple space knight
 
   //----------------------------------------------------------
   
@@ -136,6 +138,16 @@ scale([1,1,1]){
     saber_left(saber_height, 0, saber_height*rounding_factor, fillets_s);
     saber_right(saber_height, 0, saber_height*rounding_factor, fillets_s);
   }  
+  else if (export == "knight_right_plain") {
+    scale([scaling,scaling,1]) {
+      translate([-200,0,0])  union () {
+        difference () {
+          knights(knights_height, knights_height*rounding_factor, fillets_s);
+          translate([0,-1,-1])cube(200, center = false);
+        }
+      }
+    }
+  }
   else if (export == "all") {
     // knight right
     scale([scaling,scaling,1]) {
@@ -201,7 +213,7 @@ module saber_right(saber_height = 20, margin = 0, rounding = 2, fillets_s = 10){
   color("red") molderize_n_fillet(height =saber_height, radius=rounding, steps=fillets_s) offset(delta=margin) shape ();
 }
 
-module knights (knights_height = 40, rounding = 2, fillets_s = 10, mold_width = 20){
+module knights (knights_height = 40, rounding = 2, fillets_s = 10){
   module shape () {
     import ("meeple_space_knights_characters.dxf");
   }
@@ -210,7 +222,7 @@ module knights (knights_height = 40, rounding = 2, fillets_s = 10, mold_width = 
 
 module knights_assembly (knights_height = 40, saber_height = 20, margin = 0, rounding_factor = 0.1, fillets_s = 10, mold_width = 20){
   difference () {
-    knights(knights_height, knights_height*rounding_factor, fillets_s, mold_width);
+    knights(knights_height, knights_height*rounding_factor, fillets_s);
     saber_left(saber_height+margin, margin, saber_height*rounding_factor, fillets_s);
     saber_right(saber_height+margin, margin, saber_height*rounding_factor, fillets_s);
   }
@@ -224,8 +236,8 @@ module pressing_support(pressing_height, mold_width, thickness) {
 }
   difference () {
     union () {
-      color("linen") linear_extrude(thickness) offset (r = mold_width) hull() shape (); 
-      color("linen") cutterize_3d_fillet(height =pressing_height, thickness=thickness) offset (r = mold_width) hull() shape (); 
+      color("linen") linear_extrude(thickness) offset (r = mold_width+2*thickness) hull() shape (); 
+      color("linen") cutterize_3d_fillet(height =pressing_height, thickness=5*thickness) offset (r = mold_width+2*thickness) hull() shape (); 
     }
  }
 }
