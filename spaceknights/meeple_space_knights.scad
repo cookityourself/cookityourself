@@ -1,6 +1,6 @@
 // ************************************************************
 // * EN
-// * This model is gracefully offered by cookityourself.
+// * This model is offered free of charge by cookityourself.
 // * Feel free to do what you want with it.
 // * Please just add a link to our website www.ciy.fr 
 // * if you use some of our code in your own creations.
@@ -27,7 +27,7 @@ scale([1,1,1]){
   
   // Choose here what you want to export:
 
-  export = "sabers"; 
+  export = "all"; 
 
   // "all" : not designed for printing, final view of all the parts
   // "knight_right" : center and export the knights at the right
