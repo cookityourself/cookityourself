@@ -27,7 +27,7 @@ scale([1,1,1]){
   
   // Choose here what you want to export:
 
-  export = "knight_right_plain"; 
+  export = "sabers"; 
 
   // "all" : not designed for printing, final view of all the parts
   // "knight_right" : center and export the knights at the right
@@ -47,19 +47,19 @@ scale([1,1,1]){
   pressing_h = 3;
   cut_offset = 300;
   
-  knights_h = 10;
-  saber_h = 4;
-  margin = 0.15; // margin for assembly
-  rounding_factor = 0.5;
-  fillets_s = 20; // fillet steps (see library)
-  scaling = 0.2;
-
-//  knights_h = 40;
-//  saber_h = 20;
+//  knights_h = 10;
+//  saber_h = 4;
 //  margin = 0.15; // margin for assembly
-//  rounding_factor = 0.2;
+//  rounding_factor = 0.5;
 //  fillets_s = 20; // fillet steps (see library)
-//  scaling = 0.8;
+//  scaling = 0.2;
+
+  knights_h = 40;
+  saber_h = 20;
+  margin = 0.15; // margin for assembly
+  rounding_factor = 0.2;
+  fillets_s = 20; // fillet steps (see library)
+  scaling = 0.8;
 
   pressing_height = pressing_h+thickness;
   knights_height = knights_h+thickness;
@@ -254,11 +254,11 @@ module pressing_support_part01 (pressing_height, mold_width, thickness, cut_offs
 }
 
 module pressing_support_part0 (pressing_height, mold_width, thickness, rounding_factor, fillets_s, cut_offset) {
-  text_depth = pressing_height-thickness+0.3;
+  text_depth = pressing_height-thickness/4;
   difference () {
     pressing_support_part01 (pressing_height, mold_width, thickness, cut_offset);
     translate([0,-315,-1]) cube(400, center = false);
-    translate([200,210,text_depth]) 
+    #translate([200,210,text_depth]) 
       color("teal") mirror([0,0,1]) 
         molderize_n_fillet(height =pressing_height, radius=pressing_height*0.8, steps=fillets_s) 
           mirror([1,0,0]) text("Happy 40", halign = "center", valign = "center", size = 15, font = "Cantarell:style=Bold");
@@ -272,13 +272,13 @@ module pressing_support_part0 (pressing_height, mold_width, thickness, rounding_
 }
 
 module pressing_support_part1 (pressing_height, mold_width, thickness, rounding_factor, fillets_s, cut_offset) {
-  text_depth = pressing_height-thickness+0.3;
+  text_depth = pressing_height-thickness/3;
   difference () {
     pressing_support_part01 (pressing_height, mold_width, thickness, cut_offset);
     translate([0,85,-1]) cube(400, center = false);
-    translate([200,20,text_depth]) 
+    translate([200,20,pressing_height+thickness/2]) 
       color("teal") mirror([0,0,1]) 
-        molderize_n_fillet(height =pressing_height, radius=pressing_height*0.8, steps=fillets_s) 
+        molderize_n_fillet(height =pressing_height, radius=pressing_height*0.5, steps=fillets_s) 
           mirror([1,0,0]) ciy_logo_2d(logo_size = 20, logo_orientation = 0);
     translate([200,60,text_depth]) 
       color("teal") mirror([0,0,1]) 
