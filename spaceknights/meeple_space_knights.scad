@@ -258,16 +258,6 @@ module pressing_support_part0 (pressing_height, mold_width, thickness, rounding_
   difference () {
     pressing_support_part01 (pressing_height, mold_width, thickness, cut_offset);
     translate([0,-315,-1]) cube(400, center = false);
-    #translate([200,210,text_depth]) 
-      color("teal") mirror([0,0,1]) 
-        molderize_n_fillet(height =pressing_height, radius=pressing_height*0.8, steps=fillets_s) 
-          mirror([1,0,0]) text("Happy 40", halign = "center", valign = "center", size = 15, font = "Cantarell:style=Bold");
-    translate([200,190,text_depth]) 
-      color("teal") mirror([0,0,1]) 
-        molderize_n_fillet(height =pressing_height, radius=pressing_height*0.8, steps=fillets_s) 
-          mirror([1,0,0]) text("Adrien", halign = "center", valign = "center", size = 15, font = "Cantarell:style=Bold");
-    translate ([0,0,-pressing_height]) union (){
-    }
   }
 }
 
