@@ -27,7 +27,7 @@ scale([1,1,1]){
   
   // Choose here what you want to export:
 
-  export = "all"; 
+  export = "knight_right_plain"; 
 
   // "all" : not designed for printing, final view of all the parts
   // "knight_right" : center and export the knights at the right
@@ -54,12 +54,12 @@ scale([1,1,1]){
 //  fillets_s = 20; // fillet steps (see library)
 //  scaling = 0.2;
 
-  knights_h = 40;
+  knights_h = 25;
   saber_h = 20;
   margin = 0.15; // margin for assembly
   rounding_factor = 0.2;
-  fillets_s = 20; // fillet steps (see library)
-  scaling = 0.8;
+  fillets_s = 30; // fillet steps (see library)
+  scaling = 0.4;
 
   pressing_height = pressing_h+thickness;
   knights_height = knights_h+thickness;
@@ -215,6 +215,7 @@ module saber_right(saber_height = 20, margin = 0, rounding = 2, fillets_s = 10){
 
 module knights (knights_height = 40, rounding = 2, fillets_s = 10){
   module shape () {
+    //import ("meeple_space_knights_characters.dxf");
     import ("meeple_space_knights_characters.dxf");
   }
   molderize_n_fillet(height =knights_height, radius=rounding, steps=fillets_s) shape (); 
