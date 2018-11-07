@@ -26,11 +26,13 @@ scale([1,1,1]){
   
   // Choose here what you want to export:
 
-  export = "fairy_simple"; 
+  export = "fairy_wand_in"; 
 
   // "all" : not designed for printing, final view of all the parts
-  // "fairy_simple" : the fairy form with a rectangular support
-
+  // "fairy_simple"      : a fairy with a rectangular support
+  // "fairy_wand_out" : a fairy with a magic wand on it
+  // "fairy_wand_in"    : a fairy with a magic wand in it
+  
   //----------------------------------------------------------
   
   $fn = 1000;
@@ -40,11 +42,13 @@ scale([1,1,1]){
   mold_width = 80;
   
   fairy_h = 25;
+  wand_h = 2;
   rounding_factor = 0.2;
   fillets_s = 30; // fillet steps (see library)
   scaling = 0.14;
 
   fairy_height = fairy_h+thickness;
+  wand_height = wand_h;
 
   //----------------------------------------------------------
 
@@ -56,7 +60,28 @@ scale([1,1,1]){
     translate([0,0,0]) color("purple")cube([80,80, thickness], center = false);
     
   }
-  else {
+ 
+  else if (export == "fairy_wand_out") {
+    translate ([-5,35,0]) rotate([0,0,-45]) 
+    scale([scaling,scaling,1]) {
+      fairy(fairy_height, rounding_factor, fillets_s);
+      translate([0,0,fairy_height]) magic_wand(wand_height, rounding_factor*4, fillets_s);
+    }
+    translate([0,0,0]) color("purple")cube([80,80, thickness], center = false);
+  }
+ 
+   else if (export == "fairy_wand_in") {
+    translate ([-5,35,0]) rotate([0,0,-45]) 
+    scale([scaling,scaling,1]) {
+      difference () {
+        fairy(fairy_height, rounding_factor, fillets_s);
+        mirror([0,0,1]) translate([0,0,-fairy_height-1]) magic_wand(wand_height+1, rounding_factor*4, fillets_s);
+      }
+    }
+    translate([0,0,0]) color("purple")cube([80,80, thickness], center = false);    
+  }
+
+ else {
     $fn = 30;
   }
 
@@ -75,3 +100,12 @@ module fairy_shape(){
 module fairy(fairy_height, rounding_factor, fillets_s){
   color("lightpink") molderize_n_fillet(height =fairy_height, radius=fairy_height*rounding_factor, steps=fillets_s) fairy_shape();
 }
+
+module magic_wand_shape(){
+  import(file = "meeple_fairy_magic_wand.dxf");
+}
+
+module magic_wand(wand_height, rounding_factor, fillets_s){
+  color("gold") molderize_n_fillet(height =wand_height, radius=wand_height*rounding_factor, steps=fillets_s) magic_wand_shape();
+}
+
