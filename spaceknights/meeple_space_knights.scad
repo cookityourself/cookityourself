@@ -147,6 +147,19 @@ scale([1,1,1]){
         }
       }
     }
+    translate([2,-2,0]) color("blue")cube([80,80, thickness/scaling], center = false);
+  }
+  else if (export == "knight_right_mold") {
+    scale([scaling,scaling,1]) {
+      knight_right(knights_height, knights_height*rounding_factor, fillets_s);
+      
+      color("green") minkowski() {
+        knight_right(knights_height, knights_height*rounding_factor, 0);
+        sphere(10);
+      }
+      
+      translate([0,-5/scaling,0]) color("blue")cube([210,220, thickness/scaling], center = false);
+    }
   }
   else if (export == "all") {
     // knight right
@@ -314,3 +327,11 @@ module pressing_support_part3 (pressing_height, mold_width, thickness, cut_offse
   }
 }
 
+module knight_right(knights_height, knight_height, fillets_s){
+      translate([-200,0,0])  union () {
+        difference () {
+          knights(knights_height, knight_height, fillets_s);
+          translate([0,-1,-1])cube(200, center = false);
+        }
+      }
+}
