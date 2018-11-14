@@ -147,7 +147,7 @@ scale([1,1,1]){
         }
       }
     }
-    translate([2,-2,0]) color("blue")cube([80,80, thickness/scaling], center = false);
+    translate([2,-2,0]) color("blue")cube([80,80, thickness], center = false);
   }
   else if (export == "knight_right_mold") {
     scale([scaling,scaling,1]) {
