@@ -14,8 +14,6 @@
 // ************************************************************
 // Generic functions to transform a 2D image file into a positive
 // to make a mold of the same shape.
-// Choose the name of the part you want to export to create
-// the files to slice and print.
 // ************************************************************
 
 
