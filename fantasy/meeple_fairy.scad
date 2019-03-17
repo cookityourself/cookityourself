@@ -26,7 +26,7 @@ scale([1,1,1]){
   
   // Choose here what you want to export:
 
-  export = "fairy_wand_in"; 
+  export = "fairy_wand_out"; 
 
   // "all" : not designed for printing, final view of all the parts
   // "fairy_simple"      : a fairy with a rectangular support
@@ -43,8 +43,8 @@ scale([1,1,1]){
   
   fairy_h = 25;
   wand_h = 2;
-  rounding_factor = 0.2;
-  fillets_s = 30; // fillet steps (see library)
+  rounding_factor = 1;
+  fillets_s = 80; // fillet steps (see library)
   scaling = 0.14;
 
   fairy_height = fairy_h+thickness;
@@ -65,7 +65,7 @@ scale([1,1,1]){
     translate ([-5,35,0]) rotate([0,0,-45]) 
     scale([scaling,scaling,1]) {
       fairy(fairy_height, rounding_factor, fillets_s);
-      translate([0,0,fairy_height]) magic_wand(wand_height, rounding_factor*4, fillets_s);
+      translate([0/scaling,-3/scaling,fairy_height]) magic_wand(wand_height, rounding_factor*4, fillets_s);
     }
     translate([0,0,0]) color("purple")cube([80,80, thickness], center = false);
   }
