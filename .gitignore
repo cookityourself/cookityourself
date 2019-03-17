@@ -5,3 +5,7 @@
 libs/writescad/*.*
 libs/wedge/*.*
 test_log.txt
+libs/fillet2d3d/*.*
+libs/paths2openscad-6/*.*
+*_export.svg
+*tmp*
