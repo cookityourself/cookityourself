@@ -16,6 +16,8 @@ color("purple") cutterize_3d_fillet(2, 20)
 color("purple") cutterize_3d_chamfer(2, 20) 
   translate ([22,46,0]) square(40);
   
+color("pink") cutterize_3d_offset (thickness = 1)  
+  translate ([-20,90,0]) square(40);
   
 module fillet(r) {
    offset(r = r) {
@@ -67,6 +69,33 @@ module cutterize_offset (thickness = 1) {
       children();
   }
 }
+
+module cutterize_2d_offset (thickness = 1) {
+  difference() {
+    render() {
+      minkowski() {
+        children();
+        square([2 * thickness, 2 * thickness, 2 * thickness], center=true);
+      }
+    }
+    translate([0, 0, -5 * thickness]) scale([1, 1, 100])
+      children();
+  }
+}
+
+module cutterize_3d_offset (thickness = 1, height = 10) {
+  difference() {
+    render() {
+      minkowski() {
+        linear_extrude(height) children();
+        cube([2 * thickness, 2 * thickness, 2 * thickness], center=true);
+      }
+    }
+    translate([0, 0, -5 * thickness]) scale([1, 1, 100])
+      linear_extrude(height) children();
+  }
+}
+
 
 module cutterize_offset_round (thickness = 1) {
   difference() {
