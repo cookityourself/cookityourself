@@ -16,6 +16,7 @@
 // - cookie cutter
 // ************************************************************
 
+use <../common/molderize.scad>
 use <../common/cutterize.scad>
 use <../common/ciy_logo.scad>
 use <../libs/recycling_symbol_library/recycling_symbol.scad>
@@ -26,7 +27,7 @@ scale([1,1,1]){
   
   // Choose here what you want to export:
 
-  export = "cookie_cutter"; 
+  export = "mold"; 
 
   // "all": not designed for printing, final view of all the parts
   // "cookie_cutter": cookie cutter in the shape of a guitarist meeple
@@ -45,6 +46,16 @@ scale([1,1,1]){
   
   cutter_scale = cutter_size/original_size;
 
+  // mold parameters
+
+  mold_height = 15;
+  mold_size = 74; // size of the mold in mm
+  mold_rounding_factor = 0.3;
+  mold_fillet_steps = 30; // fillet steps (see library)
+  mold_thickness = 1; // thickness of the plate
+  
+  mold_scale = mold_size/original_size;
+
   //----------------------------------------------------------
 
   if (export == "cookie_cutter") {
@@ -52,9 +63,12 @@ scale([1,1,1]){
     
   }
  
-  //else if (export == "") {
-  ///}
- 
+  else if (export == "mold") {
+    rotate([0,0,0]) scale([mold_scale,mold_scale,1]) {
+      meeple_guitarist_mold(mold_height, mold_height*mold_rounding_factor, mold_fillet_steps);
+    }
+    translate([-13,-3,0]) color("blue")cube([80,80, mold_thickness], center = false);
+  } 
 
   else {
     $fn = 30;
@@ -82,3 +96,8 @@ module meeple_guitarist_cookie_cutter(cutter_scale, cutter_height, cutter_thickn
     }
   }
 }
+
+module meeple_guitarist_mold(mold_height, mold_radius, mold_fillet_steps){
+  color("grey") molderize_n_fillet(height =mold_height, radius=mold_radius, steps=mold_fillet_steps) meeple_guitar_shape (); 
+}
+
