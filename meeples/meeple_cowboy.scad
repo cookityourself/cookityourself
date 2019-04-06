@@ -93,8 +93,8 @@ module meeple_cowboy_cookie_cutter(cutter_scale, cutter_height, cutter_thickness
   difference() {
     color("SaddleBrown") cutterize_3d_offset(thickness = cutter_thickness, height =cutter_height) scale(cutter_scale) meeple_cowboy_shape();
     union () {
-      translate ([40*cutter_scale,-cutter_thickness+0.2,cutter_height/2]) rotate([90,0,0]) ciy_logo(logo_size = cutter_height/2, logo_height = cutter_thickness, logo_orientation = 0);
-      translate ([130*cutter_scale,-cutter_thickness+0.2,cutter_height/2+1]) rotate([90,0,0]) recycling_symbol("PLA", cutter_height/2, cutter_thickness, [0,0,0]);
+      translate ([40*cutter_scale,+0.2,cutter_height/2]) rotate([90,0,0]) ciy_logo(logo_size = cutter_height/2, logo_height = cutter_thickness, logo_orientation = 0);
+      translate ([130*cutter_scale,+0.2,cutter_height/2+1]) rotate([90,0,0]) recycling_symbol("PLA", cutter_height/2, cutter_thickness, [0,0,0]);
     }
   }
 }
