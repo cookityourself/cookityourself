@@ -28,7 +28,7 @@ scale([1,1,1]){
   
   // Choose here what you want to export:
 
-  export = "cookie_cutter"; 
+  export = "mold"; 
 
   // "all": not designed for printing, final view of all the parts
   // "cookie_cutter": cookie cutter in the shape of a goldorak meeple
@@ -93,8 +93,8 @@ module meeple_goldorak_cookie_cutter(cutter_scale, cutter_height, cutter_thickne
   difference() {
     color("red") cutterize_3d_offset(thickness = cutter_thickness, height =cutter_height) scale(cutter_scale) meeple_goldorak_shape();
     union () {
-      translate ([45*cutter_scale,-cutter_thickness+0.2,cutter_height/2]) rotate([90,0,0]) ciy_logo(logo_size = cutter_height/2, logo_height = cutter_thickness, logo_orientation = 0);
-      translate ([135*cutter_scale,-cutter_thickness+0.2,cutter_height/2+1]) rotate([90,0,0]) recycling_symbol("PLA", cutter_height/2, cutter_thickness, [0,0,0]);
+      translate ([60*cutter_scale,-cutter_thickness+0.2,cutter_height/2]) rotate([90,0,0]) ciy_logo(logo_size = cutter_height/2, logo_height = cutter_thickness, logo_orientation = 0);
+      translate ([150*cutter_scale,-cutter_thickness+0.2,cutter_height/2+1]) rotate([90,0,0]) recycling_symbol("PLA", cutter_height/2, cutter_thickness, [0,0,0]);
     }
   }
 }
