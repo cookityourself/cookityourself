@@ -28,7 +28,7 @@ scale([1,1,1]){
   
   // Choose here what you want to export:
 
-  export = "cookie_cutter"; 
+  export = "mold"; 
 
   // "all": not designed for printing, final view of all the parts
   // "cookie_cutter": cookie cutter in the shape of a hockey player meeple
@@ -66,10 +66,10 @@ scale([1,1,1]){
   }
  
   else if (export == "mold") {
-    rotate([0,0,15]) scale([mold_scale,mold_scale,1]) {
+    rotate([0,0,12]) scale([mold_scale,mold_scale,1]) {
       meeple_hockey_mold(mold_height, mold_height*mold_rounding_factor, mold_fillet_steps);
     }
-    translate([-22,-10,0]) color("red")cube([80,80, mold_thickness], center = false);
+    translate([-2,0,0]) color("red")cube([80,80, mold_thickness], center = false);
   } 
 
   else {
@@ -91,9 +91,9 @@ module meeple_hockey_shape(){
 
 module meeple_hockey_cookie_cutter(cutter_scale, cutter_height, cutter_thickness){
   difference() {
-    color("red") cutterize_3d_fillet(thickness = cutter_thickness, height =cutter_height) scale(cutter_scale) meeple_hockey_shape();
+    color("red") cutterize_3d_offset(thickness = cutter_thickness, height =cutter_height) scale(cutter_scale) meeple_hockey_shape();
     union () {
-      translate ([-20*cutter_scale,-8*cutter_scale+0.2,cutter_height/2]) rotate([90,0,10]) ciy_logo(logo_size = cutter_height/2, logo_height = cutter_thickness, logo_orientation = 0);
+      translate ([35*cutter_scale,2*cutter_scale+0.2,cutter_height/2]) rotate([90,0,10]) ciy_logo(logo_size = cutter_height/2, logo_height = cutter_thickness, logo_orientation = 0);
       #translate ([130*cutter_scale,-cutter_thickness+0.2,cutter_height/2+1]) rotate([90,0,0]) recycling_symbol("PLA", cutter_height/2, cutter_thickness, [0,0,0]);
     }
   }
