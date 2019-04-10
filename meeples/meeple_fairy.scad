@@ -20,24 +20,39 @@
 use <../common/molderize.scad>
 use <../common/cutterize.scad>
 use <../common/ciy_logo.scad>
+use <../libs/recycling_symbol_library/recycling_symbol.scad>
+
 
 scale([1,1,1]){
   // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
   
   // Choose here what you want to export:
 
-  export = "fairy_wand_out"; 
+  export = "cookie_petg"; 
 
   // "all" : not designed for printing, final view of all the parts
   // "fairy_simple"      : a fairy with a rectangular support
   // "fairy_wand_out" : a fairy with a magic wand on it
   // "fairy_wand_in"    : a fairy with a magic wand in it
-  
+  // "cookie_cutter": cookie cutter in the shape of a cowboy meeple
+  // "cookie_petg": cookie cutter with recycling logo "PETG"
+
+   
   //----------------------------------------------------------
   
   $fn = 1000;
   //$fn = 30; // debug
+
+  original_size = 500; // size of the imported dxf in mm
   
+  // cookie cutter parameters
+  cutter_height = 15;
+  cutter_thickness = 1;
+  cutter_size = 70; // size of the cutter in mm
+  
+  cutter_scale = cutter_size/original_size;
+
+  // mold parameters
   thickness = 2;
   mold_width = 80;
   
@@ -49,6 +64,7 @@ scale([1,1,1]){
 
   fairy_height = fairy_h+thickness;
   wand_height = wand_h;
+
 
   //----------------------------------------------------------
 
@@ -81,6 +97,14 @@ scale([1,1,1]){
     translate([0,0,0]) color("purple")cube([80,80, thickness], center = false);    
   }
 
+  else if (export == "cookie_cutter") {
+    meeple_fairy_cookie_cutter(cutter_scale, cutter_height, cutter_thickness);
+    
+  }
+  else if (export == "cookie_petg") {
+    meeple_fairy_cookie_cutter(cutter_scale, cutter_height, cutter_thickness, "PETG");
+  }
+
  else {
     $fn = 30;
   }
@@ -107,5 +131,16 @@ module magic_wand_shape(){
 
 module magic_wand(wand_height, rounding_factor, fillets_s){
   color("gold") molderize_n_fillet(height =wand_height, radius=wand_height*rounding_factor, steps=fillets_s) magic_wand_shape();
+}
+
+
+module meeple_fairy_cookie_cutter(cutter_scale, cutter_height, cutter_thickness, filament="PLA"){
+  difference() {
+    color("Pink") cutterize_3d_fillet(thickness = cutter_thickness, height =cutter_height) scale(cutter_scale) fairy_shape();
+    union () {
+      translate ([159*cutter_scale,500*cutter_scale,cutter_height/2]) rotate([90,0,253]) ciy_logo(logo_size = cutter_height/2, logo_height = cutter_thickness, logo_orientation = 0);
+      translate ([228*cutter_scale,500*cutter_scale,cutter_height/2+1]) rotate([90,0,105]) recycling_symbol(filament, cutter_height/2, cutter_thickness, [0,0,0]);
+    }
+  }
 }
 
