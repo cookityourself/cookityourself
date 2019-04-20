@@ -28,7 +28,7 @@ scale([1,1,1]){
   
   // Choose here what you want to export:
 
-  export = "cookie_petg"; 
+  export = "mold"; 
 
   // "all": not designed for printing, final view of all the parts
   // "cookie_cutter": cookie cutter in the shape of a guitar player meeple with recycling logo "PLA"
@@ -40,7 +40,7 @@ scale([1,1,1]){
   $fn = 1000;
   //$fn = 30; // debug
   
-  original_size = 200; // size of the imported dxf in mm
+  original_size = 175; // size of the imported dxf in mm
   
   // cookie cutter parameters
   cutter_height = 15;
@@ -52,7 +52,7 @@ scale([1,1,1]){
   // mold parameters
 
   mold_height = 15;
-  mold_size = 74; // size of the mold in mm
+  mold_size = 65; // size of the mold in mm
   mold_rounding_factor = 0.3;
   mold_fillet_steps = 30; // fillet steps (see library)
   mold_thickness = 1; // thickness of the plate
