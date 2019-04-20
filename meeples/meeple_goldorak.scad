@@ -40,7 +40,7 @@ scale([1,1,1]){
   $fn = 1000;
   //$fn = 30; // debug
   
-  original_size = 200; // size of the imported dxf in mm
+  original_size = 175; // size of the imported dxf in mm
   
   // cookie cutter parameters
   cutter_height = 15;
@@ -52,7 +52,7 @@ scale([1,1,1]){
   // mold parameters
 
   mold_height = 15;
-  mold_size = 74; // size of the mold in mm
+  mold_size = 66; // size of the mold in mm
   mold_rounding_factor = 0.3;
   mold_fillet_steps = 30; // fillet steps (see library)
   mold_thickness = 1; // thickness of the plate
@@ -74,7 +74,7 @@ scale([1,1,1]){
     rotate([0,0,0]) scale([mold_scale,mold_scale,1]) {
       meeple_goldorak_mold(mold_height, mold_height*mold_rounding_factor, mold_fillet_steps);
     }
-    translate([-1,-10,0]) color("blue")cube([80,80, mold_thickness], center = false);
+    translate([-0.5,-5,0]) color("blue")cube([80,80, mold_thickness], center = false);
   } 
 
   else {
