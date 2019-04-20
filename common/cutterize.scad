@@ -51,8 +51,8 @@ module cutterize_2d_chamfer (thickness = 1) {
 
 module cutterize_2d_offset (thickness = 1) {
   difference () {
-    offset(delta = thickness, chamfer = false) chamfer(thickness) children();
-    chamfer(thickness) children();
+    offset(delta = thickness, chamfer = false) children();
+    children();
   }
 } 
 
