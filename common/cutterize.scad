@@ -49,12 +49,23 @@ module cutterize_2d_chamfer (thickness = 1) {
   }
 } 
 
+module cutterize_2d_offset (thickness = 1) {
+  difference () {
+    offset(delta = thickness, chamfer = false) chamfer(thickness) children();
+    chamfer(thickness) children();
+  }
+} 
+
 module cutterize_3d_fillet (thickness = 1, height = 10) {
   linear_extrude(height) cutterize_2d_fillet(thickness) children();
 } 
 
 module cutterize_3d_chamfer (thickness = 1, height = 10) {
   linear_extrude(height) cutterize_2d_chamfer(thickness) children();
+} 
+
+module cutterize_3d_offset (thickness = 1, height = 10) {
+  linear_extrude(height) cutterize_2d_offset(thickness) children();
 } 
 
 module cutterize_offset (thickness = 1) {
@@ -70,7 +81,7 @@ module cutterize_offset (thickness = 1) {
   }
 }
 
-module cutterize_2d_offset (thickness = 1) {
+module cutterize_2d_offset_min (thickness = 1) {
   difference() {
     render() {
       minkowski() {
@@ -83,7 +94,7 @@ module cutterize_2d_offset (thickness = 1) {
   }
 }
 
-module cutterize_3d_offset (thickness = 1, height = 10) {
+module cutterize_3d_offset_min (thickness = 1, height = 10) {
   difference() {
     render() {
       minkowski() {
