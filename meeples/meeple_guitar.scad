@@ -28,7 +28,7 @@ scale([1,1,1]){
   
   // Choose here what you want to export:
 
-  export = "mold"; 
+  export = "cookie_petg"; 
 
   // "all": not designed for printing, final view of all the parts
   // "cookie_cutter": cookie cutter in the shape of a guitar player meeple with recycling logo "PLA"
