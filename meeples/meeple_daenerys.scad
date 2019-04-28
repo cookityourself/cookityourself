@@ -12,7 +12,7 @@
 // * site web www.ciy.fr si vous utilisez tout ou partie de ce 
 // * code pour l'une de vos créations.
 // ************************************************************
-// Model for cooking tools in the shape of a Rock'n Roll daenerys meeple:
+// Model for cooking tools in the shape of a Daenerys meeple:
 // - cookie cutter
 // - positive shape to create a mold
 // ************************************************************
@@ -28,7 +28,7 @@ scale([1,1,1]){
   
   // Choose here what you want to export:
 
-  export = "cookie_petg"; 
+  export = "cookie_cutter"; 
 
   // "all": not designed for printing, final view of all the parts
   // "cookie_cutter": cookie cutter in the shape of a daenerys meeple with recycling logo "PLA"
@@ -46,17 +46,18 @@ scale([1,1,1]){
   cutter_height = 15;
   cutter_thickness = 1;
   cutter_size = 70; // size of the cutter in mm
+  cutter_color = "silver";
   
   cutter_scale = cutter_size/original_size;
-  cutter_color = "silver";
 
   // mold parameters
 
   mold_height = 15;
-  mold_size = 65; // size of the mold in mm
+  mold_size = 72; // size of the mold in mm
   mold_rounding_factor = 0.3;
   mold_fillet_steps = 30; // fillet steps (see library)
   mold_thickness = 1; // thickness of the plate
+  mold_color  = cutter_color;
   
   mold_scale = mold_size/original_size;
 
@@ -73,9 +74,9 @@ scale([1,1,1]){
   }
   else if (export == "mold") {
     rotate([0,0,0]) scale([mold_scale,mold_scale,1]) {
-      meeple_daenerys_mold(mold_height, mold_height*mold_rounding_factor, mold_fillet_steps);
+      meeple_daenerys_mold(mold_height, mold_height*mold_rounding_factor, mold_fillet_steps, mold_color);
     }
-    translate([-13,-3,0]) color("blue")cube([80,80, mold_thickness], center = false);
+    translate([-1,-2,0]) color("blue")cube([100,100, mold_thickness], center = false);
   } 
 
   else {
@@ -95,6 +96,11 @@ module meeple_daenerys_shape(){
   import(file = "meeple_daenerys.dxf");
 }
 
+module meeple_daenerys_mold_shape(){
+  import(file = "meeple_daenerys_mold.dxf");
+}
+
+
 module meeple_daenerys_cookie_cutter(cutter_scale, cutter_height, cutter_thickness, cutter_color = "grey", filament="PLA"){
   difference() {
     color(cutter_color) cutterize_3d_offset(thickness = cutter_thickness, height =cutter_height) scale(cutter_scale) meeple_daenerys_shape();
@@ -105,7 +111,7 @@ module meeple_daenerys_cookie_cutter(cutter_scale, cutter_height, cutter_thickne
   }
 }
 
-module meeple_daenerys_mold(mold_height, mold_radius, mold_fillet_steps){
-  color("grey") molderize_n_fillet(height =mold_height, radius=mold_radius, steps=mold_fillet_steps) meeple_daenerys_shape (); 
+module meeple_daenerys_mold(mold_height, mold_radius, mold_fillet_steps, mold_color = "grey"){
+  color(mold_color) molderize_n_fillet(height =mold_height, radius=mold_radius, steps=mold_fillet_steps) meeple_daenerys_mold_shape (); 
 }
 
