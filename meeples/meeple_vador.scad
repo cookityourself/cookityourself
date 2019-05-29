@@ -28,7 +28,7 @@ scale([1,1,1]){
   
   // Choose here what you want to export:
 
-  export = "cookie_petg"; 
+  export = "mold"; 
 
   // "all": not designed for printing, final view of all the parts
   // "cookie_cutter": cookie cutter in the shape of a Dark Space Knight meeple
@@ -37,7 +37,10 @@ scale([1,1,1]){
   
   //----------------------------------------------------------
   
-  $fn = 1000;
+  $fa = 6;
+  $fs = 0.2;
+  $fn = 0;
+  //$fn = 1000;
   //$fn = 30; // debug
   
   original_size = 175; // size of the imported dxf in mm
@@ -52,10 +55,10 @@ scale([1,1,1]){
 
   // mold parameters
 
-  mold_height = 15;
-  mold_size = 72; // size of the mold in mm
+  mold_height = 20;
+  mold_size = 85; // size of the mold in mm
   mold_rounding_factor = 0.3;
-  mold_fillet_steps = 30; // fillet steps (see library)
+  mold_fillet_steps = 50; // fillet steps (see library)
   mold_thickness = 1; // thickness of the plate
   mold_color = "grey";
   
@@ -75,7 +78,7 @@ scale([1,1,1]){
     rotate([0,0,0]) scale([mold_scale,mold_scale,1]) {
       meeple_vador_mold(mold_height, mold_height*mold_rounding_factor, mold_fillet_steps, mold_color);
     }
-    translate([-5,-1,0]) color("black")cube([80,80, mold_thickness], center = false);
+    //translate([-5,-1,0]) color("black")cube([80,80, mold_thickness], center = false);
   } 
 
   else {
