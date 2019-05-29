@@ -28,7 +28,7 @@ scale([1,1,1]){
   
   // Choose here what you want to export:
 
-  export = "cookie_petg"; 
+  export = "mold"; 
 
   // "all": not designed for printing, final view of all the parts
   // "cookie_cutter": cookie cutter in the shape of a Harley Quinn meeple
@@ -37,7 +37,10 @@ scale([1,1,1]){
   
   //----------------------------------------------------------
   
-  $fn = 1000;
+  $fa = 6;
+  $fs = 0.2;
+  $fn = 0;
+  //$fn = 1000;
   //$fn = 30; // debug
   
   original_size = 175; // size of the imported dxf in mm
@@ -52,10 +55,10 @@ scale([1,1,1]){
 
   // mold parameters
 
-  mold_height = 15;
-  mold_size = 80; // size of the mold in mm
+  mold_height = 20;
+  mold_size = 85; // size of the mold in mm
   mold_rounding_factor = 0.3;
-  mold_fillet_steps = 30; // fillet steps (see library)
+  mold_fillet_steps = 50; // fillet steps (see library)
   mold_thickness = 1; // thickness of the plate
   mold_color = cutter_color;
   
@@ -75,7 +78,7 @@ scale([1,1,1]){
     rotate([0,0,0]) scale([mold_scale,mold_scale,1]) {
       meeple_harleyquinn_mold(mold_height, mold_height*mold_rounding_factor, mold_fillet_steps, mold_color);
     }
-    translate([-1,-1,0]) color("black")cube([80,80, mold_thickness], center = false);
+    //translate([-1,-1,0]) color("black")cube([80,80, mold_thickness], center = false);
   } 
 
   else {
@@ -95,6 +98,10 @@ module meeple_harleyquinn_shape(){
     import(file = "meeple_harleyquinn.dxf");
 }
 
+module meeple_harleyquinn_mold_shape(){
+    import(file = "meeple_harleyquinn_mold.dxf");
+}
+
 module meeple_harleyquinn_cookie_cutter(cutter_scale, cutter_height, cutter_thickness, cutter_color, filament="PLA"){
   difference() {
     color(cutter_color) cutterize_3d_offset(thickness = cutter_thickness, height =cutter_height) scale(cutter_scale) meeple_harleyquinn_shape();
@@ -106,6 +113,6 @@ module meeple_harleyquinn_cookie_cutter(cutter_scale, cutter_height, cutter_thic
 }
 
 module meeple_harleyquinn_mold(mold_height, mold_radius, mold_fillet_steps, mold_color){
-  color(mold_color) molderize_n_fillet(height =mold_height, radius=mold_radius, steps=mold_fillet_steps) meeple_harleyquinn_shape (); 
+  color(mold_color) molderize_n_fillet(height =mold_height, radius=mold_radius, steps=mold_fillet_steps) meeple_harleyquinn_mold_shape (); 
 }
 
