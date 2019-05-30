@@ -95,10 +95,7 @@ scale([1,1,1]){
 // ************************************************************
 
 module meeple_vador_shape(){
-  difference () {
-    translate([-223,0,0]) import(file = "../spaceknights/meeple_space_knights_characters.dxf");
-    translate([-270,-10]) square(250);
-  }
+  import(file = "meeple_vador.dxf");
 }
 
 module meeple_vador_cookie_cutter(cutter_scale, cutter_height, cutter_thickness, cutter_color, filament="PLA"){
