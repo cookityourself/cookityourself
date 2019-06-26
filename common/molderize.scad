@@ -20,7 +20,7 @@
 preview();
 
 module preview () {
-  file = "meeple.dxf";
+  file = "../meeples/meeple.dxf";
   height = 40;
   chamfer = 2;
   radius = 5;

@@ -16,7 +16,7 @@ color("purple") cutterize_3d_fillet(2, 20)
 color("purple") cutterize_3d_chamfer(2, 20) 
   translate ([22,46,0]) square(40);
   
-color("pink") cutterize_3d_offset (thickness = 1)  
+color("pink") cutterize_3d_offset (thickness = 1, height = 20)  
   translate ([-20,90,0]) square(40);
   
 module fillet(r) {
