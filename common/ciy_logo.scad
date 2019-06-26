@@ -1,3 +1,21 @@
+// ************************************************************
+// * EN
+// * This model is gracefully offered by cookityourself.
+// * Feel free to do what you want with it.
+// * Please just add a link to our website www.ciy.fr 
+// * if you use some of our code in your own creations.
+// ************************************************************
+// * FR
+// * Ce modèle vous est gracieusement offert par cookityourself.
+// * Vous êtes libres de l'utiliser comme bon vous semble.
+// * Nous vous demandons seulement de faire un lien vers notre 
+// * site web www.ciy.fr si vous utilisez tout ou partie de ce 
+// * code pour l'une de vos créations.
+// ************************************************************
+// Module for the CIY (Cook It Yourself) logo
+// ************************************************************
+
+
 ciy_logo(logo_size = 10, logo_height = 5, logo_orientation = 10);
 translate([10,10,0])color("green")ciy_logo_2d(logo_size = 10, logo_orientation = 10);
 
